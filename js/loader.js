@@ -11,6 +11,7 @@
 
 
 			init();
+			var board;
 			//animate();
 
 
@@ -36,11 +37,11 @@
 				areaLight1.width = 100;
 				areaLight1.height = 100;
 
-				scene.add( areaLight1 );
+				//scene.add( areaLight1 );
 				
 				var light = new THREE.PointLight( 0xffffff, .5, 10000 );
 				light.position.set( 90, 140, 90 );
-				scene.add( light );
+				//scene.add( light );
 				
 				var light2 = new THREE.PointLight( 0xffffff, .5, 10000 );
 				light2.position.set( -90, 140, -90 );
@@ -54,7 +55,7 @@
 				//scene.add( directionalLight );
 				
 				var spotLight = new THREE.SpotLight( 0xeeeeee );
-				spotLight.position.set( 0, 5000, -500 );
+				//spotLight.position.set( 0, 5000, -500 );
 				//scene.add(spotLight);
 				
 				
@@ -149,7 +150,7 @@
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
-				var board = new ChessBoard(scene, camera, renderer);
+				board = new ChessBoard(scene, camera, renderer);
 
 			}
 
@@ -187,7 +188,20 @@
 			}
 
 			function onKeyUp( event ) {
-                /*
+				//camera.position.z = -camera.position.z;
+				var testloader = new THREE.OBJMTLLoader();
+				testloader.load('Models/Pawn/Pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
+					// scales and positions the model;
+					object.position.z = TOP + 60;
+					object.position.x = LEFT + 40;;
+					object.position.y = 4.5;
+
+					object.scale.x = object.scale.y = object.scale.z = 5;
+
+					scene.add(object);
+					});
+                board.move(6, 1, 4, 1);
+				/*
                     Implement keyboard controls for pedaling (i.e., spinning the wheels)
                 */
 			}
@@ -212,6 +226,7 @@
                 /*
                     TODO Perform updates for animation purposes
                 */
+				board.update();
 				render();
 
 			}

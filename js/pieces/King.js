@@ -23,24 +23,15 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.board = board;
 	this.scene = scene;
 	this.color = color;
-	this.xLoc = spot[0];
-	this.yLoc = spot[1];
-	this.x = TOP + (this.xLoc * 20)
-	this.y = LEFT + (this.yLoc * 20)
-	this.moving = false;
-	this.ttl = 0;
-	this.x2 = 0;
-	this.y2 = 0;
-	this.dx = 0;
-	this.dy = 0;
+	this.spot = spot;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
 	this.loader = new THREE.OBJMTLLoader();
 	
 	//local variables to the init method to help loading the model
-	var xPos = this.xLoc;
-	var yPos = this.yLoc;
+	var xPos = this.spot[0];
+	var yPos = this.spot[1];
 	
 	// This loadPiece function takes the Pawn object itself, or the loader function will
 	// the reference to the Pawn object, it also takes the loader to load with, and a callback for when it completes
@@ -77,29 +68,9 @@ Pawn.prototype.init = function(scene, color, spot, board)
 // TODO a move method, should add the pawn to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
 Pawn.prototype.move = function(x, y){
-	this.xLoc = x;
-	this.yLoc = y;
-	this.x2 = TOP + (x * 20);
-	this.y2 = LEFT + (y * 20);
-	this.moving = true;
-	this.ttl = TIME_TO_MOVE;
-	this.dx = (this.x2 - this.x) / this.ttl;
-	this.dy = (this.y2 - this.y) / this.ttl;
-	
-}
-
-Pawn.prototype.update = function(){
-	this.piece.position.z += this.dx;
-	this.piece.position.x += this.dy;
-	this.ttl--;
-	if(this.ttl == 0){
-		this.moving = false;
-		this.x = this.x2;
-		this.y = this.y2;
-		
-	}
-}
-
-Pawn.prototype.isMoving = function(){
-	return this.moving;
+	//alert(this.piece);
+	//console.log(this.piece);
+	this.piece.position.z = TOP + (x * 20);
+	this.piece.position.x = LEFT + (y * 20);
+	//console.log(this.piece);
 }
