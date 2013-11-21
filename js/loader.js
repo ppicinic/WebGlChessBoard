@@ -222,7 +222,8 @@
 					scene.add(object);
 					});*/
 				if(doneLoading){
-					board.move("Pe2e4");
+					var str = prompt("Enter a move");
+					board.move(str);
 				}
 				/*var z = camera.position.z;
 				if(z == 170){
@@ -257,9 +258,9 @@
                 */
 				if(doneLoading){
 					//console.log('happens');
-					scene.rotation.x += .5;
-					scene.rotation.y += .5;
-					scene.rotation.x += .5;
+					//scene.rotation.x += .5;
+					//scene.rotation.y += .5;
+					//scene.rotation.x += .5;
 					board.update();
 				}
 				

@@ -73,7 +73,8 @@ ChessBoard.prototype.update = function(){
 				this.pieces[x][y] = null;
 				this.movingArray.push(this.pieces[x2][y2]);
 			}else{
-				// add camera move
+				this.camera.move();
+				this.movingArray.push(this.camera);
 			}
 			
 			//console.log(this.movingArray);
