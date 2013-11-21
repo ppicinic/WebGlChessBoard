@@ -253,14 +253,14 @@
                 /*
                     TODO Perform updates for animation purposes
                 */
-				/*camera.position.z += movep;
+				camera.position.z += movep;
 				if(camera.position.z == -140 || camera.position.z == 176){
 					movep = -movep;
 				}
 				camera.position.x += movey;
 				if(camera.position.x == 158 || camera.position.x == -158){
 					movey = -movey;
-				}*/
+				}
 				
 				
 				board.update();
