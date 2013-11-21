@@ -1,8 +1,9 @@
-var ChessBoard = function (scene) { this.init(scene); }
+var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
-ChessBoard.prototype.init = function(scene)
+ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
+	this.camera = new CameraController(camera);
 	this.moveQueue = new Array(); // queue of moves to be animated
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();

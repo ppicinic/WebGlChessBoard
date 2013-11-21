@@ -154,10 +154,13 @@
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
-				setTimeout(function(){toAnim()}, 10);
-				board = new ChessBoard(scene, camera, renderer);
 				
+				
+				board = new ChessBoard(scene, camera);
+				setTimeout(function(){toAnim()}, 200);
 				animate();
+				
+				
 				
 
 			}
@@ -167,7 +170,7 @@
 					doneLoading = true;
 				}
 				else{
-					setTimeout(toAnim, 10);
+					setTimeout(toAnim, 200);
 				}
 			}
 
@@ -253,17 +256,11 @@
                 /*
                     TODO Perform updates for animation purposes
                 */
-				camera.position.z += movep;
-				if(camera.position.z == -140 || camera.position.z == 176){
-					movep = -movep;
-				}
-				camera.position.x += movey;
-				if(camera.position.x == 158 || camera.position.x == -158){
-					movey = -movey;
+				if(doneLoading){
+					board.update();
 				}
 				
 				
-				board.update();
 				render();
 
 			}
