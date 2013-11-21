@@ -12,6 +12,10 @@
 
 			init();
 			var board;
+			var movep = -1;
+			var movey = 1;
+			var start = 0;
+			var doneLoading = false;
 			//animate();
 
 
@@ -21,7 +25,7 @@
 				document.body.appendChild( container );
 
 				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-				camera.position.z = 170;
+				camera.position.z = 176;
 				camera.position.y = 100;
 				
 
@@ -150,8 +154,21 @@
 				//
 
 				window.addEventListener( 'resize', onWindowResize, false );
+				setTimeout(function(){toAnim()}, 10);
 				board = new ChessBoard(scene, camera, renderer);
+				
+				animate();
+				
 
+			}
+			var toAnim = function(){
+				console.log('happens');
+				if(start == 16){
+					doneLoading = true;
+				}
+				else{
+					setTimeout(toAnim, 10);
+				}
 			}
 
             function cloneObj ( obj ) {
@@ -189,7 +206,7 @@
 
 			function onKeyUp( event ) {
 				//camera.position.z = -camera.position.z;
-				var testloader = new THREE.OBJMTLLoader();
+				/*var testloader = new THREE.OBJMTLLoader();
 				testloader.load('Models/Pawn/Pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
 					// scales and positions the model;
 					object.position.z = TOP + 60;
@@ -199,8 +216,18 @@
 					object.scale.x = object.scale.y = object.scale.z = 5;
 
 					scene.add(object);
-					});
-                board.move(6, 1, 4, 1);
+					});*/
+				if(doneLoading){
+					board.move(1, 6, 1, 2);
+					board.move(3, 1, 3, 2);
+					board.move(4, 6, 4, 4);
+				}
+				/*var z = camera.position.z;
+				if(z == 170){
+					camera.position.z = -140;
+				}else{
+					camera.position.z = 175;
+				}*/
 				/*
                     Implement keyboard controls for pedaling (i.e., spinning the wheels)
                 */
@@ -226,6 +253,16 @@
                 /*
                     TODO Perform updates for animation purposes
                 */
+				/*camera.position.z += movep;
+				if(camera.position.z == -140 || camera.position.z == 176){
+					movep = -movep;
+				}
+				camera.position.x += movey;
+				if(camera.position.x == 158 || camera.position.x == -158){
+					movey = -movey;
+				}*/
+				
+				
 				board.update();
 				render();
 

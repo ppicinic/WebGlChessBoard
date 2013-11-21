@@ -25,8 +25,8 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.color = color;
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
-	this.x = TOP + (this.xLoc * 20)
-	this.y = LEFT + (this.yLoc * 20)
+	this.x = LEFT + (this.xLoc * 20)
+	this.y = TOP + (this.yLoc * 20)
 	this.moving = false;
 	this.ttl = 0;
 	this.x2 = 0;
@@ -46,10 +46,10 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	// the reference to the Pawn object, it also takes the loader to load with, and a callback for when it completes
 	function loadPiece(pawn, loader, callback) {
 		// loads the model
-		loader.load('Models/Pawn/Pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
+		loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
 		// scales and positions the model;
-		object.position.z = TOP + (xPos * 20);
-		object.position.x = LEFT + (yPos * 20);
+		object.position.z = TOP + (yPos * 20);
+		object.position.x = LEFT + (xPos * 20);
 		object.position.y = 4.5;
 
     	object.scale.x = object.scale.y = object.scale.z = 5;
@@ -67,7 +67,8 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	// the loader, and the callback function which calls back to the board
 	loadPiece(this, this.loader, function() {
 		// calls back to the board
-		board.callbackFromPiece(spot[0], spot[1]);
+		start++;
+		console.log(start);
 	});
 	
 }
@@ -77,20 +78,28 @@ Pawn.prototype.init = function(scene, color, spot, board)
 // TODO a move method, should add the pawn to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
 Pawn.prototype.move = function(x, y){
+	var spaces = 1;
+	if(this.xLoc != x){
+		spaces = Math.abs(this.xLoc - x);
+	}else{
+		spaces = Math.abs(this.yLoc - y);
+	}
 	this.xLoc = x;
 	this.yLoc = y;
-	this.x2 = TOP + (x * 20);
-	this.y2 = LEFT + (y * 20);
+	this.x2 = LEFT + (x * 20);
+	this.y2 = TOP + (y * 20);
+	console.log(spaces);
+	
 	this.moving = true;
-	this.ttl = TIME_TO_MOVE;
+	this.ttl = TIME_TO_MOVE * spaces;
 	this.dx = (this.x2 - this.x) / this.ttl;
 	this.dy = (this.y2 - this.y) / this.ttl;
 	
 }
 
 Pawn.prototype.update = function(){
-	this.piece.position.z += this.dx;
-	this.piece.position.x += this.dy;
+	this.piece.position.z += this.dy;
+	this.piece.position.x += this.dx;
 	this.ttl--;
 	if(this.ttl == 0){
 		this.moving = false;
