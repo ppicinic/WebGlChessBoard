@@ -157,8 +157,9 @@
 				
 				
 				board = new ChessBoard(scene, camera);
-				setTimeout(function(){toAnim()}, 200);
 				animate();
+				setTimeout(function(){toAnim()}, 200);
+				
 				
 				
 				
