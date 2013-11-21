@@ -167,7 +167,7 @@
 			}
 			var toAnim = function(){
 				console.log('happens');
-				if(start == 16){
+				if(start == 17){
 					doneLoading = true;
 				}
 				else{
@@ -222,9 +222,7 @@
 					scene.add(object);
 					});*/
 				if(doneLoading){
-					board.move(1, 6, 1, 2);
-					board.move(3, 1, 3, 2);
-					board.move(4, 6, 4, 4);
+					board.move("Pe2e4");
 				}
 				/*var z = camera.position.z;
 				if(z == 170){
@@ -258,6 +256,10 @@
                     TODO Perform updates for animation purposes
                 */
 				if(doneLoading){
+					//console.log('happens');
+					scene.rotation.x += .5;
+					scene.rotation.y += .5;
+					scene.rotation.x += .5;
 					board.update();
 				}
 				

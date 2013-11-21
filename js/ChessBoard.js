@@ -3,20 +3,28 @@ var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
+	this.board;
 	this.camera = new CameraController(camera);
 	this.moveQueue = new Array(); // queue of moves to be animated
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
-	this.loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
+	function loadBoard(board, loader){
+	loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
 		object.position.x = -20;
     	object.scale.x = 10;
     	object.scale.y = 10;
     	object.scale.z = 10;
 		object.material = null;
 		object.receiveShadow = true;	
-		this.scene.add(object);
+		board.board = object;
+		board.scene.add(board.board);
+		start++;
+		console.log(start);
     } );
+	}
+	
+	loadBoard(this, this.loader);
 	
 	this.pieces = new Array(8);
 	for(var i = 0; i < this.pieces.length; i++){
@@ -40,6 +48,7 @@ ChessBoard.prototype.init = function(scene, camera)
 }
 
 ChessBoard.prototype.update = function(){
+	
 	var bool = false;
 	for(var i = 0; i < this.movingArray.length; i++){
 		//console.log(this.movingArray[i].isMoving());
@@ -52,17 +61,31 @@ ChessBoard.prototype.update = function(){
 	if(!bool){
 		this.movingArray = new Array();
 		if(this.moveQueue.length > 0){
-			//console.log('pushes here');
-			this.movingArray.push(this.moveQueue.shift());
+			var move = this.moveQueue.shift();
+			if(move.isPiece()){
+				console.log(move);
+				var x = move.x;
+				var y = move.y;
+				var x2 = move.x2;
+				var y2 = move.y2;
+				this.pieces[x][y].move(x2, y2);
+				this.pieces[x2][y2] = this.pieces[x][y];
+				this.pieces[x][y] = null;
+				this.movingArray.push(this.pieces[x2][y2]);
+			}else{
+				// add camera move
+			}
+			
 			//console.log(this.movingArray);
 			//console.log(this.moveQueue);
 			
 		}
 	}
 }
-ChessBoard.prototype.move = function(x1, y1, x2, y2){
-	this.pieces[x1][y1].move(x2, y2);
-	this.pieces[x2][y2] = this.pieces[x1][y1];
-	this.pieces[x1][y1] = null;
-	this.moveQueue.push(this.pieces[x2][y2]);
+ChessBoard.prototype.move = function(str){
+	var move = new PieceMove(str);
+	var camMove = new CameraMove();
+	this.moveQueue.push(move);
+	this.moveQueue.push(camMove);
+	
 }
