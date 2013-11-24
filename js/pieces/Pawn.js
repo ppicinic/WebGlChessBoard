@@ -59,7 +59,7 @@ Pawn.prototype.init = function(scene, color, spot, board)
 
 		// sets the model to the pawn object and adds it to the scene
 		pawn.piece = object;
-		console.log(pawn.piece);
+		//console.log(pawn.piece);
 		pawn.scene.add(pawn.piece);
 		// calls the callback
 		callback();

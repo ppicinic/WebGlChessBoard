@@ -16,6 +16,7 @@
 			var movey = 1;
 			var start = 0;
 			var doneLoading = false;
+			var notPlaying = true;
 			var moveList = ["Pe2e4", "Pd7d6", "Pd2d4", "Ng8f6", "Nb1c3", "Pg7g6", "Bc1e3", "Bf8g7", 
 				"Qd1d2", "Pc7c6", "Pf2f3", "Pb7b5", "Ng1e2", "Nb8d7", "Be3h6", "Bg7h6", "Qd2h6", "Bc8b7", 
 				"Pa2a3", "Pe7e5", "Ke1c1", "Qd8e7", "Kc1b1", "Pa7a6", "Ne2c1", "Ke8c8", "Nc1b3", "Pe5d4", 
@@ -233,8 +234,11 @@
 				if(doneLoading){
 					//var str = prompt("Enter a move");
 					//board.move(str);
-					for(var i = 0; i < moveList.length; i++){
-						board.move(moveList[i]);
+					if(notPlaying){
+						notPlaying = false;
+						for(var i = 0; i < moveList.length; i++){
+							board.move(moveList[i]);
+						}
 					}
 				}
 				/*var z = camera.position.z;
