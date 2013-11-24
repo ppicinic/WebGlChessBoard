@@ -28,6 +28,8 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.x = LEFT + (this.xLoc * 20)
 	this.y = TOP + (this.yLoc * 20)
 	this.moving = false;
+	this.fadettl = TIME_TO_MOVE;
+	this.dest = false;
 	this.ttl = 0;
 	this.x2 = 0;
 	this.y2 = 0;
@@ -54,8 +56,10 @@ Pawn.prototype.init = function(scene, color, spot, board)
 
     	object.scale.x = object.scale.y = object.scale.z = 5;
 
+
 		// sets the model to the pawn object and adds it to the scene
 		pawn.piece = object;
+		console.log(pawn.piece);
 		pawn.scene.add(pawn.piece);
 		// calls the callback
 		callback();
@@ -98,15 +102,32 @@ Pawn.prototype.move = function(x, y){
 }
 
 Pawn.prototype.update = function(){
-	this.piece.position.z += this.dy;
-	this.piece.position.x += this.dx;
-	this.ttl--;
-	if(this.ttl == 0){
-		this.moving = false;
-		this.x = this.x2;
-		this.y = this.y2;
-		
+	if(this.dest){
+		if(this.ttl < TIME_TO_MOVE){
+			this.piece.opacity -= (1 / TIME_TO_MOVE);
+		}
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+		}
+
+	}else {
+		this.piece.position.z += this.dy;
+		this.piece.position.x += this.dx;
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+			this.x = this.x2;
+			this.y = this.y2;
+			
+		}
 	}
+}
+
+Pawn.prototype.destroy = function(ttl){
+	this.moving = true;
+	this.ttl = ttl;
+	this.dest = true;
 }
 
 Pawn.prototype.isMoving = function(){

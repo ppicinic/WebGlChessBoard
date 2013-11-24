@@ -33,12 +33,54 @@ ChessBoard.prototype.init = function(scene, camera)
 	var piece;
 	for(var x = 0; x < this.pieces.length; x++){
 		for(var y = 0; y < this.pieces[x].length; y++){
-			if(y == 1){
+			if(y == 0){
+				if(x == 0 || x == 7){
+					piece = new Rook(this.scene, BLACK, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 1 || x == 6){
+					piece = new Knight(this.scene, BLACK, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 2 || x == 5){
+					piece = new Bishop(this.scene, BLACK, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 3){
+					piece = new King(this.scene, BLACK, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 4){
+					piece = new Queen(this.scene, BLACK, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+			}else if(y == 1){
 				piece = new Pawn(this.scene, BLACK, [x,y], this);
 				this.pieces[x][y] = piece;
 			}else if(y == 6){
 				piece = new Pawn(this.scene, WHITE, [x,y], this);
 				this.pieces[x][y] = piece;
+			}else if(y == 7){
+				if(x == 0 || x == 7){
+					piece = new Rook(this.scene, WHITE, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 1 || x == 6){
+					piece = new Knight(this.scene, WHITE, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 2 || x == 5){
+					piece = new Bishop(this.scene, WHITE, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 3){
+					piece = new Queen(this.scene, WHITE, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
+				if(x == 4){
+					piece = new King(this.scene, WHITE, [x, y], this);
+					this.pieces[x][y] = piece;
+				}
 			}
 		}
 	}
@@ -69,6 +111,11 @@ ChessBoard.prototype.update = function(){
 				var x2 = move.x2;
 				var y2 = move.y2;
 				this.pieces[x][y].move(x2, y2);
+				if(this.pieces[x2][y2]){
+					console.log('piece dies');
+					this.pieces[x2][y2].destroy(this.pieces[x][y].ttl);
+					this.movingArray.push(this.pieces[x2][y2]);
+				}
 				this.pieces[x2][y2] = this.pieces[x][y];
 				this.pieces[x][y] = null;
 				this.movingArray.push(this.pieces[x2][y2]);

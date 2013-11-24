@@ -28,6 +28,7 @@ Bishop.prototype.init = function(scene, color, spot, board)
 	this.x = LEFT + (this.xLoc * 20)
 	this.y = TOP + (this.yLoc * 20)
 	this.moving = false;
+	this.dest = false;
 	this.ttl = 0;
 	this.x2 = 0;
 	this.y2 = 0;
@@ -98,15 +99,38 @@ Bishop.prototype.move = function(x, y){
 }
 
 Bishop.prototype.update = function(){
-	this.piece.position.z += this.dy;
-	this.piece.position.x += this.dx;
-	this.ttl--;
-	if(this.ttl == 0){
-		this.moving = false;
-		this.x = this.x2;
-		this.y = this.y2;
-		
+	if(this.dest){
+		if(this.ttl <= TIME_TO_MOVE){
+			//console.log('opacity drops')
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.transparent = true;
+					mesh.material.opacity -= (1 / TIME_TO_MOVE);
+				}
+			});
+		}
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+		}
+
+	}else {
+		this.piece.position.z += this.dy;
+		this.piece.position.x += this.dx;
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+			this.x = this.x2;
+			this.y = this.y2;
+			
+		}
 	}
+}
+
+Bishop.prototype.destroy = function(ttl){
+	this.moving = true;
+	this.ttl = ttl;
+	this.dest = true;
 }
 
 Bishop.prototype.isMoving = function(){

@@ -1,23 +1,23 @@
 /**
-*	Pawn Class
-* 	This class holds all pawn logic
-*	The class also holds onto the pawn information
+*	Knight Class
+* 	This class holds all knight logic
+*	The class also holds onto the knight information
 *   and the 3D model object
 */
 
-var Pawn = function (scene, color, spot, board) { this.init(scene, color, spot, board); }
+var Knight = function (scene, color, spot, board) { this.init(scene, color, spot, board); }
 
 /**
-*	Constructor - creates a pawn object
+*	Constructor - creates a knight object
 *	also loads the model associated with it
-*	@param scene - the pawn needs to have a reference to the scene graph 
+*	@param scene - the knight needs to have a reference to the scene graph 
 *		so it can add the model into the scene
-*	@param color color of the Pawn (white or black)
-*	@param spot - the position the Pawn is in
+*	@param color color of the Knight (white or black)
+*	@param spot - the position the Knight is in
 *	@param board - a reference to the board that holds it, so the piece can
 *	callback to the board to chain properly
 */
-Pawn.prototype.init = function(scene, color, spot, board)
+Knight.prototype.init = function(scene, color, spot, board)
 {
 	// initializes all class instances
 	this.board = board;
@@ -28,6 +28,7 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.x = LEFT + (this.xLoc * 20)
 	this.y = TOP + (this.yLoc * 20)
 	this.moving = false;
+	this.dest = false;
 	this.ttl = 0;
 	this.x2 = 0;
 	this.y2 = 0;
@@ -42,9 +43,9 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
 	
-	// This loadPiece function takes the Pawn object itself, or the loader function will
-	// the reference to the Pawn object, it also takes the loader to load with, and a callback for when it completes
-	function loadPiece(pawn, loader, callback) {
+	// This loadPiece function takes the Knight object itself, or the loader function will
+	// the reference to the Knight object, it also takes the loader to load with, and a callback for when it completes
+	function loadPiece(knight, loader, callback) {
 		// loads the model
 		loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
 		// scales and positions the model;
@@ -54,16 +55,16 @@ Pawn.prototype.init = function(scene, color, spot, board)
 
     	object.scale.x = object.scale.y = object.scale.z = 5;
 
-		// sets the model to the pawn object and adds it to the scene
-		pawn.piece = object;
-		pawn.scene.add(pawn.piece);
+		// sets the model to the knight object and adds it to the scene
+		knight.piece = object;
+		knight.scene.add(knight.piece);
 		// calls the callback
 		callback();
 		});
 		
 	}
 	
-	// calls the loadPiece function, gives it this a reference to the pawn object, 
+	// calls the loadPiece function, gives it this a reference to the knight object, 
 	// the loader, and the callback function which calls back to the board
 	loadPiece(this, this.loader, function() {
 		// calls back to the board
@@ -75,9 +76,9 @@ Pawn.prototype.init = function(scene, color, spot, board)
 
 
 
-// TODO a move method, should add the pawn to a move Queue that will animate one move at a time
+// TODO a move method, should add the knight to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
-Pawn.prototype.move = function(x, y){
+Knight.prototype.move = function(x, y){
 	var spaces = 1;
 	if(this.xLoc != x){
 		spaces = Math.abs(this.xLoc - x);
@@ -97,18 +98,35 @@ Pawn.prototype.move = function(x, y){
 	
 }
 
-Pawn.prototype.update = function(){
-	this.piece.position.z += this.dy;
-	this.piece.position.x += this.dx;
-	this.ttl--;
-	if(this.ttl == 0){
-		this.moving = false;
-		this.x = this.x2;
-		this.y = this.y2;
-		
+Knight.prototype.update = function(){
+	if(this.dest){
+		if(this.ttl < TIME_TO_MOVE){
+			this.piece.opacity -= (1 / TIME_TO_MOVE);
+		}
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+		}
+
+	}else {
+		this.piece.position.z += this.dy;
+		this.piece.position.x += this.dx;
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+			this.x = this.x2;
+			this.y = this.y2;
+			
+		}
 	}
 }
 
-Pawn.prototype.isMoving = function(){
+Knight.prototype.destroy = function(ttl){
+	this.moving = true;
+	this.ttl = ttl;
+	this.dest = true;
+}
+
+Knight.prototype.isMoving = function(){
 	return this.moving;
 }

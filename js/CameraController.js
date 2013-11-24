@@ -7,8 +7,8 @@ CameraController.prototype.init = function(camera)
 	this.camera.position.x = 0;
 	this.camera.position.y = 100;
 	this.camera.position.z = 176;
-	this.movex = 1;
-	this.movez = -1;
+	this.movex = 2;
+	this.movez = -2;
 	this.moving = false;
 	
 }
