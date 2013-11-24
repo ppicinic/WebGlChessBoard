@@ -47,13 +47,13 @@ Knight.prototype.init = function(scene, color, spot, board)
 	// the reference to the Knight object, it also takes the loader to load with, and a callback for when it completes
 	function loadPiece(knight, loader, callback) {
 		// loads the model
-		loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
+		loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function ( object ) {
 		// scales and positions the model;
 		object.position.z = TOP + (yPos * 20);
 		object.position.x = LEFT + (xPos * 20);
 		object.position.y = 4.5;
 
-    	object.scale.x = object.scale.y = object.scale.z = 5;
+    	object.scale.x = object.scale.y = object.scale.z = .3;
 
 		// sets the model to the knight object and adds it to the scene
 		knight.piece = object;
