@@ -47,11 +47,11 @@ ChessBoard.prototype.init = function(scene, camera)
 					this.pieces[x][y] = piece;
 				}
 				if(x == 3){
-					piece = new King(this.scene, BLACK, [x, y], this);
+					piece = new Queen(this.scene, BLACK, [x, y], this);
 					this.pieces[x][y] = piece;
 				}
 				if(x == 4){
-					piece = new Queen(this.scene, BLACK, [x, y], this);
+					piece = new King(this.scene, BLACK, [x, y], this);
 					this.pieces[x][y] = piece;
 				}
 			}else if(y == 1){

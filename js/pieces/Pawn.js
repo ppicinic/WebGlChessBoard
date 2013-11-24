@@ -103,8 +103,14 @@ Pawn.prototype.move = function(x, y){
 
 Pawn.prototype.update = function(){
 	if(this.dest){
-		if(this.ttl < TIME_TO_MOVE){
-			this.piece.opacity -= (1 / TIME_TO_MOVE);
+		if(this.ttl <= TIME_TO_MOVE){
+			//console.log('opacity drops')
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.transparent = true;
+					mesh.material.opacity -= (1 / TIME_TO_MOVE);
+				}
+			});
 		}
 		this.ttl--;
 		if(this.ttl == 0){

@@ -24,15 +24,8 @@ PieceMove.prototype.init = function(moveString)
 	if(moveString[0] == 'K'){
 		if(Math.abs(this.x2 - this.x) > 1){
 			this.castle = true;
-			if(this.y == 0){
-				if(this.x2 - this.x > 0){
-					this.queenCastle = true;
-				}
-			}
-			if(this.y == 7){
-				if(this.x - this.x < 0){
-					this.queenCastle = true;
-				}
+			if((this.x2 - this.x) < 0){
+				this.queenCastle = true;
 			}
 		}
 	}
