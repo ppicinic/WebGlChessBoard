@@ -105,20 +105,46 @@ ChessBoard.prototype.update = function(){
 		if(this.moveQueue.length > 0){
 			var move = this.moveQueue.shift();
 			if(move.isPiece()){
-				console.log(move);
-				var x = move.x;
-				var y = move.y;
-				var x2 = move.x2;
-				var y2 = move.y2;
-				this.pieces[x][y].move(x2, y2);
-				if(this.pieces[x2][y2]){
-					console.log('piece dies');
-					this.pieces[x2][y2].destroy(this.pieces[x][y].ttl);
+				if(move.castle){
+					var x = move.x;
+					var y = move.y;
+					var x2 = move.x2;
+					var y2 = move.y2;
+					var rx = -1;
+					var ry = y;
+					var rx2 = -1;
+					var ry2 = y;
+					if(move.queenCastle){
+						rx = 0;
+						rx2 = x2 + 1;
+					}else{
+						rx = 7;
+						rx2 = x2 - 1;
+					}
+					this.pieces[x][y].move(x2, y2);
+					this.pieces[x2][y2] = this.pieces[x][y];
+					this.pieces[x][y] = null;
+					this.pieces[rx][ry].move(rx2, ry2);
+					this.pieces[rx2][ry2] = this.pieces[rx][ry];
+					this.pieces[rx][ry] = null;
+					this.movingArray.push(this.pieces[x2][y2]);
+					this.movingArray.push(this.pieces[rx2][ry2]);
+				}else{
+					console.log(move);
+					var x = move.x;
+					var y = move.y;
+					var x2 = move.x2;
+					var y2 = move.y2;
+					this.pieces[x][y].move(x2, y2);
+					if(this.pieces[x2][y2]){
+						console.log('piece dies');
+						this.pieces[x2][y2].destroy(this.pieces[x][y].ttl);
+						this.movingArray.push(this.pieces[x2][y2]);
+					}
+					this.pieces[x2][y2] = this.pieces[x][y];
+					this.pieces[x][y] = null;
 					this.movingArray.push(this.pieces[x2][y2]);
 				}
-				this.pieces[x2][y2] = this.pieces[x][y];
-				this.pieces[x][y] = null;
-				this.movingArray.push(this.pieces[x2][y2]);
 			}else{
 				this.camera.move();
 				this.movingArray.push(this.camera);
