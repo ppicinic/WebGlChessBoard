@@ -140,6 +140,13 @@ ChessBoard.prototype.update = function(){
 						console.log('piece dies');
 						this.pieces[x2][y2].destroy(this.pieces[x][y].ttl);
 						this.movingArray.push(this.pieces[x2][y2]);
+					}else {
+						// en passent happens
+						if(move.pawnCap){
+							console.log('piece dies');
+							this.pieces[x2][y].destroy(this.pieces[x][y].ttl);
+							this.movingArray.push(this.pieces[x2][y]);
+						}
 					}
 					this.pieces[x2][y2] = this.pieces[x][y];
 					this.pieces[x][y] = null;

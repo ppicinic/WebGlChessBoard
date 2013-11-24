@@ -13,6 +13,8 @@ PieceMove.prototype.init = function(moveString)
 	this.promoteType = "";
 	this.castle = false;
 	this.queenCastle = false;
+	this.pawnCap = false;
+
 	if(this.moveString.length >= 6 && this.moveString[0] == 'P'){
 		this.promote = true;
 		this.promoteType = this.moveString[5];
@@ -21,6 +23,11 @@ PieceMove.prototype.init = function(moveString)
 	this.y = this.decideY(b);
 	this.x2 = this.decideX(c);
 	this.y2 = this.decideY(d);
+	if(this.moveString[0] == 'P'){
+		if(this.x2 != this.x){
+			this.pawnCap = true;
+		}
+	}
 	if(moveString[0] == 'K'){
 		if(Math.abs(this.x2 - this.x) > 1){
 			this.castle = true;
