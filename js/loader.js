@@ -27,6 +27,7 @@
 				"Qa1b2", "Kd2d1", "Bh3f1", "Rd8d2", "Rb7d7", "Rd2d7", "Bf1c4", "Pb5c4", "Qb2h8", "Rd7d3", 
 				"Qh8a8", "Pc4c3", "Qa8a4", "Kd1e1", "Pf3f4", "Pf7f5", "Kb1c1", "Rd3d2", "Qa4a7"];
 			var moveList2 = ["Pe2e4", "Pc7c6", "Pe4e5", "Pf7f5", "Pe5f6"];
+			var moveList3 = ["Ph2h3", "Pd7d5", "Ph3h4", "Pd5d4", "Pe2e4", "Pd4e3"];
 			//animate();
 
 
@@ -237,8 +238,8 @@
 					//board.move(str);
 					if(notPlaying){
 						notPlaying = false;
-						for(var i = 0; i < moveList2.length; i++){
-							board.move(moveList2[i]);
+						for(var i = 0; i < moveList3.length; i++){
+							board.move(moveList3[i]);
 						}
 					}
 				}
