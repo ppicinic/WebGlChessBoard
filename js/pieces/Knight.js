@@ -51,9 +51,9 @@ Knight.prototype.init = function(scene, color, spot, board)
 		// scales and positions the model;
 		object.position.z = TOP + (yPos * 20);
 		object.position.x = LEFT + (xPos * 20);
-		object.position.y = 15;
+		object.position.y = 12.8;
 
-    	object.scale.x = object.scale.y = object.scale.z = .2;
+    	object.scale.x = object.scale.y = object.scale.z = 5;
 
 		// sets the model to the knight object and adds it to the scene
 		knight.piece = object;
