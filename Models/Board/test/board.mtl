@@ -4,7 +4,7 @@
 newmtl Material.001
 Ns 96.078431
 Ka 0.246194 0.246194 0.246194
-Kd 1.000000 1.000000 1.000000
+Kd 0.000000 0.000000 0.000000
 Ks 1.000000 1.000000 1.000000
 Ni 1.000000
 d 1.000000
@@ -19,7 +19,7 @@ Ks 1.000000 1.000000 1.000000
 Ni 1.000000
 d 1.000000
 illum 0
-map_Kd Seamless marble texture (12).jpg
+map_Kd C:\Users\Anthony\Desktop\Seamless marble texture (12).jpg
 
 newmtl Material.003
 Ns 96.078431
@@ -29,4 +29,4 @@ Ks 1.000000 1.000000 1.000000
 Ni 1.000000
 d 1.000000
 illum 0
-map_Kd Wood-Texture-Background.jpg
+map_Kd C:\Users\Anthony\Desktop\Wood-Texture-Background.jpg
