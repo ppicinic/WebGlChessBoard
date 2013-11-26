@@ -22,7 +22,26 @@ CameraController.prototype.move = function(){
 }
 
 CameraController.prototype.update = function(){
-	this.camera.position.z += this.movez * ((176 - -140) / CAMERA_TIME);
+	var mid = (176 + -140) / 2;
+	console.log("mid " + mid)
+	var start = this.camera.position.z;
+	this.camera.position.z += this.movez;
+	var end = this.camera.position.z;
+	var m = (start + end) / 2;
+	var n = m - mid;
+	console.log("m " + m);
+	var change = Math.pow(n, 2) / 8000;
+	if(m > mid){
+		this.camera.position.x += change;
+	}else{
+		this.camera.position.x -= change;
+	}
+
+	if(end == 176 || end == -140){
+		this.moving = false;
+		this.movez = -this.movez;
+	}
+	/*this.camera.position.z += this.movez * ((176 - -140) / CAMERA_TIME);
 	this.camera.position.x += this.movex * (158 / (CAMERA_TIME / 2));
 	this.ttl--;
 	if(this.ttl == (CAMERA_TIME / 2) || this.ttl == 0){
@@ -31,7 +50,7 @@ CameraController.prototype.update = function(){
 	if(this.ttl == 0){
 		this.moving = false;
 		this.movez = -this.movez;
-	}
+	}*/
 }
 
 CameraController.prototype.isMoving = function(){
