@@ -34,6 +34,7 @@ Queen.prototype.init = function(scene, color, spot, board)
 	this.y2 = 0;
 	this.dx = 0;
 	this.dy = 0;
+	this.promote = false;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -51,7 +52,18 @@ Queen.prototype.init = function(scene, color, spot, board)
 	start++;
 }
 
-
+Queen.prototype.promoted = function(ttl){
+	console.log('queen promotion');
+	this.piece.traverse(function(mesh){
+		if(mesh instanceof THREE.Mesh){
+			mesh.material.transparent = true;
+			mesh.material.opacity = 0;
+		}
+	});
+	this.ttl = ttl + (FADE_TIME * 2);
+	this.moving = true;
+	this.promote = true;
+}
 
 // TODO a move method, should add the queen to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
@@ -90,7 +102,24 @@ Queen.prototype.update = function(){
 		if(this.ttl == 0){
 			this.moving = false;
 		}
-
+	}else if(this.promote){
+		if(this.ttl <= FADE_TIME){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.opacity += (1 / FADE_TIME);
+				}
+			});
+		}
+		this.ttl--;
+		if(this.ttl == 0){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.transparent = false;
+				}
+			});
+			this.moving = false;
+			this.promote = false;
+		}
 	}else {
 		this.piece.position.z += this.dy;
 		this.piece.position.x += this.dx;

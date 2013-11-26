@@ -178,9 +178,27 @@ ChessBoard.prototype.update = function(){
 							this.movingArray.push(this.pieces[x2][y]);
 						}
 					}
-					this.pieces[x2][y2] = this.pieces[x][y];
-					this.pieces[x][y] = null;
-					this.movingArray.push(this.pieces[x2][y2]);
+					if(move.promote){
+						this.pieces[x][y].promoted();
+						this.movingArray.push(this.pieces[x][y]);
+						if(move.promoteType == 'Q'){
+							this.pieces[x2][y2] = new Queen(this.scene, this.pieces[x][y].color, [x2, y2], this);
+						}else if(move.promoteType == 'N'){
+							this.pieces[x2][y2] = new Knight(this.scene, this.pieces[x][y].color, [x2, y2], this);
+						}else if(move.promoteType == 'R'){
+							this.pieces[x2][y2] = new Rook(this.scene, this.pieces[x][y].color, [x2, y2], this);
+						}else if(move.promoteType == 'B'){
+							this.pieces[x2][y2] = new Bishop(this.scene, this.pieces[x][y].color, [x2, y2], this);
+						}
+						
+						this.pieces[x2][y2].promoted(this.pieces[x][y].ttl);
+						this.movingArray.push(this.pieces[x2][y2]);
+						this.pieces[x][y] = null;
+					}else{
+						this.pieces[x2][y2] = this.pieces[x][y];
+						this.pieces[x][y] = null;
+						this.movingArray.push(this.pieces[x2][y2]);
+					}
 				}
 			}else{
 				this.camera.move();

@@ -35,6 +35,8 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.y2 = 0;
 	this.dx = 0;
 	this.dy = 0;
+	this.promote = false;
+	this.promoting = false;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -78,7 +80,19 @@ Pawn.prototype.move = function(x, y){
 }
 
 Pawn.prototype.update = function(){
-	if(this.dest){
+	if(this.promoting){
+		this.piece.traverse(function(mesh) {
+			if(mesh instanceof THREE.Mesh){
+				mesh.material.transparent = true;
+				mesh.material.opacity -= (1 / FADE_TIME);
+			}
+		});
+		this.ttl--;
+		if(this.ttl == 0){
+			this.moving = false;
+			this.promoting = false;
+		}
+	}else if(this.dest){
 		if(this.ttl <= TIME_TO_MOVE){
 			//console.log('opacity drops')
 			this.piece.traverse(function(mesh){
@@ -101,6 +115,12 @@ Pawn.prototype.update = function(){
 			this.moving = false;
 			this.x = this.x2;
 			this.y = this.y2;
+			if(this.promote){
+				this.moving = true;
+				this.ttl = FADE_TIME;
+				this.promoting = true;
+				this.promote = false;
+			}
 			
 		}
 	}
@@ -114,4 +134,8 @@ Pawn.prototype.destroy = function(ttl){
 
 Pawn.prototype.isMoving = function(){
 	return this.moving;
+}
+
+Pawn.prototype.promoted = function(){
+	this.promote = true;
 }
