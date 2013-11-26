@@ -45,7 +45,7 @@
 				"Qa1b2", "Kd2d1", "Bh3f1", "Rd8d2", "Rb7d7", "Rd2d7", "Bf1c4", "Pb5c4", "Qb2h8", "Rd7d3", 
 				"Qh8a8", "Pc4c3", "Qa8a4", "Kd1e1", "Pf3f4", "Pf7f5", "Kb1c1", "Rd3d2", "Qa4a7", "Pg6g5",
 				"Pf4g5", "Pc3c2", "Qa7h7", "Ke1e2", "Qh7f5", "Ke2e1", "Pg5g6", "Ke1e2", "Pg6g7", "Ke2e1",
-				"Pg7g8B"];
+				"Pg7g8Q"];
 			//animate();
 
 
