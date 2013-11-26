@@ -37,40 +37,18 @@ King.prototype.init = function(scene, color, spot, board)
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
 	this.loader = new THREE.OBJMTLLoader();
-	
+
 	//local variables to the init method to help loading the model
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
-	
-	// This loadPiece function takes the King object itself, or the loader function will
-	// the reference to the King object, it also takes the loader to load with, and a callback for when it completes
-	function loadPiece(king, loader, callback) {
-		// loads the model
-		loader.load('Models/King/king.obj', 'Models/King/king.mtl', function ( object ) {
-		// scales and positions the model;
-		object.position.z = TOP + (yPos * 20);
-		object.position.x = LEFT + (xPos * 20);
-		object.position.y = 4.5;
+	this.piece = cloneObjMtl(board.king);
 
-    	object.scale.x = object.scale.y = object.scale.z = 5;
-
-		// sets the model to the king object and adds it to the scene
-		king.piece = object;
-		king.scene.add(king.piece);
-		// calls the callback
-		callback();
-		});
-		
-	}
-	
-	// calls the loadPiece function, gives it this a reference to the king object, 
-	// the loader, and the callback function which calls back to the board
-	loadPiece(this, this.loader, function() {
-		// calls back to the board
-		start++;
-		console.log(start);
-	});
-	
+	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+	this.piece.position.x = LEFT + (xPos * 20);
+	this.piece.position.z = TOP + (yPos * 20);
+	this.piece.position.y = 4.5;
+	this.scene.add(this.piece);
+	start++;
 }
 
 
