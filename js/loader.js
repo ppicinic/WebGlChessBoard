@@ -8,7 +8,8 @@
 
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
-
+			var startTime;
+			var endTime;
 
 			init();
 			var board;
@@ -32,7 +33,7 @@
 
 
 			function init() {
-
+				startTime = new Date().getTime();
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
@@ -181,6 +182,8 @@
 				console.log('happens');
 				if(start == 33){
 					doneLoading = true;
+					endTime = new Date().getTime();
+					console.log(endTime - startTime);
 				}
 				else{
 					setTimeout(toAnim, 200);
@@ -202,7 +205,7 @@
                 for (var i in objmtl.children) {
                 	if(objmtl.children[i] instanceof THREE.Mesh){
                     	cpy.add(
-                        	new THREE.Mesh(objmtl.children[i].geometry.clone(),
+                        	new THREE.Mesh(objmtl.children[i].geometry,
                         	objmtl.children[i].material.clone())
                    		);
                 	}else {
