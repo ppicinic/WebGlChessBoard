@@ -42,36 +42,13 @@ Queen.prototype.init = function(scene, color, spot, board)
 	//local variables to the init method to help loading the model
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
-	
-	// This loadPiece function takes the Queen object itself, or the loader function will
-	// the reference to the Queen object, it also takes the loader to load with, and a callback for when it completes
-	function loadPiece(queen, loader, callback) {
-		// loads the model
-		loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function ( object ) {
-		// scales and positions the model;
-		object.position.z = TOP + (yPos * 20);
-		object.position.x = LEFT + (xPos * 20);
-		object.position.y = 4.5;
-
-    	object.scale.x = object.scale.y = object.scale.z = 5;
-
-		// sets the model to the queen object and adds it to the scene
-		queen.piece = object;
-		queen.scene.add(queen.piece);
-		// calls the callback
-		callback();
-		});
-		
-	}
-	
-	// calls the loadPiece function, gives it this a reference to the queen object, 
-	// the loader, and the callback function which calls back to the board
-	loadPiece(this, this.loader, function() {
-		// calls back to the board
-		start++;
-		console.log(start);
-	});
-	
+	this.piece = cloneObjMtl(board.queen);
+	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+	this.piece.position.x = LEFT + (xPos * 20);
+	this.piece.position.z = TOP + (yPos * 20);
+	this.piece.position.y = 4.5;
+	this.scene.add(this.piece);
+	start++;
 }
 
 

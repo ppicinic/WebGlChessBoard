@@ -8,7 +8,8 @@
 
 			var windowHalfX = window.innerWidth / 2;
 			var windowHalfY = window.innerHeight / 2;
-
+			var startTime;
+			var endTime;
 
 			init();
 			var board;
@@ -32,7 +33,7 @@
 
 
 			function init() {
-
+				startTime = new Date().getTime();
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
 
@@ -181,6 +182,8 @@
 				console.log('happens');
 				if(start == 33){
 					doneLoading = true;
+					endTime = new Date().getTime();
+					console.log(endTime - startTime);
 				}
 				else{
 					setTimeout(toAnim, 200);
@@ -200,10 +203,14 @@
             function cloneObjMtl ( objmtl ) {
                 var i, cpy = new THREE.Object3D();
                 for (var i in objmtl.children) {
-                    cpy.add(
-                        new THREE.Mesh(objmtl.children[i].geometry,
-                        objmtl.children[i].material)
-                    );
+                	if(objmtl.children[i] instanceof THREE.Mesh){
+                    	cpy.add(
+                        	new THREE.Mesh(objmtl.children[i].geometry,
+                        	objmtl.children[i].material.clone())
+                   		);
+                	}else {
+                		cpy.add(cloneObjMtl(objmtl.children[i]));
+                	}
                 }
                 return cpy;
             }
@@ -238,8 +245,8 @@
 					//board.move(str);
 					if(notPlaying){
 						notPlaying = false;
-						for(var i = 0; i < moveList3.length; i++){
-							board.move(moveList3[i]);
+						for(var i = 0; i < moveList.length; i++){
+							board.move(moveList[i]);
 						}
 					}
 				}

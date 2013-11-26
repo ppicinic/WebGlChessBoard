@@ -43,35 +43,13 @@ Knight.prototype.init = function(scene, color, spot, board)
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
 	
-	// This loadPiece function takes the Knight object itself, or the loader function will
-	// the reference to the Knight object, it also takes the loader to load with, and a callback for when it completes
-	function loadPiece(knight, loader, callback) {
-		// loads the model
-		loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function ( object ) {
-		// scales and positions the model;
-		object.position.z = TOP + (yPos * 20);
-		object.position.x = LEFT + (xPos * 20);
-		object.position.y = 15;
-
-    	object.scale.x = object.scale.y = object.scale.z = .2;
-
-		// sets the model to the knight object and adds it to the scene
-		knight.piece = object;
-		knight.scene.add(knight.piece);
-		// calls the callback
-		callback();
-		});
-		
-	}
-	
-	// calls the loadPiece function, gives it this a reference to the knight object, 
-	// the loader, and the callback function which calls back to the board
-	loadPiece(this, this.loader, function() {
-		// calls back to the board
-		start++;
-		console.log(start);
-	});
-	
+	this.piece = cloneObjMtl(board.knight);
+	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+	this.piece.position.x = LEFT + (xPos * 20);
+	this.piece.position.z = TOP + (yPos * 20);
+	this.piece.position.y = 12.8;
+	this.scene.add(this.piece);
+	start++;
 }
 
 

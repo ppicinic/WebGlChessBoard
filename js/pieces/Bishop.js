@@ -42,36 +42,13 @@ Bishop.prototype.init = function(scene, color, spot, board)
 	//local variables to the init method to help loading the model
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
-	
-	// This loadPiece function takes the Bishop object itself, or the loader function will
-	// the reference to the Bishop object, it also takes the loader to load with, and a callback for when it completes
-	function loadPiece(bishop, loader, callback) {
-		// loads the model
-		loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function ( object ) {
-		// scales and positions the model;
-		object.position.z = TOP + (yPos * 20);
-		object.position.x = LEFT + (xPos * 20);
-		object.position.y = 4.5;
-
-    	object.scale.x = object.scale.y = object.scale.z = 5;
-
-		// sets the model to the bishop object and adds it to the scene
-		bishop.piece = object;
-		bishop.scene.add(bishop.piece);
-		// calls the callback
-		callback();
-		});
-		
-	}
-	
-	// calls the loadPiece function, gives it this a reference to the bishop object, 
-	// the loader, and the callback function which calls back to the board
-	loadPiece(this, this.loader, function() {
-		// calls back to the board
-		start++;
-		console.log(start);
-	});
-	
+	this.piece = cloneObjMtl(board.bishop);
+	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+	this.piece.position.x = LEFT + (xPos * 20);
+	this.piece.position.z = TOP + (yPos * 20);
+	this.piece.position.y = 4.5;
+	this.scene.add(this.piece);
+	start++;	
 }
 
 

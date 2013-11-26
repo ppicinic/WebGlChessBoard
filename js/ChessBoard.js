@@ -9,6 +9,12 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
+	this.pawn;
+	this.rook;
+	this.knight;
+	this.bishop;
+	this.queen;
+	this.king;
 	function loadBoard(board, loader){
 	loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
 		object.position.x = -20;
@@ -24,8 +30,36 @@ ChessBoard.prototype.init = function(scene, camera)
     } );
 	}
 	
+
 	loadBoard(this, this.loader);
 	
+	//load in all pieces
+	var board = this;
+	var loadComplete = 0;
+	this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
+		board.pawn = object;
+		board.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function(object){
+			board.rook = object;
+			board.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function(object){
+				board.knight = object;
+				board.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function(object){
+					board.bishop = object;
+					board.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function(object){
+						board.queen = object;
+						board.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function(object){
+							board.king = object;
+							board.loadPieces();
+						});
+					});
+				});
+			});
+		});
+	});
+
+	
+}
+
+ChessBoard.prototype.loadPieces = function(){
 	this.pieces = new Array(8);
 	for(var i = 0; i < this.pieces.length; i++){
 		this.pieces[i] = new Array(8);
@@ -84,11 +118,7 @@ ChessBoard.prototype.init = function(scene, camera)
 			}
 		}
 	}
-	//this.add(0,0);
-	
-	//this.pieces[6][5].move([4, 5]);
 }
-
 ChessBoard.prototype.update = function(){
 	
 	var bool = false;

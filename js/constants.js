@@ -22,5 +22,5 @@ const LEFT = -68;
 const WHITE = true;
 const BLACK = false;
 
-const TIME_TO_MOVE = 20;
-const CAMERA_TIME = 2;
+const TIME_TO_MOVE = 5;
+const CAMERA_TIME = 50;
