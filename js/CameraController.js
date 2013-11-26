@@ -30,7 +30,7 @@ CameraController.prototype.update = function(){
 	var m = (start + end) / 2;
 	var n = m - mid;
 	console.log("m " + m);
-	var change = Math.pow(n, 2) / 10000;
+	var change = Math.pow(n, 2) / 8000;
 	if(m > mid){
 		this.camera.position.x += change;
 	}else{
