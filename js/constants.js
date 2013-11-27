@@ -24,4 +24,4 @@ const BLACK = false;
 
 const TIME_TO_MOVE = 20;
 const FADE_TIME = 10;
-const CAMERA_TIME = 100;
+const CAMERA_TIME = 250;
