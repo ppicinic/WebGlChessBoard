@@ -1,3 +1,9 @@
+// ease out function found online
+//t is time in frames (our ttl)
+// b is start value either 178 or -142
+// c is change in value always going to be 178 + 142 (negative from white to black, positive from black to white)
+// d camera time constant
+
 function easeInOutSin(t, b, c, d){
 	return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
 }

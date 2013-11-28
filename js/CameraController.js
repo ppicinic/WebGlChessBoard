@@ -24,32 +24,16 @@ CameraController.prototype.move = function(){
 }
 
 CameraController.prototype.update = function(){
-	// ease out function found online
-	//t is time in frames (our ttl)
-	// b is start value either 178 or -142
-	// c is change in value always going to be 178 + 142 (negative from white to black, positive from black to white)
-	// d camera time constant
-	function easeInOut(t, b, c, d){
-		return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
-	};
-
-	function easeIn(t, b, c, d) {
-		return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
-	};
-
-	function easeOut(t, b, c, d) {
-		return c * Math.sin(t/d * (Math.PI/2)) + b;
-	};
-	var movescale = easeInOut(this.ttl, this.point, (316 * this.movez), CAMERA_TIME);
+	var movescale = easeInOutSin(this.ttl, this.point, (316 * this.movez), CAMERA_TIME);
 	var factor = 1;
 	var yttl = this.ttl;
 	var movey = 0;
 	if(this.ttl > CAMERA_TIME / 2){
 		factor = -1;
 		yttl -= (CAMERA_TIME / 2);
-		movey = easeIn(yttl, 176, -176, (CAMERA_TIME/2));
+		movey = easeInSin(yttl, 176, -176, (CAMERA_TIME/2));
 	}else{
-		movey = easeOut(this.ttl, 0, 176, (CAMERA_TIME/2));
+		movey = easeOutSin(this.ttl, 0, 176, (CAMERA_TIME/2));
 	}
 	camera.position.x = movey;
 
