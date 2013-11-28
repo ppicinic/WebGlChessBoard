@@ -31,6 +31,7 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.fadettl = TIME_TO_MOVE;
 	this.dest = false;
 	this.ttl = 0;
+	this.duration = 0;
 	this.x2 = 0;
 	this.y2 = 0;
 	this.dx = 0;

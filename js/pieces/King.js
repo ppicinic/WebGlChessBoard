@@ -29,6 +29,7 @@ King.prototype.init = function(scene, color, spot, board)
 	this.y = TOP + (this.yLoc * 20)
 	this.moving = false;
 	this.ttl = 0;
+	this.duration = 0;
 	this.x2 = 0;
 	this.y2 = 0;
 	this.dx = 0;
@@ -69,21 +70,23 @@ King.prototype.move = function(x, y){
 	console.log(spaces);
 	
 	this.moving = true;
-	this.ttl = TIME_TO_MOVE * spaces;
-	this.dx = (this.x2 - this.x) / this.ttl;
-	this.dy = (this.y2 - this.y) / this.ttl;
+	this.ttl = 0;
+	this.duration = TIME_TO_MOVE * spaces;
+	this.dx = (this.x2 - this.x);
+	this.dy = (this.y2 - this.y);
 	
 }
 
 King.prototype.update = function(){
-	this.piece.position.z += this.dy;
-	this.piece.position.x += this.dx;
-	this.ttl--;
-	if(this.ttl == 0){
+	var newYpos = easeInOutSin(this.ttl, this.y, this.dy, this.duration);
+	var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
+	this.piece.position.z = newYpos;
+	this.piece.position.x = newXpos;
+	this.ttl++;
+	if(this.ttl > this.duration){
 		this.moving = false;
 		this.x = this.x2;
 		this.y = this.y2;
-		
 	}
 }
 

@@ -22,3 +22,17 @@ function easeInOutQuad(t, b, c, d) {
 	t--;
 	return -c/2 * (t*(t-2) - 1) + b;
 }
+
+function easeInOutQnt(t, b, c, d) {
+	t /= d/2;
+	if (t < 1) return c/2*t*t*t*t*t + b;
+	t -= 2;
+	return c/2*(t*t*t*t*t + 2) + b;
+}
+
+function easeInOutExp(t, b, c, d) {
+	t /= d/2;
+	if (t < 1) return c/2 * Math.pow( 2, 10 * (t - 1) ) + b;
+	t--;
+	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
+}

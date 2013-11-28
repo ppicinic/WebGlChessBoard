@@ -184,13 +184,13 @@ ChessBoard.prototype.update = function(){
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
 						console.log('piece dies');
-						this.pieces[x2][y2].destroy(this.pieces[x][y].ttl);
+						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
 						this.movingArray.push(this.pieces[x2][y2]);
 					}else {
 						// en passent happens
 						if(move.pawnCap){
 							console.log('piece dies');
-							this.pieces[x2][y].destroy(this.pieces[x][y].ttl);
+							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
 							this.movingArray.push(this.pieces[x2][y]);
 						}
 					}
@@ -207,7 +207,7 @@ ChessBoard.prototype.update = function(){
 							this.pieces[x2][y2] = new Bishop(this.scene, this.pieces[x][y].color, [x2, y2], this);
 						}
 						
-						this.pieces[x2][y2].promoted(this.pieces[x][y].ttl);
+						this.pieces[x2][y2].promoted(this.pieces[x][y].duration);
 						this.movingArray.push(this.pieces[x2][y2]);
 						this.pieces[x][y] = null;
 					}else{
