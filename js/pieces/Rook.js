@@ -30,6 +30,7 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.moving = false;
 	this.dest = false;
 	this.ttl = 0;
+	this.duration = 0;
 	this.x2 = 0;
 	this.y2 = 0;
 	this.dx = 0;
@@ -80,12 +81,13 @@ Rook.prototype.move = function(x, y){
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20);
 	this.y2 = TOP + (y * 20);
-	console.log(spaces);
+	//console.log(spaces);
 	
 	this.moving = true;
-	this.ttl = TIME_TO_MOVE * spaces;
-	this.dx = (this.x2 - this.x) / this.ttl;
-	this.dy = (this.y2 - this.y) / this.ttl;
+	this.ttl = 0;
+	this.duration = TIME_TO_MOVE * spaces;
+	this.dx = (this.x2 - this.x);
+	this.dy = (this.y2 - this.y);
 	
 }
 
@@ -124,14 +126,15 @@ Rook.prototype.update = function(){
 			this.promote = false;
 		}
 	}else {
-		this.piece.position.z += this.dy;
-		this.piece.position.x += this.dx;
-		this.ttl--;
-		if(this.ttl == 0){
+		var newYpos = easeInOutQnt(this.ttl, this.y, this.dy, this.duration);
+		var newXpos = easeInOutQnt(this.ttl, this.x, this.dx, this.duration);
+		this.piece.position.z = newYpos;
+		this.piece.position.x = newXpos;
+		this.ttl++;
+		if(this.ttl > this.duration){
 			this.moving = false;
 			this.x = this.x2;
 			this.y = this.y2;
-			
 		}
 	}
 }

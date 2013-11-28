@@ -38,23 +38,39 @@ ChessBoard.prototype.init = function(scene, camera)
 	var loadComplete = 0;
 	this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
 		board.pawn = object;
-		board.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function(object){
-			board.rook = object;
-			board.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function(object){
-				board.knight = object;
-				board.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function(object){
-					board.bishop = object;
-					board.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function(object){
-						board.queen = object;
-						board.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function(object){
-							board.king = object;
-							board.loadPieces();
-						});
-					});
-				});
-			});
-		});
+		loadComplete++;
 	});
+	this.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function (object){
+		board.rook = object;
+		loadComplete++;
+	});
+	this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
+		board.knight = object;
+		loadComplete++;
+	});
+	this.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function (object){
+		board.bishop = object;
+		loadComplete++;
+	});
+	this.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function (object){
+		board.queen = object;
+		loadComplete++;
+	});
+	this.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function (object){
+		board.king = object;
+		loadComplete++;
+	});
+
+	var loadCompleted = function(){
+		console.log('this happens');
+		if(loadComplete == 6){
+			board.loadPieces();
+		}else{
+			setTimeout(loadCompleted, 200);
+		}
+	};
+
+	setTimeout(loadCompleted, 200);
 
 	
 }
@@ -168,13 +184,13 @@ ChessBoard.prototype.update = function(){
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
 						console.log('piece dies');
-						this.pieces[x2][y2].destroy(this.pieces[x][y].ttl);
+						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
 						this.movingArray.push(this.pieces[x2][y2]);
 					}else {
 						// en passent happens
 						if(move.pawnCap){
 							console.log('piece dies');
-							this.pieces[x2][y].destroy(this.pieces[x][y].ttl);
+							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
 							this.movingArray.push(this.pieces[x2][y]);
 						}
 					}
@@ -191,7 +207,7 @@ ChessBoard.prototype.update = function(){
 							this.pieces[x2][y2] = new Bishop(this.scene, this.pieces[x][y].color, [x2, y2], this);
 						}
 						
-						this.pieces[x2][y2].promoted(this.pieces[x][y].ttl);
+						this.pieces[x2][y2].promoted(this.pieces[x][y].duration);
 						this.movingArray.push(this.pieces[x2][y2]);
 						this.pieces[x][y] = null;
 					}else{

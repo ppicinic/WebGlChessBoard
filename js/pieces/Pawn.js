@@ -31,6 +31,7 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.fadettl = TIME_TO_MOVE;
 	this.dest = false;
 	this.ttl = 0;
+	this.duration = 0;
 	this.x2 = 0;
 	this.y2 = 0;
 	this.dx = 0;
@@ -61,21 +62,22 @@ Pawn.prototype.init = function(scene, color, spot, board)
 // Should handle callback to board for promotion
 Pawn.prototype.move = function(x, y){
 	var spaces = 1;
-	if(this.xLoc != x){
+	/*if(this.xLoc != x){
 		spaces = Math.abs(this.xLoc - x);
 	}else{
 		spaces = Math.abs(this.yLoc - y);
-	}
+	}*/
 	this.xLoc = x;
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20);
 	this.y2 = TOP + (y * 20);
-	console.log(spaces);
+	//console.log(spaces);
 	
 	this.moving = true;
-	this.ttl = TIME_TO_MOVE * spaces;
-	this.dx = (this.x2 - this.x) / this.ttl;
-	this.dy = (this.y2 - this.y) / this.ttl;
+	this.ttl = 0;
+	this.duration = TIME_TO_MOVE * spaces;
+	this.dx = (this.x2 - this.x)
+	this.dy = (this.y2 - this.y);
 	
 }
 
@@ -108,7 +110,24 @@ Pawn.prototype.update = function(){
 		}
 
 	}else {
-		this.piece.position.z += this.dy;
+		var newYpos = easeInOutSin(this.ttl, this.y, this.dy, this.duration);
+		var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
+		this.piece.position.z = newYpos;
+		this.piece.position.x = newXpos;
+		this.ttl++;
+		if(this.ttl > this.duration){
+			this.moving = false;
+			this.x = this.x2;
+			this.y = this.y2;
+			if(this.promote){
+				this.moving = true;
+				this.ttl = FADE_TIME;
+				this.promoting = true;
+				this.promote = false;
+			}
+		}
+		// old method
+		/*this.piece.position.z += this.dy;
 		this.piece.position.x += this.dx;
 		this.ttl--;
 		if(this.ttl == 0){
@@ -122,7 +141,7 @@ Pawn.prototype.update = function(){
 				this.promote = false;
 			}
 			
-		}
+		}*/
 	}
 }
 
