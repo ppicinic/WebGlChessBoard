@@ -36,6 +36,7 @@ Knight.prototype.init = function(scene, color, spot, board)
 	this.dx = 0;
 	this.dy = 0;
 	this.promote = false;
+	this.yMove = true;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -71,12 +72,7 @@ Knight.prototype.promoted = function(ttl){
 // TODO a move method, should add the knight to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
 Knight.prototype.move = function(x, y){
-	var spaces = 1;
-	if(this.xLoc != x){
-		spaces = Math.abs(this.xLoc - x);
-	}else{
-		spaces = Math.abs(this.yLoc - y);
-	}
+	var spaces = 3;
 	this.xLoc = x;
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20);
@@ -88,6 +84,11 @@ Knight.prototype.move = function(x, y){
 	this.ttl = 0;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
+	if(this.dy > this.dx){
+		this.yMove = true;
+	}else{
+		this.yMove = false;
+	}
 	
 }
 
@@ -126,8 +127,13 @@ Knight.prototype.update = function(){
 			this.promote = false;
 		}
 	}else {
-		var newYpos = easeInOutQuad(this.ttl, this.y, this.dy, this.duration);
-		var newXpos = easeInOutQuad(this.ttl, this.x, this.dx, this.duration);
+		if(this.yMove){
+			var newYpos = easeInOutExp(this.ttl, this.y, this.dy, this.duration);
+			var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
+		}else{
+			var newYpos = easeInOutSin(this.ttl, this.y, this.dy, this.duration);
+			var newXpos = easeInOutExp(this.ttl, this.x, this.dx, this.duration);
+		}
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
 		this.ttl++;
