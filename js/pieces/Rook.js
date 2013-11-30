@@ -43,6 +43,8 @@ Rook.prototype.init = function(scene, color, spot, board)
 	//local variables to the init method to help loading the model
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
+	
+	
 
 	this.piece = cloneObjMtl(board.rook);
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;

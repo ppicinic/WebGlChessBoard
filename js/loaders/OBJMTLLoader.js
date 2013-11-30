@@ -32,7 +32,7 @@ THREE.OBJMTLLoader.prototype = {
 					if ( object instanceof THREE.Mesh ) {
 
 						if ( object.material.name ) {
-
+							//console.log(object.material);
 							var material = materialsCreator.create( object.material.name );
 
 							if ( material ) object.material = material;
@@ -471,6 +471,7 @@ THREE.OBJMTLLoader.prototype = {
 				console.log( "THREE.OBJMTLLoader: Unhandled line " + line );
 
 			}
+							
 
 		}
 
