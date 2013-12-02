@@ -48,6 +48,19 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	var yPos = this.yLoc;
 	
 	this.piece = cloneObjMtl(board.pawn);
+	if(this.color){
+		this.piece.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.material.map = board.whiteTexture;
+			}
+		});
+	} else {
+		this.piece.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.material.map = board.blackTexture;
+			}
+		});
+	} 
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 	this.piece.position.x = LEFT + (xPos * 20);
 	this.piece.position.z = TOP + (yPos * 20);

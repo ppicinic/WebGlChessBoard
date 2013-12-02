@@ -71,7 +71,7 @@
 				areaLight1.width = 100;
 				areaLight1.height = 100;
 
-				//scene.add( areaLight1 );
+				scene.add( areaLight1 );
 				
 				var light = new THREE.PointLight( 0xffffff, .5, 10000 );
 				light.position.set( 90, 140, 90 );
@@ -83,14 +83,14 @@
 				
 				var light3 = new THREE.PointLight( 0xffffff, .5, 10000 );
 				light3.position.set( -90, 140, 90 );
-				scene.add( light3 );
+				//scene.add( light3 );
 				var directionalLight = new THREE.DirectionalLight( 0x8b8b8b );
 				directionalLight.position.set( 0, 10, 0 ).normalize();
-				//scene.add( directionalLight );
+				scene.add( directionalLight );
 				
-				var spotLight = new THREE.SpotLight( 0xeeeeee );
-				//spotLight.position.set( 0, 5000, -500 );
-				//scene.add(spotLight);
+				var spotLight = new THREE.SpotLight( 0x111111 );
+				spotLight.position.set( 0, 10000, -500 );
+				scene.add(spotLight);
 				
 				
 				// model

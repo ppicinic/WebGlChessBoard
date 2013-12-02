@@ -15,6 +15,10 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.bishop;
 	this.queen;
 	this.king;
+	this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
+	this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
+
+
 	function loadBoard(board, loader){
 	loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
 		object.position.x = -20;
@@ -80,6 +84,7 @@ ChessBoard.prototype.loadPieces = function(){
 	for(var i = 0; i < this.pieces.length; i++){
 		this.pieces[i] = new Array(8);
 	}
+
 	var piece;
 	for(var x = 0; x < this.pieces.length; x++){
 		for(var y = 0; y < this.pieces[x].length; y++){
