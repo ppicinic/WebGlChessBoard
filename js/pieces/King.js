@@ -60,6 +60,7 @@ King.prototype.init = function(scene, color, spot, board)
 	this.piece.position.x = LEFT + (xPos * 20);
 	this.piece.position.z = TOP + (yPos * 20);
 	this.piece.position.y = 4.5;
+	this.piece.rotation.y = 90 * (Math.PI / 180);
 	this.scene.add(this.piece);
 	start++;
 }

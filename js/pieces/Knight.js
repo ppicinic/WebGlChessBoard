@@ -48,12 +48,14 @@ Knight.prototype.init = function(scene, color, spot, board)
 	
 	this.piece = cloneObjMtl(board.knight);
 	if(this.color){
+		this.piece.rotation.y = -90 * (Math.PI / 180);
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.map = board.whiteTexture;
 			}
 		});
 	} else {
+		this.piece.rotation.y = 90 * (Math.PI / 180);
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.map = board.blackTexture;
