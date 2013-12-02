@@ -25,6 +25,7 @@ King.prototype.init = function(scene, color, spot, board)
 	this.color = color;
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
+	// piece fix info
 	this.xfix = -2;
 	this.zfix = -2;
 	this.x = LEFT + (this.xLoc * 20) + this.xfix;
