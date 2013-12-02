@@ -48,7 +48,7 @@ ChessBoard.prototype.init = function(scene, camera)
 		board.rook = object;
 		loadComplete++;
 	});
-	this.loader.load('Models/Knight/knight2.obj', 'Models/Knight/knight2.mtl', function (object){
+	this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
 		board.knight = object;
 		
 		object.children[0].children[0].position.z -= 1;
