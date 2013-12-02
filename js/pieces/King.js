@@ -25,8 +25,10 @@ King.prototype.init = function(scene, color, spot, board)
 	this.color = color;
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
-	this.x = LEFT + (this.xLoc * 20)
-	this.y = TOP + (this.yLoc * 20)
+	this.xfix = -2;
+	this.zfix = -2;
+	this.x = LEFT + (this.xLoc * 20) + this.xfix;
+	this.y = TOP + (this.yLoc * 20) + this.zfix;
 	this.moving = false;
 	this.ttl = 0;
 	this.duration = 0;
@@ -57,8 +59,8 @@ King.prototype.init = function(scene, color, spot, board)
 		});
 	} 
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
-	this.piece.position.x = LEFT + (xPos * 20);
-	this.piece.position.z = TOP + (yPos * 20);
+	this.piece.position.x = LEFT + (xPos * 20) + this.xfix;
+	this.piece.position.z = TOP + (yPos * 20) + this.zfix;
 	this.piece.position.y = 4.5;
 	this.piece.rotation.y = 90 * (Math.PI / 180);
 	this.scene.add(this.piece);
@@ -78,8 +80,8 @@ King.prototype.move = function(x, y){
 	}
 	this.xLoc = x;
 	this.yLoc = y;
-	this.x2 = LEFT + (x * 20);
-	this.y2 = TOP + (y * 20);
+	this.x2 = LEFT + (x * 20) + this.xfix;
+	this.y2 = TOP + (y * 20) + this.zfix;
 	console.log(spaces);
 	
 	this.moving = true;
