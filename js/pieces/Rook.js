@@ -25,7 +25,8 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.color = color;
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
-	this.x = LEFT + (this.xLoc * 20)
+	this.xfix = -2;
+	this.x = LEFT + (this.xLoc * 20) + this.xfix;
 	this.y = TOP + (this.yLoc * 20)
 	this.moving = false;
 	this.dest = false;
@@ -60,7 +61,7 @@ Rook.prototype.init = function(scene, color, spot, board)
 		});
 	} 
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
-	this.piece.position.x = LEFT + (xPos * 20);
+	this.piece.position.x = LEFT + (xPos * 20) + this.xfix;
 	this.piece.position.z = TOP + (yPos * 20);
 	this.piece.position.y = 4.5;
 	this.scene.add(this.piece);
@@ -92,7 +93,7 @@ Rook.prototype.move = function(x, y){
 	}
 	this.xLoc = x;
 	this.yLoc = y;
-	this.x2 = LEFT + (x * 20);
+	this.x2 = LEFT + (x * 20) + this.xfix;
 	this.y2 = TOP + (y * 20);
 	//console.log(spaces);
 	

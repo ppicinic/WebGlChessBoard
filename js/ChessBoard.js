@@ -50,6 +50,9 @@ ChessBoard.prototype.init = function(scene, camera)
 	});
 	this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
 		board.knight = object;
+		
+		object.children[0].children[0].position.z -= 1;
+		console.log(object.children[0].children[0]);
 		loadComplete++;
 	});
 	this.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function (object){
