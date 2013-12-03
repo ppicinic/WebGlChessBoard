@@ -69,7 +69,6 @@ ChessBoard.prototype.init = function(scene, camera)
 	});
 
 	var loadCompleted = function(){
-		console.log('this happens');
 		if(loadComplete == 6){
 			board.loadPieces();
 		}else{

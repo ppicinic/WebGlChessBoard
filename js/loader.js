@@ -1,5 +1,7 @@
 			var container, stats;
 			
+			var game;
+			
 			var camera, scene, renderer;
 			var bicycle, frame;
 			var test;
@@ -61,129 +63,23 @@
 				startTime = new Date().getTime();
 				container = document.createElement( 'div' );
 				document.body.appendChild( container );
-
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+				
+				game = new GameController();
+				
+				scene = new THREE.Scene();
+				scene = game.scene;
+				camera = game.camera;
+				/*camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 				camera.position.z = 176;
-				camera.position.y = 100;
+				camera.position.y = 100;*/
 				
 
 				// scene
 		
-				scene = new THREE.Scene();
+				
 				
 				datdatgui = new UIController();
 				
-				
-				var ambient = new THREE.AmbientLight( 0x00000f );
-				scene.add( ambient );
-				var areaLight1 = new THREE.AreaLight( 0xffffff, 100 );
-				areaLight1.position.set( 0.0001, 10.0001, 0.5001 );
-				//areaLight1.rotation.set( -0.74719, 0.0001, 0.0001 );
-				areaLight1.width = 100;
-				areaLight1.height = 100;
-
-				scene.add( areaLight1 );
-				
-				var light = new THREE.PointLight( 0xffffff, .5, 10000 );
-				light.position.set( 90, 140, 90 );
-				//scene.add( light );
-				
-				var light2 = new THREE.PointLight( 0xffffff, .5, 10000 );
-				light2.position.set( -90, 140, -90 );
-				scene.add( light2 );
-				
-				var light3 = new THREE.PointLight( 0xffffff, .5, 10000 );
-				light3.position.set( -90, 140, 90 );
-				//scene.add( light3 );
-				var directionalLight = new THREE.DirectionalLight( 0x8b8b8b );
-				directionalLight.position.set( 0, 10, 0 ).normalize();
-				scene.add( directionalLight );
-				
-				var spotLight = new THREE.SpotLight( 0x111111 );
-				spotLight.position.set( 0, 10000, -500 );
-				scene.add(spotLight);
-				
-				
-				// model
-                //bicycle = new THREE.Object3D();
-
-				/*var loader = new THREE.OBJMTLLoader();
-				loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
-					object.position.x = -20;
-    				object.scale.x = 10;
-    				object.scale.y = 10;
-    				object.scale.z = 10;
-					object.material = null;
-					object.receiveShadow = true;
-					
-					scene.add(object);
-                } );
-				
-				loader.load( 'Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
-					object.position.x = -68;
-					object.position.y = 4.5;
-					object.position.z = -40;
-					object.traverse( function ( child ) {
-						if ( child instanceof THREE.Mesh ) {
-							child.material = new THREE.MeshPhongMaterial( {color: 0x000000, ambient: 0xffffff, shininess: 10, specular: 0xffffff} );
-						}
-					} );
-					object.castShadow = true;
-    				object.scale.x = 5;
-    				object.scale.y = 5;
-    				object.scale.z = 5;
-					//test = object;
-					scene.add(object);
-                } );
-				
-				loader.load( 'Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
-					object.position.x = -68;
-					object.position.y = 4.5;
-					object.position.z = 60;
-					
-					object.traverse( function ( child ) {
-						if ( child instanceof THREE.Mesh ) {
-							child.material = new THREE.MeshPhongMaterial( {color: 0xffffff, ambient: 0x000000, shininess: 5, specular: 0x000000} );
-						}
-					} );
-					object.castShadow = true;
-    				object.scale.x = 5;
-    				object.scale.y = 5;
-    				object.scale.z = 5;
-					
-					scene.add(object);
-                } );
-				
-				loader.load( 'Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
-					object.position.x = 72;
-					object.position.y = 4.5;
-					object.position.z = -40;
-					test = object;
-    				object.scale.x = 5;
-    				object.scale.y = 5;
-    				object.scale.z = 5;
-					
-					scene.add(object);
-                } );
-
-				loader.load( 'Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
-					object.position.x = 72;
-					object.position.y = 4.5;
-					object.position.z = 60;
-					object.castShadow = true;
-    				object.scale.x = 5;
-    				object.scale.y = 5;
-    				object.scale.z = 5;
-					
-					scene.add(object);
-                } );*/
-                /*
-                    TODO Add more bicycle parts and connect them up to the scene
-                    Note: Be sure to apply whatever transformations are appropriate
-                */
-
-				//scene.add( bicycle );
-
 				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
@@ -197,17 +93,15 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 				
 				
-				board = new ChessBoard(scene, camera);
+				
 				animate();
-				setTimeout(function(){toAnim()}, 200);
-				gui();
+				setTimeout(toAnim, 200);
 				
 				
 				
 
 			}
-			var toAnim = function(){
-				console.log('happens');
+			function toAnim(){
 				if(start == 33){
 					datdatgui.gui();
 					doneLoading = true;
@@ -275,7 +169,7 @@
 					if(notPlaying){
 						notPlaying = false;
 						for(var i = 0; i < moveList5.length; i++){
-							board.move(moveList5[i]);
+							//game.move(moveList5[i]);
 						}
 					}
 				}
@@ -315,7 +209,7 @@
 					//scene.rotation.x += .5;
 					//scene.rotation.y += .5;
 					//scene.rotation.x += .5;
-					board.update();
+					game.update();
 				}
 				
 				
@@ -333,11 +227,3 @@
 				renderer.render( scene, camera );
 
 			}
-			
-
-//Function that creates a multifolder GUI.
-//Create serverFolder, themeFolder, cameraFolder vars global
-//Needs the vars at the top like guiServParams for the typing. Cannot just create blank buttons.
-function gui(){
-    
-}
