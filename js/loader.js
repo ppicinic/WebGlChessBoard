@@ -10,6 +10,8 @@
 			var windowHalfY = window.innerHeight / 2;
 			var startTime;
 			var endTime;
+			var effectFXAA;
+			var composer;
 
 			init();
 			var board;
@@ -187,10 +189,35 @@
 				
 				
 				board = new ChessBoard(scene, camera);
-				animate();
+				
 				setTimeout(function(){toAnim()}, 200);
+				// COMPOSER
 				
+				var renderModel = new THREE.RenderPass( scene, camera );
+
+                                //var effectBleach = new THREE.ShaderPass( THREE.BleachBypassShader );
+                                //var effectColor = new THREE.ShaderPass( THREE.ColorCorrectionShader );
+                                effectFXAA = new THREE.ShaderPass( THREE.FXAAShader );
+
+                                effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
+
+                                //effectBleach.uniforms[ 'opacity' ].value = 0.4;
+
+                                //effectColor.uniforms[ 'powRGB' ].value.set( 1.4, 1.45, 1.45 );
+                                //effectColor.uniforms[ 'mulRGB' ].value.set( 1.1, 1.1, 1.1 );
+
+                                effectFXAA.renderToScreen = true;
+
+                                composer = new THREE.EffectComposer( renderer );
+
+                                composer.addPass( renderModel );
+
+                                //composer.addPass( effectBleach );
+                               //composer.addPass( effectColor );
+                                composer.addPass( effectFXAA );
 				
+				// END COMPOSER
+				animate();
 				
 				
 
@@ -236,6 +263,7 @@
 
 				windowHalfX = window.innerWidth / 2;
 				windowHalfY = window.innerHeight / 2;
+				effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
 
 				camera.aspect = window.innerWidth / window.innerHeight;
 				camera.updateProjectionMatrix();
@@ -318,6 +346,7 @@
 				//test.position.z += .5;
 				camera.lookAt( scene.position );
 
-				renderer.render( scene, camera );
+				//renderer.render( scene, camera );
+				composer.render();
 
 			}
