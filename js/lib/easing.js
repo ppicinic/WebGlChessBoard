@@ -36,3 +36,7 @@ function easeInOutExp(t, b, c, d) {
 	t--;
 	return c/2 * ( -Math.pow( 2, -10 * t) + 2 ) + b;
 }
+
+function easeInOutLin(t, b, c, d) {
+	return c*t/d + b;
+}

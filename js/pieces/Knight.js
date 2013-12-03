@@ -105,7 +105,7 @@ Knight.prototype.move = function(x, y){
 	this.ttl = 0;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
-	if(this.dy > this.dx){
+	if(Math.abs(this.dy) > Math.abs(this.dx)){
 		this.yMove = true;
 	}else{
 		this.yMove = false;
@@ -149,6 +149,7 @@ Knight.prototype.update = function(){
 		}
 	}else {
 		if(this.yMove){
+			console.log('correct');
 			var newYpos = easeInOutExp(this.ttl, this.y, this.dy, this.duration);
 			var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
 		}else{
