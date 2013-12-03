@@ -173,7 +173,7 @@
 
 				//scene.add( bicycle );
 
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer( {antialiasing: true });
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
 
