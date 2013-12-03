@@ -51,8 +51,8 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
 		board.knight = object;
 		
-		object.children[0].children[0].position.z -= 1;
-		console.log(object.children[0].children[0]);
+		//object.children[0].children[0].position.z -= 1;
+		//console.log(object.children[0].children[0]);
 		loadComplete++;
 	});
 	this.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function (object){
@@ -178,7 +178,7 @@ ChessBoard.prototype.update = function(){
 					this.pieces[x][y].move(x2, y2);
 					this.pieces[x2][y2] = this.pieces[x][y];
 					this.pieces[x][y] = null;
-					this.pieces[rx][ry].move(rx2, ry2);
+					this.pieces[rx][ry].castled(rx2, ry2, this.pieces[x2][y2].duration);
 					this.pieces[rx2][ry2] = this.pieces[rx][ry];
 					this.pieces[rx][ry] = null;
 					this.movingArray.push(this.pieces[x2][y2]);

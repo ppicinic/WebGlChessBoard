@@ -37,6 +37,7 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.dx = 0;
 	this.dy = 0;
 	this.promote = false;
+	this.castle = false;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -105,6 +106,21 @@ Rook.prototype.move = function(x, y){
 	
 }
 
+Rook.prototype.castled = function(x, y, duration){
+	this.xLoc = x;
+	this.yLoc = y;
+	this.x2 = LEFT + (x * 20) + this.xfix;
+	this.y2 = TOP + (y * 20);
+	//console.log(spaces);
+	
+	this.moving = true;
+	this.castle = true;
+	this.duration = duration;
+	this.dx = (this.x2 - this.x);
+	this.dy = (this.y2 - this.y);
+	
+}
+
 Rook.prototype.update = function(){
 	if(this.dest){
 		if(this.ttl <= TIME_TO_MOVE){
@@ -140,6 +156,14 @@ Rook.prototype.update = function(){
 			this.promote = false;
 		}
 	}else {
+		if(this.castle){
+			if(this.ttl > (this.duration / 2) ){
+				var newTtl = this.ttl - (this.duration / 2);
+				this.piece.position.y = easeInOutSin(newTtl, 19.5, -15, (this.duration / 2) );
+			}else{
+				this.piece.position.y = easeInOutSin(this.ttl, 4.5, 15, (this.duration / 2) );
+			}
+		}
 		var newYpos = easeInOutQnt(this.ttl, this.y, this.dy, this.duration);
 		var newXpos = easeInOutQnt(this.ttl, this.x, this.dx, this.duration);
 		this.piece.position.z = newYpos;
@@ -147,6 +171,7 @@ Rook.prototype.update = function(){
 		this.ttl++;
 		if(this.ttl > this.duration){
 			this.moving = false;
+			this.castle = false;
 			this.x = this.x2;
 			this.y = this.y2;
 		}

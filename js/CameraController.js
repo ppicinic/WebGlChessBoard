@@ -37,21 +37,16 @@ CameraController.prototype.update = function(){
 	}
 	camera.position.x = movey;
 
-	console.log(movescale);
 	var mid = (176 + -140) / 2;
-	//console.log("mid " + mid)
+	
 	var start = this.camera.position.z;
 	this.camera.position.z = movescale;
 	var end = this.camera.position.z;
 	var m = (start + end) / 2;
 	var n = m - mid;
-	//console.log("m " + m);
+	
 	var change = Math.pow(n, 2) / 4000;
-	if(m > mid){
-		//this.camera.position.x += change;
-	}else{
-		//this.camera.position.x -= change;
-	}
+
 	this.ttl++;
 	if(this.ttl > CAMERA_TIME){
 		this.moving = false;
