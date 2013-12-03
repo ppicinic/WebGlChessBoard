@@ -54,6 +54,8 @@ Knight.prototype.init = function(scene, color, spot, board)
 		this.piece.rotation.y = -90 * (Math.PI / 180);
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
+				mesh.castShadow = true;
+				
 				mesh.material.map = board.whiteTexture;
 			}
 		});
@@ -62,6 +64,8 @@ Knight.prototype.init = function(scene, color, spot, board)
 		this.piece.rotation.y = 90 * (Math.PI / 180);
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
+				mesh.castShadow = true;
+				
 				mesh.material.map = board.blackTexture;
 			}
 		});

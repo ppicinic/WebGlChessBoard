@@ -26,7 +26,12 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 10;
     	object.scale.z = 10;
 		object.material = null;
-		object.receiveShadow = true;	
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				//mesh.castShadow = true;
+				mesh.receiveShadow = true;
+			}
+		});
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
@@ -41,6 +46,12 @@ ChessBoard.prototype.init = function(scene, camera)
 	var board = this;
 	var loadComplete = 0;
 	this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				//mesh.castShadow = true;
+				//mesh.receiveShadow = true;
+			}
+		});
 		board.pawn = object;
 		loadComplete++;
 	});

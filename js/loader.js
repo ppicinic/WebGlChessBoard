@@ -88,8 +88,21 @@
 				directionalLight.position.set( 0, 10, 0 ).normalize();
 				scene.add( directionalLight );
 				
-				var spotLight = new THREE.SpotLight( 0x111111 );
-				spotLight.position.set( 0, 10000, -500 );
+				var spotLight = new THREE.SpotLight(  0x111111, 1, 0, Math.PI, 1);
+				spotLight.position.set( 200, 1000, 1000 );
+				spotLight.target.position.set( 0, 0, 0 );
+				spotLight.castShadow = true;
+				spotLight.shadowCameraNear = 1;
+				spotLight.shadowCameraFar = camera.far;
+				spotLight.shadowCameraFov = 5;
+
+				//light.shadowCameraVisible = true;
+
+				spotLight.shadowBias = 0.0001;
+				spotLight.shadowDarkness = 0.6;
+
+				spotLight.shadowMapWidth = 7072;
+				spotLight.shadowMapHeight = 2048;
 				scene.add(spotLight);
 				
 				
@@ -175,6 +188,8 @@
 
 				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.shadowMapEnabled = true;
+				renderer.shadowMapType = THREE.PCFShadowMap;
 				container.appendChild( renderer.domElement );
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );

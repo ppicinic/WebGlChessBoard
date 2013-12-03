@@ -49,12 +49,16 @@ King.prototype.init = function(scene, color, spot, board)
 	if(this.color){
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
+				mesh.castShadow = true;
+				
 				mesh.material.map = board.whiteTexture;
 			}
 		});
 	} else {
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
+				mesh.castShadow = true;
+				
 				mesh.material.map = board.blackTexture;
 			}
 		});
