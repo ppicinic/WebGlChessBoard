@@ -81,6 +81,8 @@
 				light2.position.set( -90, 140, -90 );
 				scene.add( light2 );
 				
+				
+				
 				var light3 = new THREE.PointLight( 0xffffff, .5, 10000 );
 				light3.position.set( -90, 140, 90 );
 				//scene.add( light3 );
@@ -88,22 +90,55 @@
 				directionalLight.position.set( 0, 10, 0 ).normalize();
 				scene.add( directionalLight );
 				
-				var spotLight = new THREE.SpotLight(  0x111111, 1, 0, Math.PI, 1);
+				var spotLight = new THREE.SpotLight(  0x111111, 3, 0, 0, 1);
 				spotLight.position.set( 200, 1000, 1000 );
+				spotLight.intensity = 3;
 				spotLight.target.position.set( 0, 0, 0 );
 				spotLight.castShadow = true;
 				spotLight.shadowCameraNear = 1;
 				spotLight.shadowCameraFar = camera.far;
-				spotLight.shadowCameraFov = 5;
-
-				//light.shadowCameraVisible = true;
+				spotLight.shadowCameraFov = 50;
 
 				spotLight.shadowBias = 0.0001;
 				spotLight.shadowDarkness = 0.6;
-
+				//spotLight.shadowCameraVisible = true;
 				spotLight.shadowMapWidth = 7072;
 				spotLight.shadowMapHeight = 2048;
 				scene.add(spotLight);
+				
+				var shadowLight1 = new THREE.SpotLight(  0x111111, 1, 0, Math.PI, 1);
+				shadowLight1.shadowOnly = true;
+				shadowLight1.position.set( 0, 0, 0 );
+				shadowLight1.target.position.set( 0, 0, 0 );
+				shadowLight1.castShadow = true;
+				shadowLight1.shadowCameraNear = 1;
+				shadowLight1.shadowCameraFar = camera.far;
+				shadowLight1.shadowCameraFov = 50;
+
+				shadowLight1.shadowBias = 0.0001;
+				shadowLight1.shadowDarkness = 0.1;
+				//shadowLight1.shadowCameraVisible = true;
+				shadowLight1.shadowMapWidth = 1920;
+				shadowLight1.shadowMapHeight = 1080;
+				scene.add(shadowLight1);
+				
+				var shadowLight2 = new THREE.SpotLight(  0x111111, 1, 0, Math.PI, 1);
+				shadowLight2.shadowOnly = true;
+				shadowLight2.position.set( 400, 350, 0 );
+				shadowLight2.target.position.set( 0, 0, 0 );
+				shadowLight2.castShadow = true;
+				shadowLight2.shadowCameraNear = 1;
+				shadowLight2.shadowCameraFar = camera.far;
+				shadowLight2.shadowCameraFov = 50;
+				
+				//shadowLight2.shadowCameraVisible = true;
+
+				shadowLight2.shadowBias = 0.0001;
+				shadowLight2.shadowDarkness = 0.4;
+
+				shadowLight2.shadowMapWidth = 1920;
+				shadowLight2.shadowMapHeight = 1080;
+				scene.add(shadowLight2);
 				
 				
 				// model
@@ -189,7 +224,7 @@
 				renderer = new THREE.WebGLRenderer();
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				renderer.shadowMapEnabled = true;
-				renderer.shadowMapType = THREE.PCFShadowMap;
+				renderer.shadowMapType = THREE.PCFSoftShadowMap;
 				container.appendChild( renderer.domElement );
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
