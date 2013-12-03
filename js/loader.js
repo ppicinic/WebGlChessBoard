@@ -72,7 +72,7 @@
 				scene = new THREE.Scene();
 				
 				datdatgui = new UIController();
-				datdatgui.gui();
+				
 				
 				var ambient = new THREE.AmbientLight( 0x00000f );
 				scene.add( ambient );
@@ -209,6 +209,7 @@
 			var toAnim = function(){
 				console.log('happens');
 				if(start == 33){
+					datdatgui.gui();
 					doneLoading = true;
 					endTime = new Date().getTime();
 					console.log(endTime - startTime);
