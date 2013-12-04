@@ -1,6 +1,8 @@
 var container, stats;
 
 var game;
+var loadingScene;
+var loadingCamera;
 
 var camera, scene, renderer;
 var bicycle, frame;
@@ -61,9 +63,13 @@ function init() {
 	
 	game = new GameController();
 	
+	loadingCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+	loadingCamera.position.z = 176;
+	loadingCamera.position.y = 100;
 	scene = new THREE.Scene();
-	scene = game.scene;
-	camera = game.camera;
+	loadingScene = new THREE.Scene();
+	scene = loadingScene;
+	camera = loadingCamera;
 	/*camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	camera.position.z = 176;
 	camera.position.y = 100;*/
@@ -100,6 +106,8 @@ function toAnim(){
 	if(start == 33){
 		datdatgui.gui();
 		doneLoading = true;
+		scene = game.scene;
+		camera = game.camera;
 		endTime = new Date().getTime();
 		console.log(endTime - startTime);
 	}
