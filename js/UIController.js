@@ -146,5 +146,9 @@ UIController.prototype.gui = function(){
 	themeFolder.add(guiThemeParams,'Update');
     gui.add(guiServParams,'Reset');
 }
+
+UIController.prototype.degui = function(){
+    gui.destroy();
+}
 						
 						

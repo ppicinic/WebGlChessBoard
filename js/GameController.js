@@ -2,6 +2,13 @@
 var GameController = function() { this.init(); }
 
 GameController.prototype.init = function(){
+
+	this.serverConnect = false;
+	this.serverURL = "";
+	this.gameOver = false;
+	this.whiteTime = 900;
+	this.blackTime = 900;
+
 	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	this.camera.position.z = 176;
 	this.camera.position.y = 100;
