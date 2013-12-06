@@ -53,26 +53,30 @@ UIController.prototype.init = function(){
         quality: "Low",
 		Update: function()
 		{
-			  if(guiThemeParams.type=="Wood")
+            var poly;
+            var texture;
+			if(guiThemeParams.type=="Wood")
 			{
 				//Make models wood.
-				console.log("wood");
+                texture = false;
 			}
 			else
 			{
 				//Make models Marble.
-				console.log("Marble");
+                texture = true;
 			}
 			   if(guiThemeParams.quality=="Low")
 			{
 				//Make models low.
-				console.log("low");
+				poly = false;
 			}
 			else
 			{
 				//Make models high.
-				console.log("high");
+				poly = true;
 			}
+
+            game.updatePieces(poly, texture);
 		}
     };
 }

@@ -46,3 +46,7 @@ GameController.prototype.update = function(){
 GameController.prototype.move = function(str){
 	this.board.move(str);
 }
+
+GameController.prototype.updatePieces = function(poly, texture){
+	this.board.updatePieceLoad(poly, texture);
+}

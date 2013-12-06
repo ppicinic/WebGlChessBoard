@@ -38,6 +38,11 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.dy = 0;
 	this.promote = false;
 	this.promoting = false;
+
+	// Low Poly - false || High Poly - true
+	this.highpoly = false;
+	// Marble - true || Wood - false
+	this.texture = true;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -170,4 +175,31 @@ Pawn.prototype.isMoving = function(){
 
 Pawn.prototype.promoted = function(){
 	this.promote = true;
+}
+
+Pawn.prototype.updatePiece = function(poly, texture){
+	if(this.poly != poly){
+		//Update Geometry
+	}
+
+	var board = this.board;
+	if(this.texture != texture){
+		console.log('happens');
+		this.texture = texture;
+		if(this.color){
+		this.piece.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				console.log('this happens');
+				mesh.material.map = board.whiteTexture;
+			}
+		});
+		} else {
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.blackTexture;
+				}
+			});
+		} 
+	}
+
 }

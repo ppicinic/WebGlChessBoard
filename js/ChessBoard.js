@@ -246,3 +246,68 @@ ChessBoard.prototype.move = function(str){
 	this.moveQueue.push(camMove);
 	
 }
+
+ChessBoard.prototype.updatePieceLoad = function(poly, texture){
+	if(this.highpoly != poly){
+		this.highpoly = poly;
+		var board = this;
+		var loadComplete = 0;
+		if(this.highpoly){
+			this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
+				board.pawn = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function (object){
+				board.rook = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
+				board.knight = object;
+				
+				//object.children[0].children[0].position.z -= 1;
+				//console.log(object.children[0].children[0]);
+				loadComplete++;
+			});
+			this.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function (object){
+				board.bishop = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function (object){
+				board.queen = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function (object){
+				board.king = object;
+				loadComplete++;
+			});
+		}
+	}
+
+	if(this.texture != texture){
+		this.texture = texture;
+		if(this.texture){
+			this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
+			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
+		} else {
+			this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackwood.jpg');
+			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitewood.jpg');
+		}
+	}
+
+	this.updatePieces(poly, texture);
+
+}
+
+ChessBoard.prototype.updatePieces = function(poly, texture){
+	for(var x = 0; x < this.pieces.length; x++){
+		for(var y = 0; y < this.pieces[x].length; y++){
+			if(this.pieces[x][y]){
+				if(this.pieces[x][y] instanceof Pawn){
+					this.pieces[x][y].updatePiece(poly, texture);
+				}
+
+			}
+		}
+	}
+
+}
