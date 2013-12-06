@@ -28,7 +28,7 @@ UIController.prototype.init = function(){
                 guiServParams.ServerUrl = "http://test.com";
                 guiServParams.GameID = "team03";
                 guiThemeParams.type = "Marble";
-                guiThemeParams.type = "High";
+                guiThemeParams.type = "Low";
                 guiServParams.Close();
                 //TODO: Reset chess pieces
                 console.log("Reset here");
@@ -50,8 +50,8 @@ UIController.prototype.init = function(){
     guiThemeParams = { //Needed for GUI, had theme settings.
         //TODO:Functions here.
         type: "Marble",
-        quality: "High",
-		change: function()
+        quality: "Low",
+		Update: function()
 		{
 			  if(guiThemeParams.type=="Wood")
 			{
@@ -134,10 +134,10 @@ UIController.prototype.gui = function(){
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:").onFinishChange(function(){
       
     });
-    themeFolder.add(guiThemeParams, 'quality', ["High","Low"]).name("Quality:").onFinishChange(function(){
+    themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:").onFinishChange(function(){
      
     });
-	themeFolder.add(guiThemeParams,'change');
+	themeFolder.add(guiThemeParams,'Update');
     gui.add(guiServParams,'Reset');
 }
 						
