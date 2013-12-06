@@ -193,7 +193,6 @@ Pawn.prototype.updatePiece = function(poly, texture){
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
-					console.log('this happens');
 					mesh.material.map = board.whiteTexture;
 				}
 			});
@@ -209,12 +208,10 @@ Pawn.prototype.updatePiece = function(poly, texture){
 	}
 
 	if(this.texture != texture){
-		console.log('happens');
 		this.texture = texture;
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
-					console.log('this happens');
 					mesh.material.map = board.whiteTexture;
 				}
 			});
