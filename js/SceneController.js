@@ -3,11 +3,13 @@ var SceneController = function(gameScene, loading){ this.init(gameScene, loading
 
 SceneController.prototype.init = function(gameScene, loading){
 
-	
+	this.duration = 39;
 	this.loading = true;
+	this.poly = false;
 	//this.loadscene = loading.scene;
 	//this.loadcam = loading.camera;
-	this.load = loading;
+	this.load = new LoadScene(this.duration);
+	console.log(this.load)
 	this.game = gameScene;
 	scene = new THREE.Scene();
 	scene = this.load.scene;
@@ -17,7 +19,7 @@ SceneController.prototype.init = function(gameScene, loading){
 	var self = this;
 
 	function change() {
-		if(start == 33){
+		if(start == self.duration){
 			self.changeScene();
 			self.datdatgui.gui();
 		}else{
@@ -35,6 +37,32 @@ SceneController.prototype.changeScene = function(){
 		camera = this.game.camera;
 		this.loading = false;
 	} else {
-
+		scene = this.load.scene;
+		camera = this.load.camera;
+		this.loading = true;
 	}
+}
+
+SceneController.prototype.loadChanges = function(poly){
+	this.duration = 32;
+	if(this.poly != poly){
+		this.poly = poly;
+		this.duration += 6;
+	}
+	console.log(this.duration);
+	this.load = new LoadScene(this.duration);
+	this.changeScene();
+
+	var self = this;
+
+	function reChange() {
+		if(start == self.duration){
+			self.changeScene();
+			//self.datdatgui.gui();
+		}else{
+			setTimeout(reChange, 200);
+		}
+	}
+
+	setTimeout(reChange, 0);
 }

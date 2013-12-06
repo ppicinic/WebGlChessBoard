@@ -1,7 +1,8 @@
 
-var LoadScene = function() { this.init(); }
+var LoadScene = function(duration) { this.init(duration); }
 
-LoadScene.prototype.init = function(){
+LoadScene.prototype.init = function(duration){
+	this.duration = duration;
 	this.scene = new THREE.Scene();
 	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	this.camera.position.z = 176;
