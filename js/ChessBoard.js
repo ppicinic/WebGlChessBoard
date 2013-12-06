@@ -344,9 +344,7 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 	for(var x = 0; x < this.pieces.length; x++){
 		for(var y = 0; y < this.pieces[x].length; y++){
 			if(this.pieces[x][y]){
-				if(this.pieces[x][y] instanceof Pawn){
-					this.pieces[x][y].updatePiece(poly, texture);
-				}
+				this.pieces[x][y].updatePiece(poly, texture);
 
 			}
 		}

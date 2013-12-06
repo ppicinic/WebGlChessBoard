@@ -183,12 +183,13 @@ Pawn.prototype.updatePiece = function(poly, texture){
 
 	if(this.poly != poly){
 		this.poly = poly;
+		var temp = this.piece;
 		this.scene.remove(this.piece);
 		this.piece = cloneObjMtl(this.board.pawn);
 		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
-		this.piece.position.x = this.x;
-		this.piece.position.z = this.y;
-		this.piece.position.y = 4.5;
+		this.piece.position.x = temp.position.x;
+		this.piece.position.z = temp.position.z;
+		this.piece.position.y = temp.position.y;
 		this.texture = texture;
 		if(this.color){
 			this.piece.traverse(function(mesh){
