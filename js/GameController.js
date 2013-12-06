@@ -75,41 +75,43 @@ GameController.prototype.connectToServer = function(url){
 
 GameController.prototype.pingServer = function(){
 	if(this.serverConnect){
-		var request = makeHttpObject();
-		request.open("GET", this.serverURL, false);
-		request.send(null);
-		if(request.status == 200){
-			var newJSON = eval("(" + request.responseText + ")");
-			if(this.jsonGame){
-				var moves = newJSON.moves;
-				for(var i = this.moveCount; i < moves.length; i++){
-					this.board.move(moves[i]);
-				}
-				this.gameOver = newJSON.gameover;
-				this.moveCount = newJSON.lastmovenumber;
-				this.blackTime = newJSON.blacktime;
-				this.whiteTime = newJSON.whitetime;
-				this.jsonGame = newJSON;
-				if(this.gameOver){
-					this.serverConnect = false;
-				}
-			}else {
-				this.moveCount = newJSON.lastmovenumber;
-				this.blackTime = newJSON.blacktime;
-				this.whiteTime = newJSON.whitetime;
-				this.gameOver = newJSON.gameover;
-				var moves = newJSON.moves;
-				for(var i in moves){
-					this.board.move(moves[i]);
-				}
-				this.jsonGame = newJSON;
-				if(this.gameOver){
-					this.serverConnect = false;
+		if(!this.board.isPlaying()){
+			var request = makeHttpObject();
+			request.open("GET", this.serverURL, false);
+			request.send(null);
+			if(request.status == 200){
+				var newJSON = eval("(" + request.responseText + ")");
+				if(this.jsonGame){
+					var moves = newJSON.moves;
+					for(var i = this.moveCount; i < moves.length; i++){
+						this.board.move(moves[i]);
+					}
+					this.gameOver = newJSON.gameover;
+					this.moveCount = newJSON.lastmovenumber;
+					this.blackTime = newJSON.blacktime;
+					this.whiteTime = newJSON.whitetime;
+					this.jsonGame = newJSON;
+					if(this.gameOver){
+						this.serverConnect = false;
+					}
+				}else {
+					this.moveCount = newJSON.lastmovenumber;
+					this.blackTime = newJSON.blacktime;
+					this.whiteTime = newJSON.whitetime;
+					this.gameOver = newJSON.gameover;
+					var moves = newJSON.moves;
+					for(var i in moves){
+						this.board.move(moves[i]);
+					}
+					this.jsonGame = newJSON;
+					if(this.gameOver){
+						this.serverConnect = false;
+					}
 				}
 			}
 		}
 		// set up next ping
 		var self = this;
-		setTimeout(function(){ self.pingServer(); }, 10000);
+		setTimeout(function(){ self.pingServer(); }, 1000);
 	}
 }
