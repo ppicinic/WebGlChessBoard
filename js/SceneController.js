@@ -60,7 +60,6 @@ SceneController.prototype.loadChanges = function(poly){
 			self.changeScene();
 			//self.datdatgui.gui();
 		}else{
-			console.log(start);
 			setTimeout(reChange, 200);
 		}
 	}

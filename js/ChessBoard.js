@@ -9,6 +9,7 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
+	this.destroyedArray = new Array();
 
 	// Low Poly - false || High Poly - true
 	this.highpoly = false;
@@ -202,12 +203,14 @@ ChessBoard.prototype.update = function(){
 						console.log('piece dies');
 						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
 						this.movingArray.push(this.pieces[x2][y2]);
+						this.destroyedArray.push(this.pieces[x2][y2]);
 					}else {
 						// en passent happens
 						if(move.pawnCap){
 							console.log('piece dies');
 							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
 							this.movingArray.push(this.pieces[x2][y]);
+							this.destroyedArray.push(this.pieces[x2][y]);
 						}
 					}
 					if(move.promote){
@@ -365,6 +368,9 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 				this.pieces[x][y].updatePiece(poly, texture);
 			}
 		}
+	}
+	for(var i in this.destroyedArray){
+		this.destroyedArray[i].updatePiece(poly, texture);
 	}
 
 }

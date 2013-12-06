@@ -38,6 +38,11 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.dy = 0;
 	this.promote = false;
 	this.castle = false;
+
+	// Low Poly - false || High Poly - true
+	this.poly = false;
+	// Marble - true || Wood - false
+	this.texture = true;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -127,7 +132,10 @@ Rook.prototype.update = function(){
 			//console.log('opacity drops')
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
-					mesh.material.transparent = true;
+					if(!mesh.material.transparent){
+						mesh.material.transparent = true;
+						mesh.material.opacity = 1;
+					}
 					mesh.material.opacity -= (1 / TIME_TO_MOVE);
 				}
 			});
@@ -191,10 +199,11 @@ Rook.prototype.isMoving = function(){
 Rook.prototype.updatePiece = function(poly, texture){
 
 	var board = this.board;
+	var temp = this.piece;
 
 	if(this.poly != poly){
 		this.poly = poly;
-		var temp = this.piece;
+		
 		this.scene.remove(this.piece);
 		this.piece = cloneObjMtl(this.board.rook);
 		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
@@ -206,12 +215,20 @@ Rook.prototype.updatePiece = function(poly, texture){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.map = board.whiteTexture;
+					if(temp.children[0].children[0].material.transparent){
+						mesh.material.transparent = true;
+						mesh.material.opacity = temp.children[0].children[0].material.opacity;
+					}
 				}
 			});
 		} else {
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.map = board.blackTexture;
+					if(temp.children[0].children[0].material.transparent){
+						mesh.material.transparent = true;
+						mesh.material.opacity = temp.children[0].children[0].material.opacity;
+					}
 				}
 			});
 		} 
@@ -225,12 +242,20 @@ Rook.prototype.updatePiece = function(poly, texture){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.map = board.whiteTexture;
+					if(temp.children[0].children[0].material.transparent){
+						mesh.material.transparent = true;
+						mesh.material.opacity = temp.children[0].children[0].material.opacity;
+					}
 				}
 			});
 		} else {
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.map = board.blackTexture;
+					if(temp.children[0].children[0].material.transparent){
+						mesh.material.transparent = true;
+						mesh.material.opacity = temp.children[0].children[0].material.opacity;
+					}
 				}
 			});
 		} 
