@@ -25,8 +25,8 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.color = color;
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
-	this.x = LEFT + (this.xLoc * 20)
-	this.y = TOP + (this.yLoc * 20)
+	this.x = LEFT + (this.xLoc * 20);
+	this.y = TOP + (this.yLoc * 20);
 	this.moving = false;
 	this.fadettl = TIME_TO_MOVE;
 	this.dest = false;
@@ -178,21 +178,46 @@ Pawn.prototype.promoted = function(){
 }
 
 Pawn.prototype.updatePiece = function(poly, texture){
-	if(this.poly != poly){
-		//Update Geometry
-	}
 
 	var board = this.board;
+
+	if(this.poly != poly){
+		this.poly = poly;
+		this.scene.remove(this.piece);
+		this.piece = cloneObjMtl(this.board.pawn);
+		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+		this.piece.position.x = this.x;
+		this.piece.position.z = this.y;
+		this.piece.position.y = 4.5;
+		this.texture = texture;
+		if(this.color){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					console.log('this happens');
+					mesh.material.map = board.whiteTexture;
+				}
+			});
+		} else {
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.blackTexture;
+				}
+			});
+		} 
+		this.scene.add(this.piece);
+
+	}
+
 	if(this.texture != texture){
 		console.log('happens');
 		this.texture = texture;
 		if(this.color){
-		this.piece.traverse(function(mesh){
-			if(mesh instanceof THREE.Mesh){
-				console.log('this happens');
-				mesh.material.map = board.whiteTexture;
-			}
-		});
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					console.log('this happens');
+					mesh.material.map = board.whiteTexture;
+				}
+			});
 		} else {
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){

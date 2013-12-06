@@ -248,7 +248,9 @@ ChessBoard.prototype.move = function(str){
 }
 
 ChessBoard.prototype.updatePieceLoad = function(poly, texture){
+	var polyUpdate = false;
 	if(this.highpoly != poly){
+		polyUpdate = true;
 		this.highpoly = poly;
 		var board = this;
 		var loadComplete = 0;
@@ -280,6 +282,8 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				board.king = object;
 				loadComplete++;
 			});
+		}else{
+			// TODO load low poly models
 		}
 	}
 
@@ -294,7 +298,19 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 		}
 	}
 
-	this.updatePieces(poly, texture);
+	function waitUpdate(){
+		if(loadComplete == 6){
+			board.updatePieces(poly, texture);
+		}else {
+			setTimeout(waitUpdate, 200);
+		}
+	}
+
+	if(polyUpdate){
+		setTimeout(waitUpdate, 200);
+	}else{
+		board.updatePieces(poly, texture);
+	}
 
 }
 
