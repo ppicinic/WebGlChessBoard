@@ -11,13 +11,16 @@ UIController.prototype.init = function(){
         GameID: "team03",
         Connect: function(){
         //TODO: Connect to server
+                var url = "";
                 if(!this.ServSetting)
                 {
-                        console.log("Connect to " + this.ServerUrl);
+                    //url += SERVER_URL + this.GameID;
+                    url = this.ServerUrl;
                 }
                 else {
-                console.log("Connect to ID: " + this.GameID);
+                    url += SERVER_URL + this.GameID;
                 }
+                game.connectToServer(url);
         },
         Close: function(){
          //TODO:Close connection

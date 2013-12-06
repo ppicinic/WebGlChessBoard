@@ -8,6 +8,8 @@ GameController.prototype.init = function(){
 	this.gameOver = false;
 	this.whiteTime = 900;
 	this.blackTime = 900;
+	this.moveCount = 0;
+	this.jsonGame = null;
 
 	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	this.camera.position.z = 176;
@@ -47,13 +49,67 @@ GameController.prototype.init = function(){
 }
 
 GameController.prototype.update = function(){
+
 	this.board.update();
 }
 
 GameController.prototype.move = function(str){
-	this.board.move(str);
+	if(!this.serverConnect){
+		this.board.move(str);
+		this.moveCount++;
+	}
 }
 
 GameController.prototype.updatePieces = function(poly, texture){
 	this.board.updatePieceLoad(poly, texture);
+}
+
+GameController.prototype.connectToServer = function(url){
+	if(!this.serverConnect){
+		this.serverConnect = true;
+		this.serverURL = url;
+		var self = this;
+		setTimeout(function(){ self.pingServer(); }, 0);
+	}
+}
+
+GameController.prototype.pingServer = function(){
+	if(this.serverConnect){
+		var request = makeHttpObject();
+		request.open("GET", this.serverURL, false);
+		request.send(null);
+		if(request.status == 200){
+			var newJSON = eval("(" + request.responseText + ")");
+			if(this.jsonGame){
+				var moves = newJSON.moves;
+				for(var i = this.moveCount; i < moves.length; i++){
+					this.board.move(moves[i]);
+				}
+				this.gameOver = newJSON.gameover;
+				this.moveCount = newJSON.lastmovenumber;
+				this.blackTime = newJSON.blacktime;
+				this.whiteTime = newJSON.whitetime;
+				this.jsonGame = newJSON;
+				if(this.gameOver){
+					this.serverConnect = false;
+				}
+			}else {
+				this.moveCount = newJSON.lastmovenumber;
+				this.blackTime = newJSON.blacktime;
+				this.whiteTime = newJSON.whitetime;
+				this.gameOver = newJSON.gameover;
+				var moves = newJSON.moves;
+				for(var i in moves){
+					this.board.move(moves[i]);
+				}
+				this.jsonGame = newJSON;
+				if(this.gameOver){
+					this.serverConnect = false;
+				}
+			}
+		}
+		// set up next ping
+		var self = this;
+		setTimeout(function(){ self.pingServer(); }, 10000);
+	}
 }
