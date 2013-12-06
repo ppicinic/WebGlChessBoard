@@ -50,7 +50,30 @@ UIController.prototype.init = function(){
     guiThemeParams = { //Needed for GUI, had theme settings.
         //TODO:Functions here.
         type: "Marble",
-        quality: "High"
+        quality: "High",
+		change: function()
+		{
+			  if(guiThemeParams.type=="Wood")
+			{
+				//Make models wood.
+				console.log("wood");
+			}
+			else
+			{
+				//Make models Marble.
+				console.log("Marble");
+			}
+			   if(guiThemeParams.quality=="Low")
+			{
+				//Make models low.
+				console.log("low");
+			}
+			else
+			{
+				//Make models high.
+				console.log("high");
+			}
+		}
     };
 }
 
@@ -109,29 +132,12 @@ UIController.prototype.gui = function(){
         
     themeFolder = gui.addFolder('Themes');
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:").onFinishChange(function(){
-        if(guiThemeParams.type=="Wood")
-        {
-            //Make models wood.
-            console.log("wood");
-        }
-        else
-        {
-            //Make models Marble.
-            console.log("Marble");
-        }
+      
     });
     themeFolder.add(guiThemeParams, 'quality', ["High","Low"]).name("Quality:").onFinishChange(function(){
-        if(guiThemeParams.quality=="Low")
-        {
-            //Make models low.
-            console.log("low");
-        }
-        else
-        {
-            //Make models high.
-            console.log("high");
-        }
+     
     });
+	themeFolder.add(guiThemeParams,'change');
     gui.add(guiServParams,'Reset');
 }
 						
