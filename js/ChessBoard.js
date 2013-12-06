@@ -9,6 +9,11 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
+
+	// Low Poly - false || High Poly - true
+	this.highpoly = false;
+	// Marble - true || Wood - false
+	this.texture = true;
 	this.pawn;
 	this.rook;
 	this.knight;
