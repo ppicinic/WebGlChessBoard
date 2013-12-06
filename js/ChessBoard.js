@@ -9,6 +9,11 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
+
+	// Low Poly - false || High Poly - true
+	this.highpoly = false;
+	// Marble - true || Wood - false
+	this.texture = true;
 	this.pawn;
 	this.rook;
 	this.knight;
@@ -30,7 +35,6 @@ ChessBoard.prototype.init = function(scene, camera)
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
-		console.log(start);
     } );
 	}
 	
@@ -183,7 +187,6 @@ ChessBoard.prototype.update = function(){
 					this.movingArray.push(this.pieces[x2][y2]);
 					this.movingArray.push(this.pieces[rx2][ry2]);
 				}else{
-					console.log(move);
 					var x = move.x;
 					var y = move.y;
 					var x2 = move.x2;
@@ -240,4 +243,111 @@ ChessBoard.prototype.move = function(str){
 	this.moveQueue.push(move);
 	this.moveQueue.push(camMove);
 	
+}
+
+ChessBoard.prototype.updatePieceLoad = function(poly, texture){
+	var polyUpdate = false;
+	var board = this;
+	if(this.highpoly != poly){
+		polyUpdate = true;
+		this.highpoly = poly;
+		var loadComplete = 0;
+		if(this.highpoly){
+			this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
+				board.pawn = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function (object){
+				board.rook = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
+				board.knight = object;
+				
+				//object.children[0].children[0].position.z -= 1;
+				//console.log(object.children[0].children[0]);
+				loadComplete++;
+			});
+			this.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function (object){
+				board.bishop = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function (object){
+				board.queen = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function (object){
+				board.king = object;
+				loadComplete++;
+			});
+		}else{
+			// TODO load low poly models
+			var loadComplete = 0;
+			this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
+				board.pawn = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Rook/rooklow.obj', 'Models/Rook/rook.mtl', function (object){
+				board.rook = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Knight/knightlow.obj', 'Models/Knight/knight.mtl', function (object){
+				board.knight = object;
+				
+				//object.children[0].children[0].position.z -= 1;
+				//console.log(object.children[0].children[0]);
+				loadComplete++;
+			});
+			this.loader.load('Models/Bishop/bishoplow.obj', 'Models/Bishop/bishop.mtl', function (object){
+				board.bishop = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/Queen/queenlow.obj', 'Models/Queen/queen.mtl', function (object){
+				board.queen = object;
+				loadComplete++;
+			});
+			this.loader.load('Models/King/kinglow.obj', 'Models/King/king.mtl', function (object){
+				board.king = object;
+				loadComplete++;
+			});
+		}
+	}
+
+	if(this.texture != texture){
+		this.texture = texture;
+		if(this.texture){
+			this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
+			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
+		} else {
+			this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackwood.jpg');
+			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitewood.jpg');
+		}
+	}
+
+	function waitUpdate(){
+		if(loadComplete == 6){
+			board.updatePieces(poly, texture);
+		}else {
+			setTimeout(waitUpdate, 200);
+		}
+	}
+
+	if(polyUpdate){
+		setTimeout(waitUpdate, 200);
+	}else{
+		board.updatePieces(poly, texture);
+	}
+
+}
+
+ChessBoard.prototype.updatePieces = function(poly, texture){
+	for(var x = 0; x < this.pieces.length; x++){
+		for(var y = 0; y < this.pieces[x].length; y++){
+			if(this.pieces[x][y]){
+				this.pieces[x][y].updatePiece(poly, texture);
+
+			}
+		}
+	}
+
 }

@@ -25,8 +25,8 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.color = color;
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
-	this.x = LEFT + (this.xLoc * 20)
-	this.y = TOP + (this.yLoc * 20)
+	this.x = LEFT + (this.xLoc * 20);
+	this.y = TOP + (this.yLoc * 20);
 	this.moving = false;
 	this.fadettl = TIME_TO_MOVE;
 	this.dest = false;
@@ -38,6 +38,11 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.dy = 0;
 	this.promote = false;
 	this.promoting = false;
+
+	// Low Poly - false || High Poly - true
+	this.highpoly = false;
+	// Marble - true || Wood - false
+	this.texture = true;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
@@ -170,4 +175,54 @@ Pawn.prototype.isMoving = function(){
 
 Pawn.prototype.promoted = function(){
 	this.promote = true;
+}
+
+Pawn.prototype.updatePiece = function(poly, texture){
+
+	var board = this.board;
+
+	if(this.poly != poly){
+		this.poly = poly;
+		var temp = this.piece;
+		this.scene.remove(this.piece);
+		this.piece = cloneObjMtl(this.board.pawn);
+		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+		this.piece.position.x = temp.position.x;
+		this.piece.position.z = temp.position.z;
+		this.piece.position.y = temp.position.y;
+		this.texture = texture;
+		if(this.color){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.whiteTexture;
+				}
+			});
+		} else {
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.blackTexture;
+				}
+			});
+		} 
+		this.scene.add(this.piece);
+
+	}
+
+	if(this.texture != texture){
+		this.texture = texture;
+		if(this.color){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.whiteTexture;
+				}
+			});
+		} else {
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.blackTexture;
+				}
+			});
+		} 
+	}
+
 }

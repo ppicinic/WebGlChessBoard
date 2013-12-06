@@ -175,3 +175,54 @@ Knight.prototype.destroy = function(ttl){
 Knight.prototype.isMoving = function(){
 	return this.moving;
 }
+
+Knight.prototype.updatePiece = function(poly, texture){
+
+	var board = this.board;
+
+	if(this.poly != poly){
+		this.poly = poly;
+		var temp = this.piece;
+		this.scene.remove(this.piece);
+		this.piece = cloneObjMtl(this.board.knight);
+		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
+		this.piece.position.x = temp.position.x;
+		this.piece.position.z = temp.position.z;
+		this.piece.position.y = temp.position.y;
+		this.piece.rotation.y = temp.rotation.y;
+		this.texture = texture;
+		if(this.color){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.whiteTexture;
+				}
+			});
+		} else {
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.blackTexture;
+				}
+			});
+		} 
+		this.scene.add(this.piece);
+
+	}
+
+	if(this.texture != texture){
+		this.texture = texture;
+		if(this.color){
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.whiteTexture;
+				}
+			});
+		} else {
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.map = board.blackTexture;
+				}
+			});
+		} 
+	}
+
+}

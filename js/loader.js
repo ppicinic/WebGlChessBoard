@@ -78,7 +78,7 @@ function init() {
 	
 	//datdatgui = new UIController();
 	
-	renderer = new THREE.WebGLRenderer();
+	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	container.appendChild( renderer.domElement );
 
