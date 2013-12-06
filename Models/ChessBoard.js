@@ -36,18 +36,18 @@ ChessBoard.prototype.init = function(scene, camera)
 	//load in all pieces
 	var board = this;
 	var loadComplete = 0;
-	this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
+	this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
 		board.pawn = object;
-		board.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function(object){
+		board.loader.load('Models/Rook/rooklow.obj', 'Models/Rook/rook.mtl', function(object){
 			board.rook = object;
 			
-			board.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function(object){
+			board.loader.load('Models/Knight/knightlow.obj', 'Models/Knight/knight.mtl', function(object){
 				board.knight = object;
-				board.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function(object){
+				board.loader.load('Models/Bishop/bishoplow.obj', 'Models/Bishop/bishop.mtl', function(object){
 					board.bishop = object;
-					board.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function(object){
+					board.loader.load('Models/Queen/queenlow.obj', 'Models/Queen/queen.mtl', function(object){
 						board.queen = object;
-						board.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function(object){
+						board.loader.load('Models/King/kinglow.obj', 'Models/King/king.mtl', function(object){
 							board.king = object;
 							board.loadPieces();
 						});
