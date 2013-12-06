@@ -225,4 +225,6 @@ Knight.prototype.updatePiece = function(poly, texture){
 		} 
 	}
 
+	start++;
+
 }

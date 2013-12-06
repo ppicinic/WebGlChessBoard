@@ -47,10 +47,12 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
 		board.pawn = object;
 		loadComplete++;
+		start++;
 	});
 	this.loader.load('Models/Rook/rooklow.obj', 'Models/Rook/rook.mtl', function (object){
 		board.rook = object;
 		loadComplete++;
+		start++;
 	});
 	this.loader.load('Models/Knight/knightlow.obj', 'Models/Knight/knight.mtl', function (object){
 		board.knight = object;
@@ -58,18 +60,22 @@ ChessBoard.prototype.init = function(scene, camera)
 		//object.children[0].children[0].position.z -= 1;
 		//console.log(object.children[0].children[0]);
 		loadComplete++;
+		start++;
 	});
 	this.loader.load('Models/Bishop/bishoplow.obj', 'Models/Bishop/bishop.mtl', function (object){
 		board.bishop = object;
 		loadComplete++;
+		start++;
 	});
 	this.loader.load('Models/Queen/queenlow.obj', 'Models/Queen/queen.mtl', function (object){
 		board.queen = object;
 		loadComplete++;
+		start++;
 	});
 	this.loader.load('Models/King/kinglow.obj', 'Models/King/king.mtl', function (object){
 		board.king = object;
 		loadComplete++;
+		start++;
 	});
 
 	var loadCompleted = function(){
@@ -256,10 +262,12 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 			this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
 				board.pawn = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Rook/rook.obj', 'Models/Rook/rook.mtl', function (object){
 				board.rook = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
 				board.knight = object;
@@ -267,18 +275,22 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				//object.children[0].children[0].position.z -= 1;
 				//console.log(object.children[0].children[0]);
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Bishop/bishop.obj', 'Models/Bishop/bishop.mtl', function (object){
 				board.bishop = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Queen/queen.obj', 'Models/Queen/queen.mtl', function (object){
 				board.queen = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/King/king.obj', 'Models/King/king.mtl', function (object){
 				board.king = object;
 				loadComplete++;
+				start++;
 			});
 		}else{
 			// TODO load low poly models
@@ -286,10 +298,12 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 			this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
 				board.pawn = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Rook/rooklow.obj', 'Models/Rook/rook.mtl', function (object){
 				board.rook = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Knight/knightlow.obj', 'Models/Knight/knight.mtl', function (object){
 				board.knight = object;
@@ -297,18 +311,22 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				//object.children[0].children[0].position.z -= 1;
 				//console.log(object.children[0].children[0]);
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Bishop/bishoplow.obj', 'Models/Bishop/bishop.mtl', function (object){
 				board.bishop = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/Queen/queenlow.obj', 'Models/Queen/queen.mtl', function (object){
 				board.queen = object;
 				loadComplete++;
+				start++;
 			});
 			this.loader.load('Models/King/kinglow.obj', 'Models/King/king.mtl', function (object){
 				board.king = object;
 				loadComplete++;
+				start++;
 			});
 		}
 	}
@@ -345,7 +363,6 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 		for(var y = 0; y < this.pieces[x].length; y++){
 			if(this.pieces[x][y]){
 				this.pieces[x][y].updatePiece(poly, texture);
-
 			}
 		}
 	}

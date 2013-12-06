@@ -75,7 +75,9 @@ UIController.prototype.init = function(){
 				//Make models high.
 				poly = true;
 			}
-
+            start = 0;
+            console.log(start);
+            sceneControl.loadChanges(poly);
             game.updatePieces(poly, texture);
 		}
     };

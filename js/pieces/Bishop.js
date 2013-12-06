@@ -216,5 +216,7 @@ Bishop.prototype.updatePiece = function(poly, texture){
 			});
 		} 
 	}
+	
+	start++;
 
 }

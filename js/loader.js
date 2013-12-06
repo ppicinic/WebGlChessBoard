@@ -65,7 +65,6 @@ function init() {
 	
 	game = new GameController();
 	scene = new THREE.Scene();
-	loadScene = new LoadScene;
 	sceneControl = new SceneController(game, loadScene);
 	/*camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	camera.position.z = 176;

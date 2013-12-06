@@ -236,4 +236,6 @@ Rook.prototype.updatePiece = function(poly, texture){
 		} 
 	}
 
+	start++;
+
 }

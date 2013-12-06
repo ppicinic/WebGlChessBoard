@@ -207,4 +207,6 @@ Queen.prototype.updatePiece = function(poly, texture){
 		} 
 	}
 
+	start++;
+
 }

@@ -159,4 +159,6 @@ King.prototype.updatePiece = function(poly, texture){
 		} 
 	}
 
+	start++;
+
 }
