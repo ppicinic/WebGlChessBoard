@@ -105,7 +105,7 @@ Knight.prototype.move = function(x, y){
 	this.ttl = 0;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
-	if(this.dy > this.dx){
+	if(Math.abs(this.dy) > Math.abs(this.dx)){
 		this.yMove = true;
 	}else{
 		this.yMove = false;

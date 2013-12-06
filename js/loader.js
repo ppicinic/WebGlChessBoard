@@ -18,6 +18,8 @@ var windowHalfY = window.innerHeight / 2;
 var startTime;
 var endTime;
 var datdatgui;
+var sceneControl;
+var loadScene;
 
 init();
 var board;
@@ -62,14 +64,9 @@ function init() {
 	document.body.appendChild( container );
 	
 	game = new GameController();
-	
-	loadingCamera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-	loadingCamera.position.z = 176;
-	loadingCamera.position.y = 100;
 	scene = new THREE.Scene();
-	loadingScene = new THREE.Scene();
-	scene = loadingScene;
-	camera = loadingCamera;
+	loadScene = new LoadScene;
+	sceneControl = new SceneController(game, loadScene);
 	/*camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	camera.position.z = 176;
 	camera.position.y = 100;*/
@@ -79,7 +76,7 @@ function init() {
 
 	
 	
-	datdatgui = new UIController();
+	//datdatgui = new UIController();
 	
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -96,7 +93,7 @@ function init() {
 	
 	
 	animate();
-	setTimeout(toAnim, 200);
+	//setTimeout(toAnim, 200);
 	
 	
 	
@@ -166,13 +163,13 @@ function onKeyUp( event ) {
 
 		scene.add(object);
 		});*/
-	if(doneLoading){
+	if(!sceneControl.loading){
 		//var str = prompt("Enter a move");
 		//board.move(str);
 		if(notPlaying){
 			notPlaying = false;
 			for(var i = 0; i < moveList5.length; i++){
-				//game.move(moveList5[i]);
+				game.move(moveList5[i]);
 			}
 		}
 	}
@@ -207,7 +204,7 @@ function animate() {
     /*
         TODO Perform updates for animation purposes
     */
-	if(doneLoading){
+	if(!sceneControl.loading){
 		//console.log('happens');
 		//scene.rotation.x += .5;
 		//scene.rotation.y += .5;
