@@ -64,6 +64,10 @@ GameController.prototype.updatePieces = function(poly, texture){
 	this.board.updatePieceLoad(poly, texture);
 }
 
+GameController.prototype.updateSkybox = function(skybox){
+	this.board.updateSkybox(skybox);
+}
+
 GameController.prototype.connectToServer = function(url){
 	if(!this.serverConnect){
 		this.serverConnect = true;

@@ -10,6 +10,7 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
 	this.destroyedArray = new Array();
+	
 
 	// Low Poly - false || High Poly - true
 	this.highpoly = false;
@@ -21,28 +22,31 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.bishop;
 	this.queen;
 	this.king;
+	this.skybox;
+	this.skyboxName = "sunnyocean";
 	this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
 	this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
 	
-	function loadSkybox(board,loader)
+	function loadSkybox(board,loader,skybox)
 	{
 		var imagePrefix = "Models/textures/skybox/";
 	var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
 	var imageSuffix = ".png";
-	var skyGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );	
+	var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
 	
 		var materialArray = [];
 		for (var i = 0; i < 6; i++)
 			materialArray.push( new THREE.MeshBasicMaterial({
-				map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+				map: THREE.ImageUtils.loadTexture( imagePrefix + skybox + directions[i] + imageSuffix ),
 				side: THREE.BackSide
 			}));
 		var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
 		var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
 
-		board.board = skyBox;
+		board.skybox = skyBox;
 		// add it to the scene
-		board.scene.add(board.board);
+		board.scene.add(board.skybox);
+		start++;
 		
 	}
 
@@ -77,7 +81,7 @@ ChessBoard.prototype.init = function(scene, camera)
     } );
 	}
 	
-	loadSkybox(this,this.loader);
+	loadSkybox(this,this.loader,"sunnyocean/");
 	loadBoard(this, this.loader);
 	loadTable(this,this.loader);
 
@@ -399,6 +403,28 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 		board.updatePieces(poly, texture);
 	}
 
+}
+
+ChessBoard.prototype.updateSkybox = function(skybox)
+{
+	var board = this;
+	if(this.skyboxName != skybox)
+	{
+		var imagePrefix = "Models/textures/skybox/";
+		var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
+		var imageSuffix = ".png";	
+		
+			var materialArray = [];
+			for (var i = 0; i < 6; i++)
+				materialArray.push( new THREE.MeshBasicMaterial({
+					map: THREE.ImageUtils.loadTexture( imagePrefix + skybox + "/" + directions[i] + imageSuffix ),
+					side: THREE.BackSide
+				}));
+			var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+
+			board.skybox.material = skyMaterial;
+			board.skyboxName = skybox;
+	}
 }
 
 ChessBoard.prototype.updatePieces = function(poly, texture){
