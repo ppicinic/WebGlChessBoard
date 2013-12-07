@@ -43,7 +43,7 @@ var smoke =
 
 		angleBase               : 0,
 		angleSpread             : 720,
-		angleVelocityBase       : 0,
+		angleVelocityBase       : 5,
 		angleVelocitySpread     : 720,
 		
 		sizeTween    : new Tween( [0, 1], [32, 128] ),
@@ -52,7 +52,7 @@ var smoke =
 
 		particlesPerSecond : 200,
 		particleDeathAge   : 2.0,		
-		emitterDeathAge    : 5
+		emitterDeathAge    : 0.1
 	}
 
 ChessBoard.prototype.init = function(scene, camera)
@@ -84,7 +84,7 @@ ChessBoard.prototype.init = function(scene, camera)
 	
 	function loadSkybox(board,loader,skybox)
 	{
-		var imagePrefix = "Models/textures/skybox/";
+		var imagePrefix = "Models/textures/Skybox/";
 	var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
 	var imageSuffix = ".png";
 	var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
@@ -122,7 +122,7 @@ ChessBoard.prototype.init = function(scene, camera)
 	}
 	
 	function loadTable(board, loader){
-	loader.load( 'Models/Table/table.obj', 'Models/Table/Table.mtl', function ( object ) {
+	loader.load( 'Models/Table/table.obj', 'Models/Table/table.mtl', function ( object ) {
 		object.position.x = 0;
 		object.position.z = 12;
 		object.position.y = -40;
@@ -309,23 +309,27 @@ ChessBoard.prototype.update = function(){
 					var y2 = move.y2;
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
-						console.log('piece dies');
-						
-						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
-						var dz = 150;
-						this.movingArray.push(this.pieces[x2][y2]);
-						this.destroyedArray.push(this.pieces[x2][y2]);
-						console.log(this.pieces[x2][y2]);
-						if(this.pieces[x2][y2] == "Bishop")
+					
+					var dz = 0;
+					if(this.pieces[x2][y2] instanceof Pawn)
 						{
-							dz = -150;
+							console.log("hi");
+							dz = -50;
 						}
 						engine = new ParticleEngine(this.scene);
-						console.log(this.pieces[x2][y2].z);
-						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].x,this.pieces[x2][y2].y,this.pieces[x2][y2].z+dz);
+						
+						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].x,this.pieces[x2][y2].y,dz);
 						engine.setValues( smoke );
 						engine.initialize();
 						particles = true;
+						console.log('piece dies');
+						
+						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
+						
+						this.movingArray.push(this.pieces[x2][y2]);
+						this.destroyedArray.push(this.pieces[x2][y2]);
+						
+						
 					}else {
 						// en passent happens
 						if(move.pawnCap){
@@ -488,7 +492,7 @@ ChessBoard.prototype.updateSkybox = function(skybox)
 	var board = this;
 	if(this.skyboxName != skybox)
 	{
-		var imagePrefix = "Models/textures/skybox/";
+		var imagePrefix = "Models/textures/Skybox/";
 		var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
 		var imageSuffix = ".png";	
 		
