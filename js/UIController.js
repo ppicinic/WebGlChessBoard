@@ -230,7 +230,7 @@ UIController.prototype.gui = function(){
 	themeFolder.add(guiThemeParams,'Update');
 	
 	gfxFolder = gui.addFolder('Graphics Settings');
-	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 10).step(1).name("# of Shadows").onFinishChange(function(){
+	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 6).step(1).name("# of Shadows").onFinishChange(function(){
 		console.log(guiGfxParams.shadowMap);
 		//TODO Change shadowmap quality here
 	});
