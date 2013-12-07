@@ -8,7 +8,7 @@ LoadScene.prototype.init = function(duration){
 	this.scene = new THREE.Scene();
 	this.scene.fog = new THREE.FogExp2( 0x0a0a00, 0.00065);
 
-	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20000 );
 	this.camera.position.set(0, 0, 1000);
 
 	this.geometry = new THREE.Geometry();
@@ -22,6 +22,8 @@ LoadScene.prototype.init = function(duration){
 				pointLight.position.set( 0, 0, 0 );
 				this.scene.add( pointLight );
 
+
+	
 	
 
 	//TODO - Particles effects

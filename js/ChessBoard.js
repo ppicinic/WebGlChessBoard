@@ -23,6 +23,28 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.king;
 	this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
 	this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
+	
+	function loadSkybox(board,loader)
+	{
+		var imagePrefix = "Models/textures/skybox/";
+	var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
+	var imageSuffix = ".png";
+	var skyGeometry = new THREE.CubeGeometry( 10000, 10000, 10000 );	
+	
+		var materialArray = [];
+		for (var i = 0; i < 6; i++)
+			materialArray.push( new THREE.MeshBasicMaterial({
+				map: THREE.ImageUtils.loadTexture( imagePrefix + directions[i] + imageSuffix ),
+				side: THREE.BackSide
+			}));
+		var skyMaterial = new THREE.MeshFaceMaterial( materialArray );
+		var skyBox = new THREE.Mesh( skyGeometry, skyMaterial );
+
+		board.board = skyBox;
+		// add it to the scene
+		board.scene.add(board.board);
+		
+	}
 
 
 	function loadBoard(board, loader){
@@ -55,9 +77,10 @@ ChessBoard.prototype.init = function(scene, camera)
     } );
 	}
 	
-
+	loadSkybox(this,this.loader);
 	loadBoard(this, this.loader);
 	loadTable(this,this.loader);
+
 	
 	//load in all pieces
 	var board = this;
