@@ -82,9 +82,9 @@ UIController.prototype.init = function(){
 	};
 	
 	guiGfxParams = {
-		shadowMap: 5,
+		shadowMap: 0,
 		shadowRes: 250,
-		fxaa: true
+		fxaa: false
 	};
 
     guiThemeParams = { //Needed for GUI, had theme settings.
@@ -232,12 +232,12 @@ UIController.prototype.gui = function(){
 	themeFolder.add(guiThemeParams,'Update');
 	
 	gfxFolder = gui.addFolder('Graphics Settings');
-	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 10).step(1).name("Shadow Quality").onFinishChange(function(){
+	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 10).step(1).name("# of Shadows").onFinishChange(function(){
 		console.log(guiGfxParams.shadowMap);
 		//TODO Change shadowmap quality here
 	});
 	
-	gfxFolder.add(guiGfxParams, 'shadowRes', 100, 1080).step(27).name("Shadow Res").onFinishChange(function(){
+	gfxFolder.add(guiGfxParams, 'shadowRes', 100, 1200).step(100).name("Shadow Res").onFinishChange(function(){
 		console.log(guiGfxParams.shadowRes);
 		//TODO Change shadowmap resolution here
 	});
