@@ -234,14 +234,7 @@ UIController.prototype.gui = function(){
 	
 	gfxFolder = gui.addFolder('Graphics Settings');
 	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 10).step(1).name("# of Shadows").onFinishChange(function(){
-		//console.log(guiGfxParams.shadowMap);
-		renderer.shadowMapEnabled = true;
-        if(guiGfxParams.shadowMap == 0){
-            renderer.shadowMapEnabled = false;
-        }
-        game.setShadows(guiGfxParams.shadowMap);
-        //TODO Change shadowmap quality here
-        renderer.updateShadowMap( scene, camera );
+		
         
 	});
 	

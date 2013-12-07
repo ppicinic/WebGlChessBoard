@@ -57,12 +57,14 @@ Rook.prototype.init = function(scene, color, spot, board)
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.map = board.whiteTexture;
+				mesh.castShadow = true;
 			}
 		});
 	} else {
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.map = board.blackTexture;
+				mesh.castShadow = true;
 			}
 		});
 	} 
@@ -219,6 +221,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} else {
@@ -229,6 +232,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} 
@@ -246,6 +250,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} else {
@@ -256,6 +261,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} 

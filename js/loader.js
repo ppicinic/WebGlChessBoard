@@ -79,12 +79,12 @@ function init() {
 	
 	renderer = new THREE.WebGLRenderer({antialias: true, maxLights:true});
 	renderer.setSize( window.innerWidth, window.innerHeight );
-	renderer.shadowMapAutoUpdate = false;
+	//renderer.shadowMapAutoUpdate = false;
 	//renderer.physicallyBasedShading = true;
-	renderer.autoClear = false;
+	//renderer.autoClear = false;
 	renderer.shadowMapEnabled = true;
 
-	render.shadowMapType = THREE.BasicShadowMap;
+	//render.shadowMapType = THREE.BasicShadowMap;
 	container.appendChild( renderer.domElement );
 
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
@@ -227,10 +227,6 @@ function render() {
 	//camera.position.x += ( mouseX - camera.position.x ) * .05;
 	//camera.position.y += ( - mouseY - camera.position.y ) * .05;
 	//test.position.z += .5;
-	renderer.autoUpdateObjects = false;
-	renderer.initWebGLObjects( scene );
-	renderer.updateShadowMap( scene, camera );
-	renderer.autoUpdateObjects = true;
 	camera.lookAt( scene.position );
 
 	renderer.render( scene, camera );
