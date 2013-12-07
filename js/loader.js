@@ -77,8 +77,14 @@ function init() {
 	
 	//datdatgui = new UIController();
 	
-	renderer = new THREE.WebGLRenderer({antialias: true});
+	renderer = new THREE.WebGLRenderer({antialias: true, maxLights:true});
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	//renderer.shadowMapAutoUpdate = false;
+	//renderer.physicallyBasedShading = true;
+	//renderer.autoClear = false;
+	renderer.shadowMapEnabled = true;
+
+	//render.shadowMapType = THREE.BasicShadowMap;
 	container.appendChild( renderer.domElement );
 
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );

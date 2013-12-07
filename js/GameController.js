@@ -45,7 +45,20 @@ GameController.prototype.init = function(){
 	this.spotLight = new THREE.SpotLight( 0x111111 );
 	this.spotLight.position.set( 0, 10000, -500 );
 	this.scene.add(this.spotLight);
-	
+
+	this.shadow = new THREE.SpotLight(0xcccccc, 1, 0, Math.PI, 1);
+	this.shadow.onlyShadow = true;
+	this.shadow.target.position.set(0,0,0);
+	this.shadow.castShadow = true;
+	this.shadow.shadowCameraNear = 1;
+	this.shadow.shadowCameraFar = this.camera.far;
+	this.shadow.shadowCameraFov = 75;
+	//this.shadow.shadowCameraVisible = true;
+	this.shadow.shadowDarkness = 0.7;
+	//this.shadow.shadowBias = 0.001;
+	this.shadow.position.set(100, 100, 100);
+
+	this.scene.add(this.shadow);
 	this.board = new ChessBoard(this.scene, this.camera);
 }
 

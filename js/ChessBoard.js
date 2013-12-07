@@ -59,6 +59,7 @@ ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
 	this.board;
+	this.table;
 	this.camera = new CameraController(camera);
 	this.moveQueue = new Array(); // queue of moves to be animated
 	this.movingArray = new Array(); // array of concurrently moving pieces
@@ -114,7 +115,12 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 10;
     	object.scale.z = 10;
 		object.material = null;
-		object.receiveShadow = true;	
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.receiveShadow = true;
+				mesh.material.needsUpdate = true;
+			}
+		})	
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
@@ -130,7 +136,11 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 50;
     	object.scale.z = 50;
 		object.material = null;
-		object.receiveShadow = true;
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.receiveShadow = true;
+			}
+		});
 	    	
 		console.log(object);
 		
@@ -154,8 +164,8 @@ ChessBoard.prototype.init = function(scene, camera)
 	*/
 
 		
-		board.board = object;
-		board.scene.add(board.board);
+		board.table = object;
+		board.scene.add(board.table);
 		start++;
     } );
 	}
