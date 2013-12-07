@@ -130,7 +130,30 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 50;
     	object.scale.z = 50;
 		object.material = null;
-		object.receiveShadow = true;	
+		object.receiveShadow = true;
+	    	
+		console.log(object);
+		
+		/*var sphereGeom =  new THREE.SphereGeometry( 80, 64, 32 );
+		var refractSphereCamera = new THREE.CubeCamera( 0.1, 10000, 1024 );
+		board.board = refractSphereCamera;
+		board.scene.add( board.board );
+		
+		 refractSphereCamera.renderTarget.mapping = new THREE.CubeRefractionMapping();
+		
+		var refractMaterial = new THREE.MeshBasicMaterial( { 
+			color: 0xccccff, 
+			envMap: refractSphereCamera.renderTarget, 
+			refractionRatio: 0.985, 
+			reflectivity: 0.9 
+			} );		
+	refractMaterial.refractionRatio = 0.99;
+	refractMaterial.reflectivity = 0.9;
+	object.children[1].children[0] = new THREE.Mesh( sphereGeom, refractMaterial );
+	refractSphereCamera.position = object.children[1].children[0].position;
+	*/
+
+		
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
