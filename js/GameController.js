@@ -55,7 +55,7 @@ GameController.prototype.init = function(){
 		this.shadowArray[i].castShadow = true;
 		this.shadowArray[i].shadowCameraNear = 700;
 		this.shadowArray[i].shadowCameraFar = this.camera.far;
-		this.shadowArray[i].shadowCameraFov = 40;
+		this.shadowArray[i].shadowCameraFov = 0;
 		this.shadowArray[i].shadowMapWidth = 3072;
 		this.shadowArray[i].shadowMapHeight = 3072;
 		this.shadowArray[i].shadowDarkness = 0.0;
@@ -161,6 +161,7 @@ GameController.prototype.setShadows = function(count){
 			this.shadowArray[i].shadowDarkness = this.shadowDark[i];
 			this.shadowArray[i].shadowMapHeight = 3072;
 			this.shadowArray[i].shadowMapWidth = 3072;
+			this.shadowArray[i].shadowCamera.updateProjectionMatrix();
 			//this.scene.add(this.shadowArray[i]);
 			//renderer.updateShadowMap(scene, camera);
 			console.log(renderer);
