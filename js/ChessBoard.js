@@ -35,6 +35,7 @@ ChessBoard.prototype.init = function(scene, camera)
 		object.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.receiveShadow = true;
+				mesh.material.needsUpdate = true;
 			}
 		})	
 		board.board = object;
@@ -55,6 +56,7 @@ ChessBoard.prototype.init = function(scene, camera)
 		object.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.receiveShadow = true;
+				mesh.material.needsUpdate = true;
 			}
 		});	
 		board.board = object;

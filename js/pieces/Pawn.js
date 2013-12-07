@@ -205,6 +205,7 @@ Pawn.prototype.updatePiece = function(poly, texture){
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
 					mesh.castShadow = true;
+					mesh.material.needsUpdate = true;
 				}
 			});
 		} else {
@@ -216,6 +217,7 @@ Pawn.prototype.updatePiece = function(poly, texture){
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
 					mesh.castShadow = true;
+					mesh.material.needsUpdate = true;
 				}
 			});
 		} 
