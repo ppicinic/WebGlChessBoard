@@ -24,12 +24,13 @@ UIController.prototype.init = function(){
         },
         Close: function(){
          //TODO:Close connection
-                console.log("Close");
+                guiServParams.ServerUrl = "http://test.com";
+                guiServParams.GameID = "team03";
+                game.closeServerConnection();
         },
         Reset: function()
         {
-                guiServParams.ServerUrl = "http://test.com";
-                guiServParams.GameID = "team03";
+                
                 guiThemeParams.type = "Marble";
                 guiThemeParams.type = "Low";
                 guiServParams.Close();

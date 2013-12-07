@@ -115,3 +115,7 @@ GameController.prototype.pingServer = function(){
 		setTimeout(function(){ self.pingServer(); }, 1000);
 	}
 }
+
+GameController.prototype.closeServerConnection = function(){
+	this.serverConnect = false;
+}
