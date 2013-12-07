@@ -12,7 +12,7 @@ GameController.prototype.init = function(){
 	this.jsonGame = null;
 	this.manualmove = false;
 
-	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20000 );
 	this.camera.position.z = 176;
 	this.camera.position.y = 100;
 	
@@ -52,11 +52,11 @@ GameController.prototype.init = function(){
 	this.shadow.castShadow = true;
 	this.shadow.shadowCameraNear = 1;
 	this.shadow.shadowCameraFar = this.camera.far;
-	this.shadow.shadowCameraFov = 50;
-	this.shadow.shadowCameraVisible = true;
+	this.shadow.shadowCameraFov = 75;
+	//this.shadow.shadowCameraVisible = true;
 	this.shadow.shadowDarkness = 0.7;
 	//this.shadow.shadowBias = 0.001;
-	this.shadow.position.set(200, 200, 200);
+	this.shadow.position.set(100, 100, 100);
 
 	this.scene.add(this.shadow);
 	this.board = new ChessBoard(this.scene, this.camera);
@@ -77,6 +77,10 @@ GameController.prototype.move = function(str){
 
 GameController.prototype.updatePieces = function(poly, texture){
 	this.board.updatePieceLoad(poly, texture);
+}
+
+GameController.prototype.updateSkybox = function(skybox){
+	this.board.updateSkybox(skybox);
 }
 
 GameController.prototype.connectToServer = function(url){
