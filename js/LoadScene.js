@@ -6,6 +6,7 @@ LoadScene.prototype.init = function(duration){
 	this.duration = duration;
 
 	this.scene = new THREE.Scene();
+	this.scene.fog = new THREE.FogExp2( 0x0a0a00, 0.001 );
 
 	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	this.camera.position.z = 1000;
@@ -13,7 +14,7 @@ LoadScene.prototype.init = function(duration){
 	this.geometry = new THREE.Geometry();
 
 	//TODO - Particles effects
-	for(var i = 0; i < 10000; i++){
+	for(var i = 0; i < 25000; i++){
 		var vertex = new THREE.Vector3();
 		vertex.x = 2000 * Math.random() - 1000;
 		vertex.y = 2000 * Math.random() - 700;
