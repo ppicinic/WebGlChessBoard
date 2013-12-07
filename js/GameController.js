@@ -10,6 +10,7 @@ GameController.prototype.init = function(){
 	this.blackTime = 900;
 	this.moveCount = 0;
 	this.jsonGame = null;
+	this.manualmove = false;
 
 	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
 	this.camera.position.z = 176;
@@ -55,6 +56,7 @@ GameController.prototype.update = function(){
 
 GameController.prototype.move = function(str){
 	if(!this.serverConnect){
+		this.manualmove = true;
 		this.board.move(str);
 		this.moveCount++;
 	}
@@ -65,7 +67,7 @@ GameController.prototype.updatePieces = function(poly, texture){
 }
 
 GameController.prototype.connectToServer = function(url){
-	if(!this.serverConnect){
+	if((!this.serverConnect) && (!this.manualmove)){
 		this.serverConnect = true;
 		this.serverURL = url;
 		var self = this;

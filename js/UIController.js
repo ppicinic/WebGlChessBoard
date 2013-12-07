@@ -71,6 +71,7 @@ UIController.prototype.init = function(){
 		moveString: "",
 		Move: function()
 		{
+         game.move(this.moveString);
 		 console.log(this.moveString);
 		 this.moveString = "";
 		 //MAKE MOVES
