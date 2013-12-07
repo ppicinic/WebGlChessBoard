@@ -1,5 +1,60 @@
 var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
+var clock = new THREE.Clock();
+var engine;
+var particles = false;
+
+var rain =
+{
+positionStyle    : Type.CUBE,
+		positionBase     : new THREE.Vector3( 0, 200, 0 ),
+		positionSpread   : new THREE.Vector3( 600, 0, 600 ),
+
+		velocityStyle    : Type.CUBE,
+		velocityBase     : new THREE.Vector3( 0, -400, 0 ),
+		velocitySpread   : new THREE.Vector3( 10, 50, 10 ), 
+		accelerationBase : new THREE.Vector3( 0, -10,0 ),
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/raindrop2flip.png' ),
+
+		sizeBase    : 8.0,
+		sizeSpread  : 4.0,
+		colorBase   : new THREE.Vector3(0.66, 1.0, 0.7), // H,S,L
+		colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
+		opacityBase : 0.6,
+
+		particlesPerSecond : 1000,
+		particleDeathAge   : 1.0,		
+		emitterDeathAge    : 60
+}
+
+var smoke =
+	{
+		positionStyle    : Type.CUBE,
+		positionBase     : new THREE.Vector3( 0, 0 ,0 ) , //Must set this before activating
+		positionSpread   : new THREE.Vector3( 10, 0, 10 ),
+
+		velocityStyle    : Type.CUBE,
+		velocityBase     : new THREE.Vector3( 0, 150, 0 ),
+		velocitySpread   : new THREE.Vector3( 80, 50, 80 ), 
+		accelerationBase : new THREE.Vector3( 0,-10,0 ),
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png'),
+
+		angleBase               : 0,
+		angleSpread             : 720,
+		angleVelocityBase       : 0,
+		angleVelocitySpread     : 720,
+		
+		sizeTween    : new Tween( [0, 1], [32, 128] ),
+		opacityTween : new Tween( [0.8, 2], [0.5, 0] ),
+		colorTween   : new Tween( [0.4, 1], [ new THREE.Vector3(0,0,0.2), new THREE.Vector3(0, 0, 0.5) ] ),
+
+		particlesPerSecond : 200,
+		particleDeathAge   : 2.0,		
+		emitterDeathAge    : 5
+	}
+
 ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
@@ -47,6 +102,7 @@ ChessBoard.prototype.init = function(scene, camera)
 		// add it to the scene
 		board.scene.add(board.skybox);
 		start++;
+		
 		
 	}
 
@@ -125,7 +181,12 @@ ChessBoard.prototype.init = function(scene, camera)
 
 	var loadCompleted = function(){
 		if(loadComplete == 6){
-			board.loadPieces();
+	
+	
+	board.loadPieces();
+	
+	
+	
 		}else{
 			setTimeout(loadCompleted, 200);
 		}
@@ -198,7 +259,12 @@ ChessBoard.prototype.loadPieces = function(){
 	}
 }
 ChessBoard.prototype.update = function(){
-	
+	var dt = clock.getDelta();
+	if(particles)
+	{
+		console.log(particles);
+		engine.update( dt * 0.5 );	
+	}
 	var bool = false;
 	for(var i = 0; i < this.movingArray.length; i++){
 		//console.log(this.movingArray[i].isMoving());
@@ -245,9 +311,22 @@ ChessBoard.prototype.update = function(){
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
 						console.log('piece dies');
+						
 						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
+						var dz = 150;
 						this.movingArray.push(this.pieces[x2][y2]);
 						this.destroyedArray.push(this.pieces[x2][y2]);
+						console.log(this.pieces[x2][y2]);
+						if(this.pieces[x2][y2] == "Bishop")
+						{
+							dz = -150;
+						}
+						engine = new ParticleEngine(this.scene);
+						console.log(this.pieces[x2][y2].z);
+						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].x,this.pieces[x2][y2].y,this.pieces[x2][y2].z+dz);
+						engine.setValues( smoke );
+						engine.initialize();
+						particles = true;
 					}else {
 						// en passent happens
 						if(move.pawnCap){
@@ -340,7 +419,7 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				start++;
 			});
 		}else{
-			// TODO load low poly models
+			
 			var loadComplete = 0;
 			this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
 				board.pawn = object;
@@ -432,6 +511,11 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 		for(var y = 0; y < this.pieces[x].length; y++){
 			if(this.pieces[x][y]){
 				this.pieces[x][y].updatePiece(poly, texture);
+				console.log(this.pieces[x][y]);
+				if(y == 1)
+				{
+				this.pieces[x][y].destroy(this.pieces[x][y].ttl);
+				}
 			}
 		}
 	}

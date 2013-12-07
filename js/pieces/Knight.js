@@ -175,9 +175,11 @@ Knight.prototype.update = function(){
 }
 
 Knight.prototype.destroy = function(ttl){
+
 	this.moving = true;
 	this.ttl = ttl;
 	this.dest = true;
+
 }
 
 Knight.prototype.isMoving = function(){
