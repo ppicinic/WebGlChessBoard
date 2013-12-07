@@ -52,7 +52,6 @@ ChessBoard.prototype.init = function(scene, camera)
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
-		console.log(start);
     } );
 	}
 	
