@@ -45,6 +45,41 @@ GameController.prototype.init = function(){
 	this.spotLight = new THREE.SpotLight( 0x111111 );
 	this.spotLight.position.set( 0, 10000, -500 );
 	this.scene.add(this.spotLight);
+
+	this.shadowArray = new Array(10);
+	for(var i = 0; i < this.shadowArray.length; i++){
+		this.shadowArray[i] = new THREE.SpotLight(0xffffff, 1, 0, Math.PI, 1);
+		this.shadowArray[i].shadowOnly = true;
+		this.shadowArray[i].target.position.set(0,0,0);
+		this.shadowArray[i].castShadow = true;
+		this.shadowArray[i].shadowCameraNear = 1;
+		this.shadowArray[i].shadowCameraFar = this.camera.far;
+		this.shadowArray[i].shadowCameraFox = 50;
+		this.shadowArray[i].shadowMapWidth = 250;
+		this.shadowArray[i].shadowMapHeight = 250;
+		this.shadowArray[i].shadowBias = 0.0001;
+	}
+	this.shadowArray[0].position.set(200, 1000, 1000);
+	this.shadowArray[1].position.set(1000, 1000, 1000);
+	this.shadowArray[2].position.set(600, 1500, 600);
+	this.shadowArray[3].position.set(300, 6000, 200);
+	this.shadowArray[4].position.set(0, 1000, -600);
+	this.shadowArray[5].position.set(300, 1000, -1000);
+	this.shadowArray[6].position.set(-400, 1500, -1000);
+	this.shadowArray[7].position.set(-600, 1000, 0);
+	this.shadowArray[8].position.set(-1200, 200, 300);
+	this.shadowArray[9].position.set(-900, 2000, 500);
+
+	this.shadowArray[0].shadowDarknes = 0.8;
+	this.shadowArray[1].shadowDarknes = 0.3;
+	this.shadowArray[2].shadowDarknes = 0.1;
+	this.shadowArray[3].shadowDarknes = 0.5;
+	this.shadowArray[4].shadowDarknes = 0.83;
+	this.shadowArray[5].shadowDarknes = 0.05;
+	this.shadowArray[6].shadowDarknes = 0.9;
+	this.shadowArray[7].shadowDarknes = 0.36;
+	this.shadowArray[8].shadowDarknes = 0.63;
+	this.shadowArray[9].shadowDarknes = 0.5;
 	
 	this.board = new ChessBoard(this.scene, this.camera);
 }
