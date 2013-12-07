@@ -262,7 +262,6 @@ ChessBoard.prototype.update = function(){
 	var dt = clock.getDelta();
 	if(particles)
 	{
-		console.log(particles);
 		engine.update( dt * 0.5 );	
 	}
 	var bool = false;
