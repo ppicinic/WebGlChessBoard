@@ -13,8 +13,10 @@ LoadScene.prototype.init = function(duration){
 
 	this.geometry = new THREE.Geometry();
 
+	
+
 	//TODO - Particles effects
-	for(var i = 0; i < 25000; i++){
+	for(var i = 0; i < 35000; i++){
 		var vertex = new THREE.Vector3();
 		vertex.x = 2000 * Math.random() - 1000;
 		vertex.y = 2000 * Math.random() - 700;
@@ -28,6 +30,38 @@ LoadScene.prototype.init = function(duration){
 	this.particles = new THREE.ParticleSystem(this.geometry, this.material);
 	this.particles.sortParticles = true;
 	this.scene.add(this.particles);
+
+	// Add Loading Sign
+	this.theText = "Loading...";
+
+	var hash = document.location.hash.substr( 1 );
+
+				if ( hash.length !== 0 ) {
+
+					this.theText = hash;
+
+				}
+
+	this.textMaterial = new THREE.MeshFaceMaterial( [
+					new THREE.MeshLambertMaterial( { color: 0xffffff, shading: THREE.FlatShading, opacity: 0.95 } ),
+					new THREE.MeshLambertMaterial( { color: 0xffffff } )
+				] );
+	var text = this.theText;
+	this.text3d = new THREE.TextGeometry( text, {font: "hevletiker"});
+
+	//this.text3d.computerVertexNormals();
+	//this.text3d.computeBoundingBox();
+
+	//this.centerOffset - -.5 * ( this.text3d.boundingBox.max.x - this.text3d.boundingBox.min.x);
+
+	//this.text = new THREE.Mesh(this.text3d, this.textMaterial);
+	//this.text.position.x = centerOffset;
+	//this.text.position.y = 130;
+	//this.text.position.z = 0;
+	//this.text.rotation.x = 0;
+	//this.text.rotation.y = Math.PI * 2;
+
+	//this.scene.add(this.text);
 
 
 
