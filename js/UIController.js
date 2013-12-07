@@ -62,7 +62,7 @@ UIController.prototype.init = function(){
 			//TODO: Reset chess pieces
 			console.log("Reset here");
 			gui.destroy();
-			self.gui();
+			sceneControl.reset();
                 
         }
     };

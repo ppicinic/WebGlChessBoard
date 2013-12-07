@@ -6,10 +6,8 @@ SceneController.prototype.init = function(gameScene, loading){
 	this.duration = 40;
 	this.loading = true;
 	this.poly = false;
-	//this.loadscene = loading.scene;
-	//this.loadcam = loading.camera;
+	
 	this.load = new LoadScene(this.duration);
-	console.log(this.load)
 	this.game = gameScene;
 	scene = new THREE.Scene();
 	scene = this.load.scene;
@@ -67,4 +65,27 @@ SceneController.prototype.loadChanges = function(poly){
 	}
 
 	setTimeout(reChange, 0);
+}
+
+SceneController.prototype.reset = function(){
+	start = 0;
+	this.duration = 40;
+	this.loading = true;
+	this.load = new LoadScene(this.duration);
+	scene = this.load.scene;
+	camera = this.load.camera;
+	game = new GameController();
+	this.game = game;
+	var self = this;
+	function resetChange(){
+		if(start == self.duration){
+			self.changeScene();
+		}else{
+			setTimeout(resetChange, 200);
+		}
+	}
+
+	setTimeout(resetChange, 200);
+
+
 }
