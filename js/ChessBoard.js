@@ -34,8 +34,26 @@ ChessBoard.prototype.init = function(scene, camera)
     } );
 	}
 	
+	function loadTable(board, loader){
+	loader.load( 'Models/Table/table.obj', 'Models/Table/Table.mtl', function ( object ) {
+		object.position.x = 0;
+		object.position.z = 12;
+		object.position.y = -40;
+    	object.scale.x = 50;
+    	object.scale.y = 50;
+    	object.scale.z = 50;
+		object.material = null;
+		object.receiveShadow = true;	
+		board.board = object;
+		board.scene.add(board.board);
+		start++;
+		console.log(start);
+    } );
+	}
+	
 
 	loadBoard(this, this.loader);
+	loadTable(this,this.loader);
 	
 	//load in all pieces
 	var board = this;

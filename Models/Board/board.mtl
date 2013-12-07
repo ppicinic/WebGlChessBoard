@@ -21,7 +21,7 @@ d 1.000000
 illum 0
 map_Kd Seamless marble texture (12).jpg
 
-newmtl Material.003
+newmtl Material
 Ns 96.078431
 Ka 0.246194 0.246194 0.246194
 Kd 0.784915 0.800000 0.788686
