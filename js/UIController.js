@@ -1,13 +1,17 @@
  //Needed for GUI
-var cameraFolder, serverFolder, themeFolder, guiServParams, guiThemeParams, gui; 
+var cameraFolder, serverFolder, themeFolder, guiServParams, guiGfxParams, guiThemeParams, moveFolder, gui; 
 
 						
 var UIController = function() { this.init(); }
 
 UIController.prototype.init = function(){
+	this.serverUrl = "http://bencarle.com/chess/cg/340";
+	this.connection = false;
+	this.currentlyConnected = false;
+	var self = this;
 	guiServParams = { //Needed for GUI, has server settings and Reset. Default settings.
         ServSetting: false, //True for GameID connection
-    	ServerUrl: "http://test.com",
+    	ServerUrl: self.serverUrl,
         GameID: "team03",
         Connect: function(){
         //TODO: Connect to server
@@ -20,36 +24,68 @@ UIController.prototype.init = function(){
                 else {
                     url += SERVER_URL + this.GameID;
                 }
+				self.connection = true;
+				self.currentlyConnected = true;
                 game.connectToServer(url);
         },
         Close: function(){
+		
          //TODO:Close connection
-                guiServParams.ServerUrl = "http://test.com";
-                guiServParams.GameID = "team03";
-                game.closeServerConnection();
+                //guiServParams.ServerUrl = "http://test.com";
+                //guiServParams.GameID = "team03";
+                
+				self.currentlyConnected = false;
+				serverFolder.__controllers[1].remove();
+				serverFolder.__controllers.splice(1);
+				serverFolder.add(guiServParams,'Connect').onFinishChange(function(){ 
+                        serverFolder.__controllers[1].remove();
+
+                        serverFolder.__controllers.splice(1);
+                        
+                        serverFolder.close(); 
+                        serverFolder.add(guiServParams,'Close').name("Close Connection");}
+						);
+						
         },
+		Help: function()
+		{
+			console.log("Help");
+			//TODO:Add help doc
+		},
         Reset: function()
         {
+			guiThemeParams.type = "Marble";
+			guiThemeParams.type = "Low";
+			guiServParams.Close();
+			self.connection = false;
+			self.currentlyConnected = false;
+			//TODO: Reset chess pieces
+			console.log("Reset here");
+			gui.destroy();
+			self.gui();
                 
-                guiThemeParams.type = "Marble";
-                guiThemeParams.type = "Low";
-                guiServParams.Close();
-                //TODO: Reset chess pieces
-                console.log("Reset here");
-                serverFolder.close();
-                serverFolder.__controllers[1].remove();
-                serverFolder.__controllers[2].remove();
-                serverFolder.__controllers.splice(1,2);
-
-                serverFolder.add(guiServParams,'ServerUrl');
-                serverFolder.add(guiServParams,'Connect').onFinishChange(function(){ 
-                serverFolder.__controllers[2].remove();
-                serverFolder.__controllers.splice(2);
-                serverFolder.close(); 
-                serverFolder.add(guiServParams,'Close').name("Close Connection");}
-                );
         }
     };
+	
+	guiMoveParams = {
+		moveString: "",
+		Move: function()
+		{
+		 console.log(this.moveString);
+		 this.moveString = "";
+		 //MAKE MOVES
+		}
+	};
+	
+	guiCameraParams = {
+		control: false
+	};
+	
+	guiGfxParams = {
+		shadowMap: 5,
+		shadowRes: 250,
+		fxaa: true
+	};
 
     guiThemeParams = { //Needed for GUI, had theme settings.
         //TODO:Functions here.
@@ -91,7 +127,29 @@ UIController.prototype.gui = function(){
 	gui = new dat.GUI();
     serverFolder = gui.addFolder('Server');
         
-        
+     if(this.connection)
+	 {
+	 serverFolder.add(guiServParams,'Close');
+	 console.log(serverFolder.__controllers);
+	 serverFolder.__controllers[0].remove();
+	 //serverFolder.__controllers.splice(0);
+		if(this.currentlyConnected){
+		//Create GUI as if already been connected to server
+		 serverFolder.add(guiServParams,'Close').name("Close Connection");
+		}else{
+			//make it just connect
+			serverFolder.add(guiServParams,'Connect').onFinishChange(function(){ 
+                        serverFolder.__controllers[1].remove();
+
+                        serverFolder.__controllers.splice(1);
+                        
+                        serverFolder.close(); 
+                        serverFolder.add(guiServParams,'Close').name("Close Connection");}
+						);
+		}
+	 }
+	 
+	 else{
     serverFolder.add(guiServParams,'ServSetting').name('Use GameID?').onFinishChange(function(){
         if(guiServParams.ServSetting)
         {
@@ -108,7 +166,7 @@ UIController.prototype.gui = function(){
         }
         else
         {
-            console.log(serverFolder);
+     
             serverFolder.__controllers[1].remove();
             serverFolder.__controllers[2].remove();
             serverFolder.__controllers.splice(1,2);
@@ -122,32 +180,74 @@ UIController.prototype.gui = function(){
                     );
         }
     });
+	
                 
                 
     serverFolder.add(guiServParams,'ServerUrl');
     serverFolder.add(guiServParams,'Connect').onFinishChange(function(){ 
+                        serverFolder.__controllers[0].remove();
+						serverFolder.__controllers[1].remove();
                         serverFolder.__controllers[2].remove();
-                        serverFolder.__controllers.splice(2);
+
+                        serverFolder.__controllers.splice(0,2);
                         
                         serverFolder.close(); 
                         serverFolder.add(guiServParams,'Close').name("Close Connection");}
         );
-    
+    }
     serverFolder.open();
-        
+    
+	moveFolder = gui.addFolder('Manual Move');
+	moveFolder.add(guiMoveParams, 'moveString').name("Move").listen();
+	moveFolder.add(guiMoveParams, 'Move');
+	
     cameraFolder = gui.addFolder('Camera');
-    cameraFolder.add(camera.position, 'x', -500,500).step(5);
-    cameraFolder.add(camera.position, 'y', -500,500).step(5);
-    cameraFolder.add(camera.position, 'z', -500,500).step(5);
-        
+	cameraFolder.add(guiCameraParams, 'control').name("Manual Control:").onFinishChange(function()
+	{
+		if(guiCameraParams.control)
+		{
+			//TODO DISABLE SWEEP CAMERA HERE
+			cameraFolder.add(camera.position, 'x', -500,500).step(5);
+			cameraFolder.add(camera.position, 'y', -500,500).step(5);
+			cameraFolder.add(camera.position, 'z', -500,500).step(5);
+		}
+		else
+		{
+			cameraFolder.__controllers[1].remove();
+			cameraFolder.__controllers[2].remove();
+			cameraFolder.__controllers[3].remove();
+			cameraFolder.__controllers.splice(0,3);
+		}
+	});
+    
+      
     themeFolder = gui.addFolder('Themes');
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:").onFinishChange(function(){
       
     });
     themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:").onFinishChange(function(){
-     
+    
+	
     });
 	themeFolder.add(guiThemeParams,'Update');
+	
+	gfxFolder = gui.addFolder('Graphics Settings');
+	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 10).step(1).name("Shadow Quality").onFinishChange(function(){
+		console.log(guiGfxParams.shadowMap);
+		//TODO Change shadowmap quality here
+	});
+	
+	gfxFolder.add(guiGfxParams, 'shadowRes', 100, 1080).step(27).name("Shadow Res").onFinishChange(function(){
+		console.log(guiGfxParams.shadowRes);
+		//TODO Change shadowmap resolution here
+	});
+	
+	gfxFolder.add(guiGfxParams, 'fxaa').name("FXAA").onFinishChange(function(){
+		console.log(guiGfxParams.fxaa);
+		//TODO Enable/Disable fxaa here
+	});
+	
+	gui.add(guiServParams, 'Help');
     gui.add(guiServParams,'Reset');
 }
 
