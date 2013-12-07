@@ -3,7 +3,7 @@ var SceneController = function(gameScene, loading){ this.init(gameScene, loading
 
 SceneController.prototype.init = function(gameScene, loading){
 
-	this.duration = 39;
+	this.duration = 40;
 	this.loading = true;
 	this.poly = false;
 	//this.loadscene = loading.scene;
