@@ -12,7 +12,7 @@ GameController.prototype.init = function(){
 	this.jsonGame = null;
 	this.manualmove = false;
 
-	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20000 );
 	this.camera.position.z = 176;
 	this.camera.position.y = 100;
 	
@@ -64,6 +64,10 @@ GameController.prototype.move = function(str){
 
 GameController.prototype.updatePieces = function(poly, texture){
 	this.board.updatePieceLoad(poly, texture);
+}
+
+GameController.prototype.updateSkybox = function(skybox){
+	this.board.updateSkybox(skybox);
 }
 
 GameController.prototype.connectToServer = function(url){

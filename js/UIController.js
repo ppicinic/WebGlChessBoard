@@ -92,6 +92,7 @@ UIController.prototype.init = function(){
         //TODO:Functions here.
         type: "Marble",
         quality: "Low",
+		skybox: "sunnyocean",
 		Update: function()
 		{
             var poly;
@@ -120,6 +121,7 @@ UIController.prototype.init = function(){
             console.log(start);
             sceneControl.loadChanges(poly);
             game.updatePieces(poly, texture);
+			game.updateSkybox(guiThemeParams.skybox);
 		}
     };
 }
@@ -223,17 +225,13 @@ UIController.prototype.gui = function(){
     
       
     themeFolder = gui.addFolder('Themes');
-    themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:").onFinishChange(function(){
-      
-    });
-    themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:").onFinishChange(function(){
-    
-	
-    });
+    themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:");
+    themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:");
+	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight"]);
 	themeFolder.add(guiThemeParams,'Update');
 	
 	gfxFolder = gui.addFolder('Graphics Settings');
-	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 10).step(1).name("# of Shadows").onFinishChange(function(){
+	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 6).step(1).name("# of Shadows").onFinishChange(function(){
 		console.log(guiGfxParams.shadowMap);
 		//TODO Change shadowmap quality here
 	});
