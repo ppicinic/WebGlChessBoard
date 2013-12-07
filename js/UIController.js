@@ -11,22 +11,26 @@ UIController.prototype.init = function(){
         GameID: "team03",
         Connect: function(){
         //TODO: Connect to server
+                var url = "";
                 if(!this.ServSetting)
                 {
-                        console.log("Connect to " + this.ServerUrl);
+                    //url += SERVER_URL + this.GameID;
+                    url = this.ServerUrl;
                 }
                 else {
-                console.log("Connect to ID: " + this.GameID);
+                    url += SERVER_URL + this.GameID;
                 }
+                game.connectToServer(url);
         },
         Close: function(){
          //TODO:Close connection
-                console.log("Close");
+                guiServParams.ServerUrl = "http://test.com";
+                guiServParams.GameID = "team03";
+                game.closeServerConnection();
         },
         Reset: function()
         {
-                guiServParams.ServerUrl = "http://test.com";
-                guiServParams.GameID = "team03";
+                
                 guiThemeParams.type = "Marble";
                 guiThemeParams.type = "Low";
                 guiServParams.Close();
@@ -145,6 +149,10 @@ UIController.prototype.gui = function(){
     });
 	themeFolder.add(guiThemeParams,'Update');
     gui.add(guiServParams,'Reset');
+}
+
+UIController.prototype.degui = function(){
+    gui.destroy();
 }
 						
 						

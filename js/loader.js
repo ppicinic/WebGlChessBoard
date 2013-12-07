@@ -168,7 +168,7 @@ function onKeyUp( event ) {
 		if(notPlaying){
 			notPlaying = false;
 			for(var i = 0; i < moveList5.length; i++){
-				game.move(moveList5[i]);
+				//game.move(moveList5[i]);
 			}
 		}
 	}

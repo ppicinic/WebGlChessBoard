@@ -374,3 +374,17 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 	}
 
 }
+
+ChessBoard.prototype.isPlaying = function(){
+	var bool = false;
+	for(var i in this.movingArray){
+		if(this.movingArray[i].isMoving()){
+			bool = true;
+		}
+	}
+	if(this.moveQueue.length > 0){
+		bool = true;
+	}
+
+	return bool;
+}

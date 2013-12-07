@@ -21,7 +21,7 @@ SceneController.prototype.init = function(gameScene, loading){
 	function change() {
 		if(start == self.duration){
 			self.changeScene();
-			self.datdatgui.gui();
+			//self.datdatgui.gui();
 		}else{
 			setTimeout(change, 200);
 		}
@@ -36,10 +36,12 @@ SceneController.prototype.changeScene = function(){
 		scene = this.game.scene;
 		camera = this.game.camera;
 		this.loading = false;
+		this.datdatgui.gui();
 	} else {
+		this.loading = true;
 		scene = this.load.scene;
 		camera = this.load.camera;
-		this.loading = true;
+		this.datdatgui.degui();
 	}
 }
 
