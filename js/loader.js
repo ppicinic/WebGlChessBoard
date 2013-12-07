@@ -79,6 +79,8 @@ function init() {
 	
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setSize( window.innerWidth, window.innerHeight );
+	renderer.shadowMapEnabled = true;
+	render.shadowMapType = THREE.BasicShadowMap;
 	container.appendChild( renderer.domElement );
 
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );

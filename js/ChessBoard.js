@@ -32,7 +32,11 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 10;
     	object.scale.z = 10;
 		object.material = null;
-		object.receiveShadow = true;	
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.receiveShadow = true;
+			}
+		})	
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
@@ -48,7 +52,11 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 50;
     	object.scale.z = 50;
 		object.material = null;
-		object.receiveShadow = true;	
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.receiveShadow = true;
+			}
+		});	
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
