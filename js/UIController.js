@@ -97,6 +97,7 @@ UIController.prototype.init = function(){
 		{
             var poly;
             var texture;
+			guiCameraParams.control = false;
 			if(guiThemeParams.type=="Wood")
 			{
 				//Make models wood.

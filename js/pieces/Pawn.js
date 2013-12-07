@@ -118,6 +118,7 @@ Pawn.prototype.update = function(){
 	}else if(this.dest){
 		if(this.ttl <= TIME_TO_MOVE){
 			//console.log('opacity drops')
+			
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.transparent = true;
@@ -165,6 +166,7 @@ Pawn.prototype.update = function(){
 		}*/
 	}
 }
+
 
 Pawn.prototype.destroy = function(ttl){
 	this.moving = true;
