@@ -59,6 +59,32 @@ Knight.prototype.init = function(scene, color, spot, board)
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
 	
+	//Particles
+	this.clock = new THREE.Clock();
+	this.particles = false;
+	this.firedSmoke = false;
+	this.smoke =
+	{
+		positionStyle  : Type.SPHERE,
+		positionBase   : new THREE.Vector3( 0, 50, 0 ),
+		positionRadius : 2,
+				
+		velocityStyle : Type.SPHERE,
+		speedBase     : 40,
+		speedSpread   : 8,
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png' ),
+
+		sizeTween    : new Tween( [0, 0.1], [1, 150] ),
+		opacityTween : new Tween( [0.7, 1], [1, 0] ),
+		colorBase    : new THREE.Vector3(0.02, 1, 0.4),
+		blendStyle   : THREE.AdditiveBlending,  
+		
+		particlesPerSecond : 60,
+		particleDeathAge   : 0.1,		
+		emitterDeathAge    : 0.1
+	};
+	
 	this.piece = cloneObjMtl(board.knight);
 	if(this.color){
 		this.zfix = 3;
@@ -153,7 +179,15 @@ Knight.prototype.update = function(){
 		}
 
 	}else if(this.dead){
-		console.log(this);
+		if(!this.firedSmoke)
+				{
+					this.board.engine.push(new ParticleEngine(this.scene));
+					this.smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
+					this.board.engine[this.board.engine.length-1].setValues( this.smoke );
+					this.board.engine[this.board.engine.length-1].initialize();
+					this.firedSmoke = true;
+					this.particles = true;
+				}
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.opacity += (1 / TIME_TO_MOVE);

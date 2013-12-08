@@ -24,6 +24,6 @@ const BLACK = false;
 
 const TIME_TO_MOVE = 40;
 const FADE_TIME = 10;
-const CAMERA_TIME = 25;
+const CAMERA_TIME = 250;
 
 const SERVER_URL = "https://10.11.18.65/cg/chess/";

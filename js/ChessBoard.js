@@ -1,7 +1,6 @@
 var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
 var clock = new THREE.Clock();
-var engine;
 var particles = false;
 
 var rain =
@@ -59,6 +58,7 @@ ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
 	this.board;
+	this.engine = new Array();
 	this.table;
 	this.camera = new CameraController(camera);
 	this.moveQueue = new Array(); // queue of moves to be animated
@@ -309,7 +309,10 @@ ChessBoard.prototype.update = function(){
 	var dt = clock.getDelta();
 	if(particles)
 	{
-		engine.update( dt * 0.5 );	
+		for(var i = 0; i < this.engine.length; i++)
+		{
+			this.engine[i].update( dt * 0.5 );	
+		}
 	}
 	var bool = false;
 	for(var i = 0; i < this.movingArray.length; i++){
@@ -358,10 +361,11 @@ ChessBoard.prototype.update = function(){
 					if(this.pieces[x2][y2]){
 
 						engine = new ParticleEngine(this.scene);
+						this.engine.push(new ParticleEngine(this.scene));
 						
 						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
-						engine.setValues( smoke );
-						engine.initialize();
+						this.engine[this.engine.length-1].setValues( smoke );
+						this.engine[this.engine.length-1].initialize();
 						particles = true;
 						console.log('piece dies');
 						
@@ -434,10 +438,18 @@ ChessBoard.prototype.update = function(){
 	}
 }
 ChessBoard.prototype.move = function(str){
-	var move = new PieceMove(str);
-	var camMove = new CameraMove();
-	this.moveQueue.push(move);
-	this.moveQueue.push(camMove);
+	if(str == "win")
+	{
+		this.moveQueue[0] = new OverMove();
+		console.log(this.moveQueue);
+	}
+	else
+	{
+		var move = new PieceMove(str);
+		var camMove = new CameraMove();
+		this.moveQueue.push(move);
+		this.moveQueue.push(camMove);
+	}
 	
 }
 
@@ -612,5 +624,5 @@ ChessBoard.prototype.gameOver = function(count){
 	}
 	var l = this.moveQueue.length - 1;
 	this.moveQueue[l] = new OverMove();
-	console.log(this.moveQueue);
+	
 }
