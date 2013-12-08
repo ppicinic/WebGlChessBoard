@@ -20,7 +20,6 @@ CameraController.prototype.move = function(){
 	this.ttl = 0;
 	//this.movez = -this.movez;
 	this.moving = true;
-	this.point = camera.position.z;
 }
 
 CameraController.prototype.update = function(){
@@ -35,37 +34,17 @@ CameraController.prototype.update = function(){
 	}else{
 		movey = easeOutSin(this.ttl, 0, 176, (CAMERA_TIME/2));
 	}
-	camera.position.x = movey;
-
-	var mid = (176 + -140) / 2;
-	
-	var start = this.camera.position.z;
-	this.camera.position.z = movescale;
-	var end = this.camera.position.z;
-	var m = (start + end) / 2;
-	var n = m - mid;
-	
-	var change = Math.pow(n, 2) / 4000;
+	if(!userCameraControl){
+		this.camera.position.x = movey;
+		this.camera.position.z = movescale;
+	}
 
 	this.ttl++;
 	if(this.ttl > CAMERA_TIME){
 		this.moving = false;
+		this.point += (316 * this.movez);
 		this.movez = -this.movez;
 	}
-	/*if(end == 176 || end == -140){
-		this.moving = false;
-		this.movez = -this.movez;
-	}*/
-	/*this.camera.position.z += this.movez * ((176 - -140) / CAMERA_TIME);
-	this.camera.position.x += this.movex * (158 / (CAMERA_TIME / 2));
-	this.ttl--;
-	if(this.ttl == (CAMERA_TIME / 2) || this.ttl == 0){
-		this.movex = -this.movex;
-	}
-	if(this.ttl == 0){
-		this.moving = false;
-		this.movez = -this.movez;
-	}*/
 }
 
 CameraController.prototype.isMoving = function(){

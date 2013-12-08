@@ -8,6 +8,7 @@ var camera, scene, renderer;
 var bicycle, frame;
 var test;
 
+var userCameraControl = false;
 //Needed for GUI
 
 
