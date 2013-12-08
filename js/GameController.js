@@ -66,22 +66,6 @@ GameController.prototype.init = function(){
 
 GameController.prototype.update = function(){
 
-	
-	if(this.shadow.position.x >= 10){
-		this.xstep = -this.xstep;
-	}
-	if(this.shadow.position.x <= -10){
-		this.xstep = -this.xstep;
-	}
-	if(this.shadow.position.z >= 10){
-		this.zstep = -this.zstep;
-	}
-	if(this.shadow.position.z <= -10){
-		this.zstep = -this.zstep;
-	}
-	this.shadow.position.x += this.xstep;
-	//this.shadow.position.z += this.zstep;
-	console.log(this.shadow.position);
 	this.board.update();
 }
 
