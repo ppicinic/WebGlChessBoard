@@ -103,8 +103,11 @@ GameController.prototype.pingServer = function(){
 			if(request.status == 200){
 				var newJSON = eval("(" + request.responseText + ")");
 				if(this.jsonGame){
+				
 					var moves = newJSON.moves;
+					
 					for(var i = this.moveCount; i < moves.length; i++){
+						
 						this.board.move(moves[i]);
 					}
 					this.gameOver = newJSON.gameover;
@@ -123,6 +126,11 @@ GameController.prototype.pingServer = function(){
 					this.gameOver = newJSON.gameover;
 					var moves = newJSON.moves;
 					for(var i in moves){
+					/*if(i==2)
+						{
+						this.board.gameOver(this.moveCount);
+						//HACK TO GAMEOVER
+						}*/
 						this.board.move(moves[i]);
 					}
 					this.jsonGame = newJSON;

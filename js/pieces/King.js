@@ -50,6 +50,33 @@ King.prototype.init = function(scene, color, spot, board)
 	//local variables to the init method to help loading the model
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
+	
+	//Particles
+	this.clock = new THREE.Clock();
+	this.particles = false;
+	this.firedSmoke = false;
+	this.smoke =
+	{
+		positionStyle  : Type.SPHERE,
+		positionBase   : new THREE.Vector3( 0, 50, 0 ),
+		positionRadius : 2,
+				
+		velocityStyle : Type.SPHERE,
+		speedBase     : 40,
+		speedSpread   : 8,
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png' ),
+
+		sizeTween    : new Tween( [0, 0.1], [1, 150] ),
+		opacityTween : new Tween( [0.7, 1], [1, 0] ),
+		colorBase    : new THREE.Vector3(0.02, 1, 0.4),
+		blendStyle   : THREE.AdditiveBlending,  
+		
+		particlesPerSecond : 60,
+		particleDeathAge   : 0.1,		
+		emitterDeathAge    : 0.1
+	};
+	
 	this.piece = cloneObjMtl(board.king);
 	if(this.color){
 		this.piece.traverse(function(mesh){
