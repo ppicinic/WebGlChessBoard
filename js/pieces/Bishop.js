@@ -9,29 +9,24 @@ var Bishop = function (scene, color, spot, board) { this.init(scene, color, spot
 
 var smoke =
 	{
-		positionStyle    : Type.CUBE,
-		positionBase     : new THREE.Vector3( 0, 0 ,0 ) , //Must set this before activating
-		positionSpread   : new THREE.Vector3( 10, 0, 10 ),
-
-		velocityStyle    : Type.CUBE,
-		velocityBase     : new THREE.Vector3( 0, 150, 0 ),
-		velocitySpread   : new THREE.Vector3( 80, 50, 80 ), 
-		accelerationBase : new THREE.Vector3( 0,-10,0 ),
+		positionStyle  : Type.SPHERE,
+		positionBase   : new THREE.Vector3( 0, 50, 0 ),
+		positionRadius : 2,
+				
+		velocityStyle : Type.SPHERE,
+		speedBase     : 40,
+		speedSpread   : 8,
 		
-		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png'),
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png' ),
 
-		angleBase               : 0,
-		angleSpread             : 720,
-		angleVelocityBase       : 5,
-		angleVelocitySpread     : 720,
+		sizeTween    : new Tween( [0, 0.1], [1, 150] ),
+		opacityTween : new Tween( [0.7, 1], [1, 0] ),
+		colorBase    : new THREE.Vector3(0.02, 1, 0.4),
+		blendStyle   : THREE.AdditiveBlending,  
 		
-		sizeTween    : new Tween( [0, 1], [32, 128] ),
-		opacityTween : new Tween( [0.8, 2], [0.5, 0] ),
-		colorTween   : new Tween( [0.4, 1], [ new THREE.Vector3(0,0,0.2), new THREE.Vector3(0, 0, 0.5) ] ),
-
-		particlesPerSecond : 200,
-		particleDeathAge   : 0.6,		
-		emitterDeathAge    : 0.1
+		particlesPerSecond : 60,
+		particleDeathAge   : 1.5,		
+		emitterDeathAge    : 60
 	}
 /**
 *	Constructor - creates a bishop object
@@ -70,7 +65,6 @@ Bishop.prototype.init = function(scene, color, spot, board)
 	this.dead = false;
 	
 	this.clock = new THREE.Clock();
-	this.engine2;
 	this.particles = false;
 	this.firedSmoke = false;
 	
@@ -154,12 +148,6 @@ Bishop.prototype.move = function(x, y){
 }
 
 Bishop.prototype.update = function(){
-var dt = clock.getDelta();
-console.log(this.particles);
-	if(this.particles)
-	{
-		this.engine2.update( dt * 0.5 );	
-	}
 	if(this.dest){
 		if(this.ttl <= TIME_TO_MOVE){
 			//console.log('opacity drops')
@@ -187,10 +175,10 @@ console.log(this.particles);
 	}else if(this.dead){
 		if(!this.firedSmoke)
 				{
-					this.engine2 = new ParticleEngine(this.scene);
+					this.board.engine.push(new ParticleEngine(this.scene));
 					smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
-					this.engine2.setValues( smoke );
-					this.engine2.initialize();
+					this.board.engine[this.board.engine.length-1].setValues( smoke );
+					this.board.engine[this.board.engine.length-1].initialize();
 					this.firedSmoke = true;
 					this.particles = true;
 				}

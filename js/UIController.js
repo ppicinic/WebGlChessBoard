@@ -83,11 +83,11 @@ UIController.prototype.init = function(){
 		control: false
 	};
 	
-	guiGfxParams = {
+	/*guiGfxParams = {
 		shadowMap: 0,
 		shadowRes: 250,
 		fxaa: false
-	};
+	};*/
 
     guiThemeParams = { //Needed for GUI, had theme settings.
         //TODO:Functions here.
@@ -232,7 +232,7 @@ UIController.prototype.gui = function(){
 	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight"]);
 	themeFolder.add(guiThemeParams,'Update');
 	
-	gfxFolder = gui.addFolder('Graphics Settings');
+	/*gfxFolder = gui.addFolder('Graphics Settings');
     
 	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 6).step(1).name("# of Shadows").onFinishChange(function(){
 		console.log(guiGfxParams.shadowMap);
@@ -247,7 +247,7 @@ UIController.prototype.gui = function(){
 	gfxFolder.add(guiGfxParams, 'fxaa').name("FXAA").onFinishChange(function(){
 		console.log(guiGfxParams.fxaa);
 		//TODO Enable/Disable fxaa here
-	});
+	});*/
 	
 	gui.add(guiServParams, 'Help');
     gui.add(guiServParams,'Reset');
