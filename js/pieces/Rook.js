@@ -42,9 +42,9 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.deadx = 0;
 	this.deady = 0;
 	this.deadz = 0;
-	this.dead = false;
+	this.dead = board.highpoly;
 	// Low Poly - false || High Poly - true
-	this.poly = false;
+	this.poly = board.texture;
 	// Marble - true || Wood - false
 	this.texture = true;
 	// create object for scene graph
