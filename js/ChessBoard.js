@@ -342,14 +342,14 @@ ChessBoard.prototype.update = function(){
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
 					
-					var dz = 0;
+					//var dz = 0;
 					if(this.pieces[x2][y2] instanceof Pawn)
 						{
-							dz = -50;
+							//dz = -50;
 						}
 						engine = new ParticleEngine(this.scene);
 						
-						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].x,this.pieces[x2][y2].y,dz);
+						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
 						engine.setValues( smoke );
 						engine.initialize();
 						particles = true;
