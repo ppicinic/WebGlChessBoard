@@ -39,6 +39,10 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.promote = false;
 	this.castle = false;
 
+	this.deadx = 0;
+	this.deady = 0;
+	this.deadz = 0;
+	this.dead = false;
 	// Low Poly - false || High Poly - true
 	this.poly = false;
 	// Marble - true || Wood - false
@@ -57,12 +61,14 @@ Rook.prototype.init = function(scene, color, spot, board)
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.map = board.whiteTexture;
+				mesh.castShadow = true;
 			}
 		});
 	} else {
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.map = board.blackTexture;
+				mesh.castShadow = true;
 			}
 		});
 	} 
@@ -142,7 +148,30 @@ Rook.prototype.update = function(){
 		}
 		this.ttl--;
 		if(this.ttl == 0){
+			this.dest = false;
+			this.dead = true;
+			this.ttl = 0;
+			this.duration = TIME_TO_MOVE;
+			this.piece.position.x = this.deadx;
+			this.piece.position.y = this.deady;
+			this.piece.position.z = this.deadz;
+		}
+
+	}else if(this.dead){
+		console.log(this);
+		this.piece.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.material.opacity += (1 / TIME_TO_MOVE);
+			}
+		});
+		this.ttl++;
+		if(this.ttl == this.duration){
 			this.moving = false;
+			this.piece.traverse(function(mesh){
+				if(mesh instanceof THREE.Mesh){
+					mesh.material.transparent = false;
+				}
+			});
 		}
 
 	}else if(this.promote){
@@ -219,6 +248,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} else {
@@ -229,6 +259,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} 
@@ -246,6 +277,7 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} else {
@@ -256,11 +288,40 @@ Rook.prototype.updatePiece = function(poly, texture){
 						mesh.material.transparent = true;
 						mesh.material.opacity = temp.children[0].children[0].material.opacity;
 					}
+					mesh.castShadow = true;
 				}
 			});
 		} 
 	}
 
 	start++;
+
+}
+
+Rook.prototype.outPos = function(pos){
+	var spot = pos;
+	if(pos > 11){
+		spot -= 11;
+	}
+	if(this.color){
+		this.deadx = -85;
+		if(pos > 11){
+			this.deadx -= 15;
+		}
+		this.deadz = TOP + ((spot - 1) * 15) - 5; 
+	}else{
+		this.deadx = 90;
+		if(pos > 11){
+			this.deadx += 11;
+		}
+		this.deadz = 80 - ((spot - 1) * 15) + 5;
+		
+	}
+
+	this.deadx += this.xfix;
+	
+	
+	
+	this.deady = 4;
 
 }

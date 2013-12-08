@@ -29,6 +29,7 @@ UIController.prototype.init = function(){
                 game.connectToServer(url);
         },
         Close: function(){
+            game.closeServerConnection();
 		
          //TODO:Close connection
                 //guiServParams.ServerUrl = "http://test.com";
@@ -72,7 +73,7 @@ UIController.prototype.init = function(){
 		Move: function()
 		{
          game.move(this.moveString);
-		 console.log(this.moveString);
+		 //console.log(this.moveString);
 		 this.moveString = "";
 		 //MAKE MOVES
 		}
@@ -232,6 +233,7 @@ UIController.prototype.gui = function(){
 	themeFolder.add(guiThemeParams,'Update');
 	
 	gfxFolder = gui.addFolder('Graphics Settings');
+    
 	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 6).step(1).name("# of Shadows").onFinishChange(function(){
 		console.log(guiGfxParams.shadowMap);
 		//TODO Change shadowmap quality here

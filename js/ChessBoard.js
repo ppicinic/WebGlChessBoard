@@ -59,12 +59,14 @@ ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
 	this.board;
+	this.table;
 	this.camera = new CameraController(camera);
 	this.moveQueue = new Array(); // queue of moves to be animated
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
-	this.destroyedArray = new Array();
+	this.whiteCap = new Array();
+	this.blackCap = new Array();
 	
 
 	// Low Poly - false || High Poly - true
@@ -114,7 +116,12 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 10;
     	object.scale.z = 10;
 		object.material = null;
-		object.receiveShadow = true;	
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.receiveShadow = true;
+				mesh.material.needsUpdate = true;
+			}
+		})	
 		board.board = object;
 		board.scene.add(board.board);
 		start++;
@@ -130,9 +137,32 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.y = 50;
     	object.scale.z = 50;
 		object.material = null;
-		object.receiveShadow = true;
-	    board.board = object;
-		board.scene.add(board.board);
+	    
+		object.traverse(function(mesh){
+			if(mesh instanceof THREE.Mesh){
+				mesh.receiveShadow = true;
+			}
+		});
+		board.table = object;
+		board.scene.add(board.table);
+		/*var sphereGeom =  new THREE.SphereGeometry( 80, 64, 32 );
+		var refractSphereCamera = new THREE.CubeCamera( 0.1, 10000, 1024 );
+		board.board = refractSphereCamera;
+		board.scene.add( board.board );
+		
+		 refractSphereCamera.renderTarget.mapping = new THREE.CubeRefractionMapping();
+		
+		var refractMaterial = new THREE.MeshBasicMaterial( { 
+			color: 0xccccff, 
+			envMap: refractSphereCamera.renderTarget, 
+			refractionRatio: 0.985, 
+			reflectivity: 0.9 
+			} );		
+	refractMaterial.refractionRatio = 0.99;
+	refractMaterial.reflectivity = 0.9;
+	object.children[1].children[0] = new THREE.Mesh( sphereGeom, refractMaterial );
+	refractSphereCamera.position = object.children[1].children[0].position;
+	*/
 		start++;
     } );
 	}
@@ -326,7 +356,14 @@ ChessBoard.prototype.update = function(){
 						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
 						
 						this.movingArray.push(this.pieces[x2][y2]);
-						this.destroyedArray.push(this.pieces[x2][y2]);
+						if(this.pieces[x2][y2].color){
+							this.whiteCap.push(this.pieces[x2][y2]);
+							this.pieces[x2][y2].outPos(this.whiteCap.length);
+						}else{
+							this.blackCap.push(this.pieces[x2][y2]);
+							this.pieces[x2][y2].outPos(this.blackCap.length);
+						}
+
 						
 						
 					}else {
@@ -335,7 +372,13 @@ ChessBoard.prototype.update = function(){
 							console.log('piece dies');
 							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
 							this.movingArray.push(this.pieces[x2][y]);
-							this.destroyedArray.push(this.pieces[x2][y]);
+							if(this.pieces[x2][y2].color){
+								this.whiteCap.push(this.pieces[x2][y2]);
+								this.pieces[x2][y2].outPos(this.whiteCap.length);
+							}else{
+								this.blackCap.push(this.pieces[x2][y2]);
+								this.pieces[x2][y2].outPos(this.blackCap.length);
+							}
 						}
 					}
 					if(move.promote){
@@ -513,12 +556,14 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 		for(var y = 0; y < this.pieces[x].length; y++){
 			if(this.pieces[x][y]){
 				this.pieces[x][y].updatePiece(poly, texture);
-
 			}
 		}
 	}
-	for(var i in this.destroyedArray){
-		this.destroyedArray[i].updatePiece(poly, texture);
+	for(var i in this.whiteCap){
+		this.whiteCap[i].updatePiece(poly, texture);
+	}
+	for(var i in this.blackCap){
+		this.blackCap[i].updatePiece(poly, texture);
 	}
 
 }
