@@ -16,8 +16,8 @@ GameOver.prototype.move = function(){
 	//this.movez = -this.movez;
 	this.moving = true;
 	this.textMaterial = new THREE.MeshFaceMaterial( [
-					new THREE.MeshLambertMaterial( { color: 0xaaaaff, shading: THREE.FlatShading, opacity: 0.95 } ),
-					new THREE.MeshLambertMaterial( { color: 0xaaaaff } )
+					new THREE.MeshLambertMaterial( { color: 0xaaccff, shading: THREE.FlatShading, opacity: 0.95 } ),
+					new THREE.MeshLambertMaterial( { color: 0xaaaaaa } )
 				] );
 	this.text3d = new THREE.TextGeometry( this.theText, {
 		size: 20,
@@ -26,8 +26,8 @@ GameOver.prototype.move = function(){
 		font: "helvetiker",
 
 		bevelEnabled: true,
-		bevelThickness: 2,
-		bevelSize: 2,
+		bevelThickness: 1,
+		bevelSize: 1,
 
 		material: 0,
 		extrudeMaterial: 1});
@@ -39,44 +39,26 @@ GameOver.prototype.move = function(){
 
 	this.text = new THREE.Mesh(this.text3d, this.textMaterial);
 	this.text.position.x = this.centerOffset;
-	this.text.position.y = 30;
+	this.text.position.y = -30;
 	this.text.position.z = 0;
 	this.text.rotation.x = 0;
-	this.text.rotation.y = Math.PI * 2;
+	if(this.theText == "White Wins!"){
+		this.text.rotation.y = Math.PI * 2;
+	}else{
+		this.text.rotation.y = Math.PI;
+		this.text.position.x = -this.centerOffset;
+	}
 
 	scene.add(this.text);
-	this.text.traverse(function(mesh){
-		if(mesh instanceof THREE.Mesh){
-			mesh.material.opacity = 0;
-			mesh.material.transparent = true;
-			//mesh.castShadow = true;
-		}
-	});
 }
 
 GameOver.prototype.update = function(){
 	if (this.ttl < this.duration){
-		this.text.traverse(function(mesh){
-			if(mesh instanceof THREE.Mesh){
-				mesh.material.opacity += (1/ 50);
-			}
-		});
-		if(this.ttl >= this.duration - 1){
-			this.text.traverse(function(mesh){
-				if(mesh instanceof THREE.Mesh){
-					mesh.material.transparent = true;
-				}
-			});
-		}
+		this.text.position.y = easeInOutSin(this.ttl, -30, 60, this.duration);
 	}else if(this.ttl < this.duration2){
 
 	}else if(this.ttl < this.duration3){
-		this.text.traverse(function(mesh){
-			if(mesh instanceof THREE.Mesh){
-				mesh.material.transparent = true;
-				mesh.material.opacity -= (1 / 50);
-			}
-		});
+		this.text.position.y = easeInOutSin(this.ttl - this.duration2, 30, -60, this.duration3 - this.duration2);
 	}
 	this.ttl++;
 	if(this.ttl >= this.duration3){

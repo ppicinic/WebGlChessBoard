@@ -70,7 +70,7 @@ GameController.prototype.update = function(){
 }
 
 GameController.prototype.move = function(str){
-	if(!this.serverConnect){
+	if((!this.serverConnect) && (!this.gameOver) ){
 		this.manualmove = true;
 		this.board.move(str);
 		this.moveCount++;
