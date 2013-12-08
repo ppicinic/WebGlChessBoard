@@ -42,9 +42,9 @@ Queen.prototype.init = function(scene, color, spot, board)
 	this.dead = false;
 
 	// Low Poly - false || High Poly - true
-	this.poly = false;
+	this.poly = board.highpoly;
 	// Marble - true || Wood - false
-	this.texture = true;
+	this.texture = board.texture;
 	// create object for scene graph
 	this.piece = new THREE.Object3D();
 	// instantiate a loader
