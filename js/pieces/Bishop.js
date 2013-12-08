@@ -7,27 +7,6 @@
 
 var Bishop = function (scene, color, spot, board) { this.init(scene, color, spot, board); }
 
-var smoke =
-	{
-		positionStyle  : Type.SPHERE,
-		positionBase   : new THREE.Vector3( 0, 50, 0 ),
-		positionRadius : 2,
-				
-		velocityStyle : Type.SPHERE,
-		speedBase     : 40,
-		speedSpread   : 8,
-		
-		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png' ),
-
-		sizeTween    : new Tween( [0, 0.1], [1, 150] ),
-		opacityTween : new Tween( [0.7, 1], [1, 0] ),
-		colorBase    : new THREE.Vector3(0.02, 1, 0.4),
-		blendStyle   : THREE.AdditiveBlending,  
-		
-		particlesPerSecond : 60,
-		particleDeathAge   : 1.5,		
-		emitterDeathAge    : 60
-	}
 /**
 *	Constructor - creates a bishop object
 *	also loads the model associated with it
@@ -67,6 +46,27 @@ Bishop.prototype.init = function(scene, color, spot, board)
 	this.clock = new THREE.Clock();
 	this.particles = false;
 	this.firedSmoke = false;
+	this.smoke =
+	{
+		positionStyle  : Type.SPHERE,
+		positionBase   : new THREE.Vector3( 0, 50, 0 ),
+		positionRadius : 2,
+				
+		velocityStyle : Type.SPHERE,
+		speedBase     : 40,
+		speedSpread   : 8,
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png' ),
+
+		sizeTween    : new Tween( [0, 0.1], [1, 150] ),
+		opacityTween : new Tween( [0.7, 1], [1, 0] ),
+		colorBase    : new THREE.Vector3(0.02, 1, 0.4),
+		blendStyle   : THREE.AdditiveBlending,  
+		
+		particlesPerSecond : 60,
+		particleDeathAge   : 0.1,		
+		emitterDeathAge    : 0.1
+	};
 	
 	// Low Poly - false || High Poly - true
 	this.poly = board.highpoly;
@@ -176,8 +176,8 @@ Bishop.prototype.update = function(){
 		if(!this.firedSmoke)
 				{
 					this.board.engine.push(new ParticleEngine(this.scene));
-					smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
-					this.board.engine[this.board.engine.length-1].setValues( smoke );
+					this.smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
+					this.board.engine[this.board.engine.length-1].setValues( this.smoke );
 					this.board.engine[this.board.engine.length-1].initialize();
 					this.firedSmoke = true;
 					this.particles = true;
