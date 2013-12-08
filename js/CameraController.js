@@ -11,7 +11,7 @@ CameraController.prototype.init = function(camera)
 	this.movez = -1;
 	this.moving = false;
 	this.ttl = 0;
-	this.point = 178;
+	this.point = 176;
 	
 }
 
