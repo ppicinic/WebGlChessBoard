@@ -52,11 +52,13 @@ GameController.prototype.init = function(){
 	this.shadow.castShadow = true;
 	this.shadow.shadowCameraNear = 1;
 	this.shadow.shadowCameraFar = this.camera.far;
-	this.shadow.shadowCameraFov = 105;
+	this.shadow.shadowCameraFov = 110;
 	//this.shadow.shadowCameraVisible = true;
 	this.shadow.shadowDarkness = 0.7;
 	//this.shadow.shadowBias = 0.001;
 	this.shadow.position.set(0, 100, 0);
+	this.xstep = .05;
+	this.zstep = .1;
 
 	this.scene.add(this.shadow);
 	this.board = new ChessBoard(this.scene, this.camera);
@@ -64,6 +66,22 @@ GameController.prototype.init = function(){
 
 GameController.prototype.update = function(){
 
+	
+	if(this.shadow.position.x >= 10){
+		this.xstep = -this.xstep;
+	}
+	if(this.shadow.position.x <= -10){
+		this.xstep = -this.xstep;
+	}
+	if(this.shadow.position.z >= 10){
+		this.zstep = -this.zstep;
+	}
+	if(this.shadow.position.z <= -10){
+		this.zstep = -this.zstep;
+	}
+	this.shadow.position.x += this.xstep;
+	//this.shadow.position.z += this.zstep;
+	console.log(this.shadow.position);
 	this.board.update();
 }
 
