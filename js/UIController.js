@@ -212,12 +212,15 @@ UIController.prototype.gui = function(){
 		if(guiCameraParams.control)
 		{
 			//TODO DISABLE SWEEP CAMERA HERE
+            userCameraControl = true;
 			cameraFolder.add(camera.position, 'x', -500,500).step(5);
 			cameraFolder.add(camera.position, 'y', -500,500).step(5);
 			cameraFolder.add(camera.position, 'z', -500,500).step(5);
 		}
 		else
 		{
+            userCameraControl = false;
+            game.camera.position.y = 100;
 			cameraFolder.__controllers[1].remove();
 			cameraFolder.__controllers[2].remove();
 			cameraFolder.__controllers[3].remove();

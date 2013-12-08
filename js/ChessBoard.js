@@ -85,6 +85,18 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
 
 	this.winner;
+
+	var orangeTexture = THREE.ImageUtils.loadTexture("Models/textures/orange.jpg");
+	var geometry = new THREE.SphereGeometry(15, 15, 15);
+	var material = new THREE.MeshPhongMaterial({map: orangeTexture, bumpMap: orangeTexture, shading: THREE.SmoothShading})
+	this.orange = new THREE.Mesh(geometry, material);
+	this.orange.castShadow = true;
+	this.orange.scale.x = this.orange.scale.y = this.orange.scale.z = .5;
+	this.orange.position.x = -115;
+	this.orange.position.z = -105;
+	this.orange.position.y = 8;
+	console.log(this.orange);
+	this.scene.add(this.orange);
 	
 	function loadSkybox(board,loader,skybox)
 	{
@@ -113,6 +125,7 @@ ChessBoard.prototype.init = function(scene, camera)
 
 	function loadBoard(board, loader){
 	loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
+
 		object.position.x = -20;
     	object.scale.x = 10;
     	object.scale.y = 10;
@@ -132,6 +145,8 @@ ChessBoard.prototype.init = function(scene, camera)
 	
 	function loadTable(board, loader){
 	loader.load( 'Models/Table/table.obj', 'Models/Table/table.mtl', function ( object ) {
+		var bump = THREE.ImageUtils.loadTexture("Models/textures/blackwood.jpg");
+		console.log(object);
 		object.position.x = 0;
 		object.position.z = 12;
 		object.position.y = -40;
@@ -341,6 +356,7 @@ ChessBoard.prototype.update = function(){
 					var y2 = move.y2;
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
+
 						engine = new ParticleEngine(this.scene);
 						
 						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
