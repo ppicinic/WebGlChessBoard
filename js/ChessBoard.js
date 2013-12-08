@@ -51,7 +51,7 @@ var smoke =
 		colorTween   : new Tween( [0.4, 1], [ new THREE.Vector3(0,0,0.2), new THREE.Vector3(0, 0, 0.5) ] ),
 
 		particlesPerSecond : 200,
-		particleDeathAge   : 1.0,		
+		particleDeathAge   : 0.6,		
 		emitterDeathAge    : 0.1
 	}
 
@@ -374,6 +374,7 @@ ChessBoard.prototype.update = function(){
 							console.log('piece dies');
 							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
 							this.movingArray.push(this.pieces[x2][y]);
+							
 							if(this.pieces[x2][y2].color){
 								this.whiteCap.push(this.pieces[x2][y2]);
 								this.pieces[x2][y2].outPos(this.whiteCap.length);

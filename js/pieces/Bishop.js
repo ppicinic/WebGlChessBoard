@@ -7,6 +7,32 @@
 
 var Bishop = function (scene, color, spot, board) { this.init(scene, color, spot, board); }
 
+var smoke =
+	{
+		positionStyle    : Type.CUBE,
+		positionBase     : new THREE.Vector3( 0, 0 ,0 ) , //Must set this before activating
+		positionSpread   : new THREE.Vector3( 10, 0, 10 ),
+
+		velocityStyle    : Type.CUBE,
+		velocityBase     : new THREE.Vector3( 0, 150, 0 ),
+		velocitySpread   : new THREE.Vector3( 80, 50, 80 ), 
+		accelerationBase : new THREE.Vector3( 0,-10,0 ),
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/smokeparticle.png'),
+
+		angleBase               : 0,
+		angleSpread             : 720,
+		angleVelocityBase       : 5,
+		angleVelocitySpread     : 720,
+		
+		sizeTween    : new Tween( [0, 1], [32, 128] ),
+		opacityTween : new Tween( [0.8, 2], [0.5, 0] ),
+		colorTween   : new Tween( [0.4, 1], [ new THREE.Vector3(0,0,0.2), new THREE.Vector3(0, 0, 0.5) ] ),
+
+		particlesPerSecond : 200,
+		particleDeathAge   : 0.6,		
+		emitterDeathAge    : 0.1
+	}
 /**
 *	Constructor - creates a bishop object
 *	also loads the model associated with it
@@ -42,7 +68,12 @@ Bishop.prototype.init = function(scene, color, spot, board)
 	this.deady = 0;
 	this.deadz = 0;
 	this.dead = false;
-
+	
+	this.clock = new THREE.Clock();
+	this.engine2;
+	this.particles = false;
+	this.firedSmoke = false;
+	
 	// Low Poly - false || High Poly - true
 	this.poly = false;
 	// Marble - true || Wood - false
@@ -123,6 +154,12 @@ Bishop.prototype.move = function(x, y){
 }
 
 Bishop.prototype.update = function(){
+var dt = clock.getDelta();
+console.log(this.particles);
+	if(this.particles)
+	{
+		this.engine2.update( dt * 0.5 );	
+	}
 	if(this.dest){
 		if(this.ttl <= TIME_TO_MOVE){
 			//console.log('opacity drops')
@@ -148,10 +185,19 @@ Bishop.prototype.update = function(){
 		}
 
 	}else if(this.dead){
-		console.log(this);
+		if(!this.firedSmoke)
+				{
+					this.engine2 = new ParticleEngine(this.scene);
+					smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
+					this.engine2.setValues( smoke );
+					this.engine2.initialize();
+					this.firedSmoke = true;
+					this.particles = true;
+				}
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.opacity += (1 / TIME_TO_MOVE);
+				
 			}
 		});
 		this.ttl++;
