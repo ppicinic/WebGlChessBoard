@@ -29,6 +29,7 @@ UIController.prototype.init = function(){
                 game.connectToServer(url);
         },
         Close: function(){
+            game.closeServerConnection();
 		
          //TODO:Close connection
                 //guiServParams.ServerUrl = "http://test.com";
@@ -72,7 +73,7 @@ UIController.prototype.init = function(){
 		Move: function()
 		{
          game.move(this.moveString);
-		 console.log(this.moveString);
+		 //console.log(this.moveString);
 		 this.moveString = "";
 		 //MAKE MOVES
 		}

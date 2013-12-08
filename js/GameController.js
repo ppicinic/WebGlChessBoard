@@ -52,11 +52,11 @@ GameController.prototype.init = function(){
 	this.shadow.castShadow = true;
 	this.shadow.shadowCameraNear = 1;
 	this.shadow.shadowCameraFar = this.camera.far;
-	this.shadow.shadowCameraFov = 75;
+	this.shadow.shadowCameraFov = 105;
 	//this.shadow.shadowCameraVisible = true;
 	this.shadow.shadowDarkness = 0.7;
 	//this.shadow.shadowBias = 0.001;
-	this.shadow.position.set(100, 100, 100);
+	this.shadow.position.set(0, 100, 0);
 
 	this.scene.add(this.shadow);
 	this.board = new ChessBoard(this.scene, this.camera);

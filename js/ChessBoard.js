@@ -65,7 +65,8 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.movingArray = new Array(); // array of concurrently moving pieces
 	this.loadStack = new Array();
 	this.loader = new THREE.OBJMTLLoader();
-	this.destroyedArray = new Array();
+	this.whiteCap = new Array();
+	this.blackCap = new Array();
 	
 
 	// Low Poly - false || High Poly - true
@@ -360,7 +361,14 @@ ChessBoard.prototype.update = function(){
 						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
 						
 						this.movingArray.push(this.pieces[x2][y2]);
-						this.destroyedArray.push(this.pieces[x2][y2]);
+						if(this.pieces[x2][y2].color){
+							this.whiteCap.push(this.pieces[x2][y2]);
+							this.pieces[x2][y2].outPos(this.whiteCap.length);
+						}else{
+							this.blackCap.push(this.pieces[x2][y2]);
+							this.pieces[x2][y2].outPos(this.blackCap.length);
+						}
+
 						
 						
 					}else {
@@ -369,7 +377,13 @@ ChessBoard.prototype.update = function(){
 							console.log('piece dies');
 							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
 							this.movingArray.push(this.pieces[x2][y]);
-							this.destroyedArray.push(this.pieces[x2][y]);
+							if(this.pieces[x2][y2].color){
+								this.whiteCap.push(this.pieces[x2][y2]);
+								this.pieces[x2][y2].outPos(this.whiteCap.length);
+							}else{
+								this.blackCap.push(this.pieces[x2][y2]);
+								this.pieces[x2][y2].outPos(this.blackCap.length);
+							}
 						}
 					}
 					if(move.promote){
@@ -548,15 +562,18 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 			if(this.pieces[x][y]){
 				this.pieces[x][y].updatePiece(poly, texture);
 				console.log(this.pieces[x][y]);
-				if(y == 1)
+				/*if(y == 1)
 				{
 				this.pieces[x][y].destroy(this.pieces[x][y].ttl);
-				}
+				}*/
 			}
 		}
 	}
-	for(var i in this.destroyedArray){
-		this.destroyedArray[i].updatePiece(poly, texture);
+	for(var i in this.whiteCap){
+		this.whiteCap[i].updatePiece(poly, texture);
+	}
+	for(var i in this.blackCap){
+		this.blackCap[i].updatePiece(poly, texture);
 	}
 
 }
