@@ -51,7 +51,7 @@ var smoke =
 		colorTween   : new Tween( [0.4, 1], [ new THREE.Vector3(0,0,0.2), new THREE.Vector3(0, 0, 0.5) ] ),
 
 		particlesPerSecond : 200,
-		particleDeathAge   : 2.0,		
+		particleDeathAge   : 1.0,		
 		emitterDeathAge    : 0.1
 	}
 
@@ -131,30 +131,7 @@ ChessBoard.prototype.init = function(scene, camera)
     	object.scale.z = 50;
 		object.material = null;
 		object.receiveShadow = true;
-	    	
-		console.log(object);
-		
-		/*var sphereGeom =  new THREE.SphereGeometry( 80, 64, 32 );
-		var refractSphereCamera = new THREE.CubeCamera( 0.1, 10000, 1024 );
-		board.board = refractSphereCamera;
-		board.scene.add( board.board );
-		
-		 refractSphereCamera.renderTarget.mapping = new THREE.CubeRefractionMapping();
-		
-		var refractMaterial = new THREE.MeshBasicMaterial( { 
-			color: 0xccccff, 
-			envMap: refractSphereCamera.renderTarget, 
-			refractionRatio: 0.985, 
-			reflectivity: 0.9 
-			} );		
-	refractMaterial.refractionRatio = 0.99;
-	refractMaterial.reflectivity = 0.9;
-	object.children[1].children[0] = new THREE.Mesh( sphereGeom, refractMaterial );
-	refractSphereCamera.position = object.children[1].children[0].position;
-	*/
-
-		
-		board.board = object;
+	    board.board = object;
 		board.scene.add(board.board);
 		start++;
     } );
@@ -336,7 +313,6 @@ ChessBoard.prototype.update = function(){
 					var dz = 0;
 					if(this.pieces[x2][y2] instanceof Pawn)
 						{
-							console.log("hi");
 							dz = -50;
 						}
 						engine = new ParticleEngine(this.scene);
@@ -537,11 +513,7 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 		for(var y = 0; y < this.pieces[x].length; y++){
 			if(this.pieces[x][y]){
 				this.pieces[x][y].updatePiece(poly, texture);
-				console.log(this.pieces[x][y]);
-				if(y == 1)
-				{
-				this.pieces[x][y].destroy(this.pieces[x][y].ttl);
-				}
+
 			}
 		}
 	}
