@@ -83,6 +83,8 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.skyboxName = "sunnyocean";
 	this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
 	this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
+
+	this.winner;
 	
 	function loadSkybox(board,loader,skybox)
 	{
@@ -409,8 +411,14 @@ ChessBoard.prototype.update = function(){
 					}
 				}
 			}else{
-				this.camera.move();
-				this.movingArray.push(this.camera);
+				if(move.camera){
+					this.camera.move();
+					this.movingArray.push(this.camera);
+				}else{
+					var endAnimation = new GameOver(this.winner);
+					endAnimation.move();
+					this.movingArray.push(endAnimation);
+				}
 			}
 			
 			//console.log(this.movingArray);
@@ -590,4 +598,18 @@ ChessBoard.prototype.isPlaying = function(){
 	}
 
 	return bool;
+}
+
+ChessBoard.prototype.gameOver = function(count){
+	console.log('happens');
+	if(count % 2 == 0){
+		// black wins
+		this.winner = "Black Wins!";
+	} else {
+		//white wins
+		this.winner = "White Wins!"
+	}
+	var l = this.moveQueue.length - 1;
+	this.moveQueue[l] = new OverMove();
+	console.log(this.moveQueue);
 }

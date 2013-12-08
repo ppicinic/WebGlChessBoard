@@ -114,6 +114,7 @@ GameController.prototype.pingServer = function(){
 					this.jsonGame = newJSON;
 					if(this.gameOver){
 						this.serverConnect = false;
+						this.board.gameOver(this.moveCount);
 					}
 				}else {
 					this.moveCount = newJSON.lastmovenumber;
@@ -125,8 +126,10 @@ GameController.prototype.pingServer = function(){
 						this.board.move(moves[i]);
 					}
 					this.jsonGame = newJSON;
+					console.log(this.gameOver);
 					if(this.gameOver){
 						this.serverConnect = false;
+						this.board.gameOver(this.moveCount);
 					}
 				}
 			}
