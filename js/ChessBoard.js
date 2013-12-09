@@ -625,7 +625,11 @@ ChessBoard.prototype.gameOver = function(count){
 		//white wins
 		this.winner = "White Wins!"
 	}
-	var l = this.moveQueue.length - 1;
-	this.moveQueue[l] = new OverMove();
+	if(this.moveQueue.length > 0){
+		var l = this.moveQueue.length - 1;
+		this.moveQueue[l] = new OverMove();
+	}else{
+		this.moveQueue.push(new OverMove());
+	}
 	
 }
