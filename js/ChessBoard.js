@@ -87,8 +87,9 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.winner;
 
 	var orangeTexture = THREE.ImageUtils.loadTexture("Models/textures/orange.jpg");
+	var orangeBump = THREE.ImageUtils.loadTexture("Models/textures/orangebump.jpg");
 	var geometry = new THREE.SphereGeometry(15, 15, 15);
-	var material = new THREE.MeshPhongMaterial({map: orangeTexture, bumpMap: orangeTexture, shading: THREE.SmoothShading})
+	var material = new THREE.MeshPhongMaterial({map: orangeTexture, bumpMap: orangeBump, shading: THREE.SmoothShading})
 	this.orange = new THREE.Mesh(geometry, material);
 	this.orange.castShadow = true;
 	this.orange.scale.x = this.orange.scale.y = this.orange.scale.z = .5;
