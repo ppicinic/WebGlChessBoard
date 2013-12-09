@@ -1,4 +1,4 @@
-var sprite = THREE.ImageUtils.loadTexture("Models/textures/disc.png");
+var sprite = THREE.ImageUtils.loadTexture("Models/textures/load.png");
 
 var LoadScene = function(duration) { this.init(duration); }
 
