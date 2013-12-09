@@ -8,6 +8,7 @@ var camera, scene, renderer;
 var bicycle, frame;
 var test;
 
+var start = 0;
 var userCameraControl = false;
 //Needed for GUI
 
@@ -26,7 +27,6 @@ init();
 var board;
 var movep = -1;
 var movey = 1;
-var start = 0;
 var doneLoading = false;
 var notPlaying = true;
 var moveList = ["Pe2e4", "Pd7d6", "Pd2d4", "Ng8f6", "Nb1c3", "Pg7g6", "Bc1e3", "Bf8g7", 
