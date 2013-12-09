@@ -80,7 +80,9 @@ UIController.prototype.init = function(){
 	};
 	
 	guiCameraParams = {
-		control: false
+		control: false,
+		speed:	250,
+		pieceSpeed: 40
 	};
 	
 	/*guiGfxParams = {
@@ -216,6 +218,8 @@ UIController.prototype.gui = function(){
 			cameraFolder.add(camera.position, 'x', -500,500).step(5);
 			cameraFolder.add(camera.position, 'y', -500,500).step(5);
 			cameraFolder.add(camera.position, 'z', -500,500).step(5);
+			cameraFolder.add(guiCameraParams, 'speed', -100,500).step(10).name("Speed");
+			cameraFolder.add(guiCameraParams, 'pieceSpeed', 10,80).step(5).name("Chess Speed");
 		}
 		else
 		{
@@ -224,7 +228,9 @@ UIController.prototype.gui = function(){
 			cameraFolder.__controllers[1].remove();
 			cameraFolder.__controllers[2].remove();
 			cameraFolder.__controllers[3].remove();
-			cameraFolder.__controllers.splice(0,3);
+			cameraFolder.__controllers[4].remove();
+			cameraFolder.__controllers[5].remove();
+			cameraFolder.__controllers.splice(0,5);
 		}
 	});
     
