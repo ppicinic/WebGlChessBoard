@@ -3,7 +3,7 @@ var SceneController = function(gameScene, loading){ this.init(gameScene, loading
 
 SceneController.prototype.init = function(gameScene, loading){
 
-	this.duration = 40;
+	this.duration = 41;
 	this.loading = true;
 	this.poly = false;
 	
@@ -17,6 +17,7 @@ SceneController.prototype.init = function(gameScene, loading){
 	var self = this;
 
 	function change() {
+		console.log(start);
 		if(start == self.duration){
 			self.changeScene();
 			//self.datdatgui.gui();
@@ -69,7 +70,7 @@ SceneController.prototype.loadChanges = function(poly){
 
 SceneController.prototype.reset = function(){
 	start = 0;
-	this.duration = 40;
+	this.duration = 41;
 	this.loading = true;
 	this.load = new LoadScene(this.duration);
 	scene = this.load.scene;

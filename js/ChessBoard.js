@@ -87,8 +87,9 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.winner;
 
 	var orangeTexture = THREE.ImageUtils.loadTexture("Models/textures/orange.jpg");
+	var orangeBump = THREE.ImageUtils.loadTexture("Models/textures/orangebump.jpg");
 	var geometry = new THREE.SphereGeometry(15, 15, 15);
-	var material = new THREE.MeshPhongMaterial({map: orangeTexture, bumpMap: orangeTexture, shading: THREE.SmoothShading})
+	var material = new THREE.MeshPhongMaterial({map: orangeTexture, bumpMap: orangeBump, shading: THREE.SmoothShading})
 	this.orange = new THREE.Mesh(geometry, material);
 	this.orange.castShadow = true;
 	this.orange.scale.x = this.orange.scale.y = this.orange.scale.z = .5;
@@ -118,6 +119,8 @@ ChessBoard.prototype.init = function(scene, camera)
 		// add it to the scene
 		board.scene.add(board.skybox);
 		start++;
+		console.log('skybox ');
+		console.log(start);
 		
 		
 	}
@@ -622,7 +625,11 @@ ChessBoard.prototype.gameOver = function(count){
 		//white wins
 		this.winner = "White Wins!"
 	}
-	var l = this.moveQueue.length - 1;
-	this.moveQueue[l] = new OverMove();
+	if(this.moveQueue.length > 0){
+		var l = this.moveQueue.length - 1;
+		this.moveQueue[l] = new OverMove();
+	}else{
+		this.moveQueue.push(new OverMove());
+	}
 	
 }
