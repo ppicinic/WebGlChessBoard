@@ -111,7 +111,7 @@ Knight.prototype.init = function(scene, color, spot, board)
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 	this.piece.position.x = LEFT + (xPos * 20) + this.xfix;
 	this.piece.position.z = TOP + (yPos * 20) + this.zfix;
-	this.piece.position.y = 12.8;
+	this.piece.position.y = 12.5;
 	this.scene.add(this.piece);
 	start++;
 }
@@ -351,6 +351,6 @@ Knight.prototype.outPos = function(pos){
 	this.deadz += this.zfix;
 	this.deadx += this.xfix;	
 	
-	this.deady = 12.3;
+	this.deady = 10.2;
 
 }
