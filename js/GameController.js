@@ -8,9 +8,12 @@ GameController.prototype.init = function(){
 	this.gameOver = false;
 	this.whiteTime = 900;
 	this.blackTime = 900;
+	this.deltaTime = Date.now();
 	this.moveCount = 0;
 	this.jsonGame = null;
 	this.manualmove = false;
+	this.whitesturn = true;
+	this.timerNeedsUpdate = true;
 
 	this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 20000 );
 	this.camera.position.z = 176;
@@ -64,8 +67,28 @@ GameController.prototype.init = function(){
 	this.board = new ChessBoard(this.scene, this.camera);
 }
 
-GameController.prototype.update = function(){
+GameController.prototype.updateTimer = function(){
+	if(this.serverConnect && !this.gameOver){
+		var s = Date.now();
+		var diff = s - this.deltaTime;
+		var seconds = Math.floor(diff / 1000);
+		if(this.whitesturn){
+			whiteTime = this.whiteTime - seconds;
+		}else{
+			blackTime = this.blackTime - seconds;
+		}
 
+		blackClock.innerHTML = "Black Timer:" + blackTime;
+		whiteClock.innerHTML = "White Timer:" + whiteTime;
+		var self = this;
+		setTimeout(function(){self.updateTimer();}, 1000);
+	}else{
+		this.timerNeedsUpdate = true;
+	}
+}
+
+GameController.prototype.update = function(){
+	
 	this.board.update();
 }
 
@@ -112,8 +135,14 @@ GameController.prototype.pingServer = function(){
 					}
 					this.gameOver = newJSON.gameover;
 					this.moveCount = newJSON.lastmovenumber;
-					this.blackTime = newJSON.blacktime;
-					this.whiteTime = newJSON.whitetime;
+					this.whitesturn = newJSON.whitesturn;
+					this.blackTime = Math.floor(newJSON.blacktime);
+					this.whiteTime = Math.floor(newJSON.whitetime);
+					blackTime = this.blackTime;
+					whiteTime = this.whiteTime;
+					blackClock.innerHTML = "Black Timer:" + blackTime;
+					whiteClock.innerHTML = "White Timer:" + whiteTime;
+					this.deltaTime = Date.now();
 					this.jsonGame = newJSON;
 					if(this.gameOver){
 						this.serverConnect = false;
@@ -121,8 +150,14 @@ GameController.prototype.pingServer = function(){
 					}
 				}else {
 					this.moveCount = newJSON.lastmovenumber;
-					this.blackTime = newJSON.blacktime;
-					this.whiteTime = newJSON.whitetime;
+					this.whitesturn = newJSON.whitesturn;
+					this.blackTime = Math.floor(newJSON.blacktime);
+					this.whiteTime = Math.floor(newJSON.whitetime);
+					blackTime = this.blackTime;
+					whiteTime = this.whiteTime;
+					blackClock.innerHTML = "Black Timer:" + blackTime;
+					whiteClock.innerHTML = "White Timer:" + whiteTime;
+					this.deltaTime = Date.now();
 					this.gameOver = newJSON.gameover;
 					var moves = newJSON.moves;
 					for(var i in moves){
@@ -144,6 +179,10 @@ GameController.prototype.pingServer = function(){
 		}
 		// set up next ping
 		var self = this;
+		if(this.timerNeedsUpdate){
+			this.timerNeedsUpdate = false;
+			setTimeout(function(){self.updateTimer();}, 1000);
+		}
 		setTimeout(function(){ self.pingServer(); }, 1000);
 	}
 }
