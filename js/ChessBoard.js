@@ -387,7 +387,7 @@ ChessBoard.prototype.update = function(){
 						particles = true;
 						console.log('piece dies');
 						
-						this.pieces[x2][y2].destroy(this.pieces[x][y].duration);
+						this.pieces[x2][y2].destroy(this.pieces[x][y].duration, this.pieces[x][y].spaces);
 						
 						this.movingArray.push(this.pieces[x2][y2]);
 						if(this.pieces[x2][y2].color){
@@ -404,7 +404,7 @@ ChessBoard.prototype.update = function(){
 						// en passent happens
 						if(move.pawnCap){
 							console.log('piece dies');
-							this.pieces[x2][y].destroy(this.pieces[x][y].duration);
+							this.pieces[x2][y].destroy(this.pieces[x][y].duration, this.pieces[x][y].spaces);
 							this.movingArray.push(this.pieces[x2][y]);
 							
 							if(this.pieces[x2][y2].color){

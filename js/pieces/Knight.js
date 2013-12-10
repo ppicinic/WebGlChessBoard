@@ -37,6 +37,7 @@ Knight.prototype.init = function(scene, color, spot, board)
 	this.dy = 0;
 	this.zfix = 0;
 	this.xfix = -2;
+	this.spaces = 3;
 	
 	this.promote = false;
 	this.yMove = true;
@@ -132,15 +133,13 @@ Knight.prototype.promoted = function(ttl){
 // TODO a move method, should add the knight to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
 Knight.prototype.move = function(x, y){
-	var spaces = 3;
 	this.xLoc = x;
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20) + this.xfix;
 	this.y2 = TOP + (y * 20) + this.zfix;
-	console.log(spaces);
 	
 	this.moving = true;
-	this.duration = TIME_TO_MOVE * spaces;
+	this.duration = SPEED_TIME * this.spaces;
 	this.ttl = 0;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
@@ -155,7 +154,8 @@ Knight.prototype.move = function(x, y){
 Knight.prototype.update = function(){
 	var dt = clock.getDelta();
 	if(this.dest){
-		if(this.ttl <= TIME_TO_MOVE){
+		var self = this;
+		if(this.ttl <= (this.duration / this.spaces)){
 			//console.log('opacity drops')
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -163,7 +163,7 @@ Knight.prototype.update = function(){
 						mesh.material.transparent = true;
 						mesh.material.opacity = 1;
 					}
-					mesh.material.opacity -= (1 / TIME_TO_MOVE);
+					mesh.material.opacity -= (1 / (self.duration / self.spaces));
 				}
 			});
 		}
@@ -172,7 +172,7 @@ Knight.prototype.update = function(){
 			this.dest = false;
 			this.dead = true;
 			this.ttl = 0;
-			this.duration = TIME_TO_MOVE;
+			this.duration = (this.duration / this.spaces);
 			this.piece.position.x = this.deadx;
 			this.piece.position.y = this.deady;
 			this.piece.position.z = this.deadz;
@@ -188,9 +188,10 @@ Knight.prototype.update = function(){
 					this.firedSmoke = true;
 					this.particles = true;
 				}
+		var self = this;
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
-				mesh.material.opacity += (1 / TIME_TO_MOVE);
+				mesh.material.opacity += (1 / self.duration);
 			
 			}
 		});
@@ -241,10 +242,11 @@ Knight.prototype.update = function(){
 	}
 }
 
-Knight.prototype.destroy = function(ttl){
-
+Knight.prototype.destroy = function(ttl, spaces){
+	this.spaces = spaces;
 	this.moving = true;
 	this.ttl = ttl;
+	this.duration = ttl;
 	this.dest = true;
 
 }

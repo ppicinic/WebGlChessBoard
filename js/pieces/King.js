@@ -37,6 +37,7 @@ King.prototype.init = function(scene, color, spot, board)
 	this.y2 = 0;
 	this.dx = 0;
 	this.dy = 0;
+	this.spaces = 0;
 
 	// Low Poly - false || High Poly - true
 	this.poly = false;
@@ -107,11 +108,10 @@ King.prototype.init = function(scene, color, spot, board)
 // TODO a move method, should add the king to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
 King.prototype.move = function(x, y){
-	var spaces = 1;
 	if(this.xLoc != x){
-		spaces = Math.abs(this.xLoc - x);
+		this.spaces = Math.abs(this.xLoc - x);
 	}else{
-		spaces = Math.abs(this.yLoc - y);
+		this.spaces = Math.abs(this.yLoc - y);
 	}
 	this.xLoc = x;
 	this.yLoc = y;
@@ -120,7 +120,7 @@ King.prototype.move = function(x, y){
 	
 	this.moving = true;
 	this.ttl = 0;
-	this.duration = TIME_TO_MOVE * spaces;
+	this.duration = SPEED_TIME * this.spaces;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
 	
