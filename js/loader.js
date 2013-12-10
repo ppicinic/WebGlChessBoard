@@ -254,6 +254,18 @@ function animate() {
 		{
 			camera.position.x = 500;
 		}
+		if(camera.position.z <= -900)
+		{
+		camera.position.z = -900;
+		}
+		if(camera.position.y <= -900)
+		{
+			camera.position.y = -900;
+		}
+		if(camera.position.x <= -900)
+		{
+			camera.position.x = -900;
+		}
 		if(controlCam && userCameraControl)
 		{
 			controls.update();
