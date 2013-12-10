@@ -42,6 +42,26 @@ SceneController.prototype.changeScene = function(){
 		this.datdatgui.gui();
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controlCam = true;
+		whiteClock = document.createElement('div');
+	whiteClock.style.position = 'fixed';
+	whiteClock.style.width = 100;
+	whiteClock.style.height = 100;
+	whiteClock.style.color = "black";
+	whiteClock.innerHTML = "White Timer:";
+	whiteClock.style.top = 0 + 'px';
+	whiteClock.style.left = 5 + 'px';
+	whiteClock.style.alignContent = 'center';
+	blackClock = document.createElement('div');
+	blackClock.style.position = 'fixed';
+	blackClock.style.width = 100;
+	blackClock.style.height = 100;
+	blackClock.style.color = "black";
+	blackClock.innerHTML = "Black Timer:";
+	blackClock.style.top = 15 + 'px';
+	blackClock.style.left = 5 + 'px';
+	blackClock.style.alignContent = 'center';
+	document.body.appendChild(whiteClock);
+	document.body.appendChild(blackClock);
 	} else {
 		this.loading = true;
 		scene = this.load.scene;
