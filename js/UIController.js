@@ -267,6 +267,8 @@ UIController.prototype.gui = function(){
 	
 	gui.add(guiServParams, 'Help');
     gui.add(guiServParams,'Reset');
+	
+	
 }
 
 UIController.prototype.degui = function(){
