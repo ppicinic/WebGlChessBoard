@@ -11,7 +11,7 @@ var test;
 
 
 var start = 0;
-var userCameraControl = false;
+var userCameraControl = true;
 //Needed for GUI
 
 

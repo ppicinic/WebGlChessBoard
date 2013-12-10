@@ -12,6 +12,7 @@ CameraController.prototype.init = function(camera)
 	this.moving = false;
 	this.ttl = 0;
 	this.point = 176;
+	this.sweepOff = true;
 	
 }
 
@@ -20,31 +21,42 @@ CameraController.prototype.move = function(){
 	this.ttl = 0;
 	//this.movez = -this.movez;
 	this.moving = true;
+	if(userCameraControl){
+		this.sweepOff = true;
+	}else{
+		this.sweepOff = false;
+	}
 }
 
 CameraController.prototype.update = function(){
-	var movescale = easeInOutSin(this.ttl, this.point, (316 * this.movez), CAMERA_TIME);
-	var factor = 1;
-	var yttl = this.ttl;
-	var movey = 0;
-	if(this.ttl > CAMERA_TIME / 2){
-		factor = -1;
-		yttl -= (CAMERA_TIME / 2);
-		movey = easeInSin(yttl, 176, -176, (CAMERA_TIME/2));
+	if(this.sweepOff){
+		this.ttl++;
+		if(this.ttl >= 10){
+			this.moving = false;
+		}
 	}else{
-		movey = easeOutSin(this.ttl, 0, 176, (CAMERA_TIME/2));
-	}
-	if(!userCameraControl){
-		this.camera.position.x = movey;
-		this.camera.position.z = movescale;
-		
-	}
+		var movescale = easeInOutSin(this.ttl, this.point, (316 * this.movez), CAMERA_TIME);
+		var factor = 1;
+		var yttl = this.ttl;
+		var movey = 0;
+		if(this.ttl > CAMERA_TIME / 2){
+			factor = -1;
+			yttl -= (CAMERA_TIME / 2);
+			movey = easeInSin(yttl, 176, -176, (CAMERA_TIME/2));
+		}else{
+			movey = easeOutSin(this.ttl, 0, 176, (CAMERA_TIME/2));
+		}
+		if(!userCameraControl){
+			this.camera.position.x = movey;
+			this.camera.position.z = movescale;
+		}
 
-	this.ttl++;
-	if(this.ttl > CAMERA_TIME){
-		this.moving = false;
-		this.point += (316 * this.movez);
-		this.movez = -this.movez;
+		this.ttl++;
+		if(this.ttl > CAMERA_TIME){
+			this.moving = false;
+			this.point += (316 * this.movez);
+			this.movez = -this.movez;
+		}
 	}
 }
 
