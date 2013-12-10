@@ -338,7 +338,7 @@ Bishop.prototype.outPos = function(pos){
 	}
 	
 	this.deadx += this.xfix;
-	this.deady = 4;
+	this.deady = 2.2;
 	this.deadz += this.zfix;
 
 }

@@ -330,6 +330,6 @@ Queen.prototype.outPos = function(pos){
 	
 	
 	
-	this.deady = 4;
+	this.deady = 2.2;
 
 }
