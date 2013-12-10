@@ -35,6 +35,8 @@ CameraController.prototype.update = function(){
 		this.ttl++;
 		if(this.ttl >= 10){
 			this.moving = false;
+			this.point += (316 * this.movez);
+			this.movez = -this.movez;
 		}
 	}else{
 		var movescale = easeInOutSin(this.ttl, this.point, (316 * this.movez), this.duration);
