@@ -1,9 +1,9 @@
 var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
-var clock = new THREE.Clock();
-var particles = false;
+var clock = new THREE.Clock(); //clock for dt change
+var particles = false; //control the particles being updated before the game starts
 
-
+//Rain particles
 var rain =
 {
 positionStyle    : Type.CUBE,
@@ -27,7 +27,7 @@ positionStyle    : Type.CUBE,
 		particleDeathAge   : 1.0,		
 		emitterDeathAge    : 60
 }
-
+//Smoke particles
 var smoke =
 	{
 		positionStyle    : Type.CUBE,
@@ -80,6 +80,10 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.bishop;
 	this.queen;
 	this.king;
+	
+	///////////////////
+	//SKYBOX & TEXTURES
+	///////////////////
 	this.skybox;
 	this.skyboxName = "sunnyocean";
 	this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
@@ -97,16 +101,16 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.orange.position.x = -115;
 	this.orange.position.z = -105;
 	this.orange.position.y = 8;
-	console.log(this.orange);
 	this.scene.add(this.orange);
 	
 	function loadSkybox(board,loader,skybox)
 	{
+		//Load over the textures and create a seamless cube.
 		var imagePrefix = "Models/textures/Skybox/";
-	var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
-	var imageSuffix = ".png";
-	var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
-	
+		var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
+		var imageSuffix = ".png";
+		var skyGeometry = new THREE.CubeGeometry( 5000, 5000, 5000 );	
+		
 		var materialArray = [];
 		for (var i = 0; i < 6; i++)
 			materialArray.push( new THREE.MeshBasicMaterial({
@@ -126,7 +130,9 @@ ChessBoard.prototype.init = function(scene, camera)
 		
 	}
 
-
+	/////////////////////
+	////Load Board/Pieces
+	////////////////////
 	function loadBoard(board, loader){
 	loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
 
@@ -166,34 +172,17 @@ ChessBoard.prototype.init = function(scene, camera)
 		});
 		board.table = object;
 		board.scene.add(board.table);
-		/*var sphereGeom =  new THREE.SphereGeometry( 80, 64, 32 );
-		var refractSphereCamera = new THREE.CubeCamera( 0.1, 10000, 1024 );
-		board.board = refractSphereCamera;
-		board.scene.add( board.board );
-		
-		 refractSphereCamera.renderTarget.mapping = new THREE.CubeRefractionMapping();
-		
-		var refractMaterial = new THREE.MeshBasicMaterial( { 
-			color: 0xccccff, 
-			envMap: refractSphereCamera.renderTarget, 
-			refractionRatio: 0.985, 
-			reflectivity: 0.9 
-			} );		
-	refractMaterial.refractionRatio = 0.99;
-	refractMaterial.reflectivity = 0.9;
-	object.children[1].children[0] = new THREE.Mesh( sphereGeom, refractMaterial );
-	refractSphereCamera.position = object.children[1].children[0].position;
-	*/
 		start++;
     } );
 	}
 	
-	loadSkybox(this,this.loader,"sunnyocean/");
+	loadSkybox(this,this.loader,"sunnyocean/"); //default to sunnyocean
 	loadBoard(this, this.loader);
 	loadTable(this,this.loader);
 
 	
 	//load in all pieces
+	//loader is asynchronous, becareful
 	var board = this;
 	var loadComplete = 0;
 	this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
@@ -209,8 +198,6 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.loader.load('Models/Knight/knightlow.obj', 'Models/Knight/knight.mtl', function (object){
 		board.knight = object;
 		
-		//object.children[0].children[0].position.z -= 1;
-		//console.log(object.children[0].children[0]);
 		loadComplete++;
 		start++;
 	});
@@ -232,12 +219,7 @@ ChessBoard.prototype.init = function(scene, camera)
 
 	var loadCompleted = function(){
 		if(loadComplete == 6){
-	
-	
-	board.loadPieces();
-	
-	
-	
+			board.loadPieces(); //When completed load, execute the piece loading
 		}else{
 			setTimeout(loadCompleted, 200);
 		}
@@ -313,16 +295,14 @@ ChessBoard.prototype.loadPieces = function(){
 ChessBoard.prototype.update = function(){
 	var dt = clock.getDelta();
 	if(particles)
-	{
+	{	//When particles are first introduced, begin to update each one pushed to the array
 		for(var i = 0; i < this.engine.length; i++)
 		{
-			this.engine[i].update( dt * 0.5 );	
+			this.engine[i].update( dt * 0.5 );	//Update each with the dt from clock
 		}
 	}
-	var bool = false;
+	var bool = false; //WHAT?
 	for(var i = 0; i < this.movingArray.length; i++){
-		//console.log(this.movingArray[i].isMoving());
-		//console.log(this.movingArray[i].isMoving());
 		if(this.movingArray[i].isMoving()){
 			this.movingArray[i].update();
 			bool = true;
@@ -357,40 +337,44 @@ ChessBoard.prototype.update = function(){
 					this.pieces[rx][ry] = null;
 					this.movingArray.push(this.pieces[x2][y2]);
 					this.movingArray.push(this.pieces[rx2][ry2]);
-				}else{
+				}
+				else{
 					var x = move.x;
 					var y = move.y;
 					var x2 = move.x2;
 					var y2 = move.y2;
 					this.pieces[x][y].move(x2, y2);
-					if(this.pieces[x2][y2]){
-
-						engine = new ParticleEngine(this.scene);
-						this.engine.push(new ParticleEngine(this.scene));
+					if(this.pieces[x2][y2]){//A piece is going to kill another piece.
 						
+						//create a smoke particle effect.
+						//Pushes to this.engine to be updated
+						this.engine.push(new ParticleEngine(this.scene));
 						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
 						this.engine[this.engine.length-1].setValues( smoke );
 						this.engine[this.engine.length-1].initialize();
 						particles = true;
-						console.log('piece dies');
 						
 						this.pieces[x2][y2].destroy(this.pieces[x][y].duration, this.pieces[x][y].spaces);
-						
 						this.movingArray.push(this.pieces[x2][y2]);
+						
 						if(this.pieces[x2][y2].color){
 							this.whiteCap.push(this.pieces[x2][y2]);
 							this.pieces[x2][y2].outPos(this.whiteCap.length);
-						}else{
+						}
+						else{
 							this.blackCap.push(this.pieces[x2][y2]);
 							this.pieces[x2][y2].outPos(this.blackCap.length);
 						}
-
-						
-						
-					}else {
+					}
+					else {
 						// en passent happens
 						if(move.pawnCap){
-							console.log('piece dies');
+							this.engine.push(new ParticleEngine(this.scene));
+							smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
+							this.engine[this.engine.length-1].setValues( smoke );
+							this.engine[this.engine.length-1].initialize();
+							particles = true;
+						
 							this.pieces[x2][y].destroy(this.pieces[x][y].duration, this.pieces[x][y].spaces);
 							this.movingArray.push(this.pieces[x2][y]);
 							
@@ -403,7 +387,7 @@ ChessBoard.prototype.update = function(){
 							}
 						}
 					}
-					if(move.promote){
+					if(move.promote){ //Promotion of pieces.
 						this.pieces[x][y].promoted();
 						this.movingArray.push(this.pieces[x][y]);
 						if(move.promoteType == 'Q'){
@@ -429,35 +413,28 @@ ChessBoard.prototype.update = function(){
 				if(move.camera){
 					this.camera.move();
 					this.movingArray.push(this.camera);
-				}else{
+				}else{//GAMEOVER
 					var endAnimation = new GameOver(this.winner);
 					endAnimation.move();
 					this.movingArray.push(endAnimation);
 				}
 			}
 			
-			//console.log(this.movingArray);
-			//console.log(this.moveQueue);
-			
 		}
 	}
 }
+
+//Manual movie pieces with a string in the GUI
 ChessBoard.prototype.move = function(str){
-	if(str == "win")
-	{
-		this.moveQueue[0] = new OverMove();
-		console.log(this.moveQueue);
-	}
-	else
-	{
+
 		var move = new PieceMove(str);
 		var camMove = new CameraMove();
 		this.moveQueue.push(move);
 		this.moveQueue.push(camMove);
-	}
 	
 }
 
+//Load new textures or models
 ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 	var polyUpdate = false;
 	var board = this;
@@ -465,7 +442,7 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 		polyUpdate = true;
 		this.highpoly = poly;
 		var loadComplete = 0;
-		if(this.highpoly){
+		if(this.highpoly){ //LOAD THE HIGH POLY MODELS
 			this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
 				board.pawn = object;
 				loadComplete++;
@@ -478,9 +455,7 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 			});
 			this.loader.load('Models/Knight/knight.obj', 'Models/Knight/knight.mtl', function (object){
 				board.knight = object;
-				
-				//object.children[0].children[0].position.z -= 1;
-				//console.log(object.children[0].children[0]);
+	
 				loadComplete++;
 				start++;
 			});
@@ -500,7 +475,7 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				start++;
 			});
 		}else{
-			
+			//LOAD THE LOW POLY MODELS
 			var loadComplete = 0;
 			this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
 				board.pawn = object;
@@ -514,9 +489,6 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 			});
 			this.loader.load('Models/Knight/knightlow.obj', 'Models/Knight/knight.mtl', function (object){
 				board.knight = object;
-				
-				//object.children[0].children[0].position.z -= 1;
-				//console.log(object.children[0].children[0]);
 				loadComplete++;
 				start++;
 			});
@@ -538,18 +510,19 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 		}
 	}
 
-	if(this.texture != texture){
+	if(this.texture != texture){ //TEXTURE LOADING
 		this.texture = texture;
-		if(this.texture){
+		if(this.texture){ //MARBLE
 			this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackmarble1.jpg');
 			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitemarble1.jpg');
-		} else {
+		} else {	//WOOD
 			this.blackTexture = THREE.ImageUtils.loadTexture('Models/textures/blackwood.jpg');
 			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitewood.jpg');
 		}
 	}
 
 	function waitUpdate(){
+	//Wait for the new models and textures to load
 		if(loadComplete == 6){
 			board.updatePieces(poly, texture);
 		}else {
@@ -565,11 +538,13 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 
 }
 
+//Load a new skybox if selected
 ChessBoard.prototype.updateSkybox = function(skybox)
 {
 	var board = this;
 	if(this.skyboxName != skybox)
 	{
+		//Load all the textures from the folder and modify the cube
 		var imagePrefix = "Models/textures/Skybox/";
 		var directions  = ["posx", "negx", "posy", "negy", "posz", "negz"];
 		var imageSuffix = ".png";	
@@ -587,6 +562,7 @@ ChessBoard.prototype.updateSkybox = function(skybox)
 	}
 }
 
+//Push the new models and textures onto the pieces
 ChessBoard.prototype.updatePieces = function(poly, texture){
 	for(var x = 0; x < this.pieces.length; x++){
 		for(var y = 0; y < this.pieces[x].length; y++){
@@ -604,6 +580,7 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 
 }
 
+//Is the game being played or stopped?
 ChessBoard.prototype.isPlaying = function(){
 	var bool = false;
 	for(var i in this.movingArray){
@@ -618,6 +595,7 @@ ChessBoard.prototype.isPlaying = function(){
 	return bool;
 }
 
+//GameOver screen setup
 ChessBoard.prototype.gameOver = function(count){
 	console.log('happens');
 	if(count % 2 == 0){

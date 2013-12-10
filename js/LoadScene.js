@@ -14,19 +14,14 @@ LoadScene.prototype.init = function(duration){
 	this.geometry = new THREE.Geometry();
 
 	var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
-				directionalLight.position.set( 0, -1, 1 );
-				directionalLight.position.normalize();
-				this.scene.add( directionalLight );
+	directionalLight.position.set( 0, -1, 1 );
+	directionalLight.position.normalize();
+	this.scene.add( directionalLight );
 
-				pointLight = new THREE.PointLight( 0xaaaaaa, 2, 300 );
-				pointLight.position.set( 0, 0, 0 );
-				this.scene.add( pointLight );
-
-
+	pointLight = new THREE.PointLight( 0xaaaaaa, 2, 300 );
+	pointLight.position.set( 0, 0, 0 );
+	this.scene.add( pointLight );
 	
-	
-
-	//TODO - Particles effects
 	for(var i = 0; i < 35000; i++){
 		var vertex = new THREE.Vector3();
 		vertex.x = 3000 * Math.random() - 1500;

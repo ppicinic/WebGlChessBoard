@@ -1,4 +1,5 @@
 var GameOver = function (text) { this.init(text); }
+//Fireworks particles
 var firework =
 	{
 		positionStyle  : Type.SPHERE,
@@ -32,15 +33,15 @@ GameOver.prototype.init = function(text)
 	this.duration3 = 550;
 	this.fireworkduration = 0;
 	this.moving = false;
-	this.clock = new THREE.Clock();
-	this.engine = new Array();
+	this.clock = new THREE.Clock(); //Clock for dt particle changes
+	this.engine = new Array();	//Partile engine array
 	this.particles = false;
 	
 }
 
 GameOver.prototype.move = function(){
 	this.ttl = 0;
-	//this.movez = -this.movez;
+	//Create 3D text displaying who won the game
 	this.moving = true;
 	this.textMaterial = new THREE.MeshFaceMaterial( [
 					new THREE.MeshLambertMaterial( { color: 0xaaccff, shading: THREE.FlatShading, opacity: 0.95 } ),
@@ -75,12 +76,11 @@ GameOver.prototype.move = function(){
 		this.text.rotation.y = Math.PI;
 		this.text.position.x = -this.centerOffset;
 	}
+	//Create the first firework explosion
 	this.engine.push(new ParticleEngine(scene));
-	
 	this.engine[0].setValues( firework );
 	this.engine[0].initialize();
-	
-	this.particles = true;
+	this.particles = true; //Begin to update the fireworks
 	scene.add(this.text);
 }
 
@@ -88,12 +88,13 @@ GameOver.prototype.update = function(){
 
 	var dt = this.clock.getDelta();
 	if(this.particles)
-	{
+	{   //Update the firework particles over the draws to animate them.
 		for(var i = 0; i < this.engine.length; i++)
 		{
 			this.engine[i].update( dt * 0.5 );	
 		}
 		this.fireworkduration += dt * 0.5;
+		//If the firework ends, create a new one over time. Up to 4 should fire.
 		if(this.fireworkduration > 1 &&  (this.fireworkduration <= 1 + (dt * 0.5) ))
 		{
 			this.engine.push(new ParticleEngine(scene));

@@ -12,10 +12,9 @@ var test;
 
 var start = 0;
 var userCameraControl = true;
-//Needed for GUI
 
-var whiteClock, blackClock;
-whiteClock = document.createElement('div');
+var whiteClock, blackClock; //Timers in the top left corner of the game
+whiteClock = document.createElement('div'); //HTML text because DATGUI doesn't support unedit vars
 	whiteClock.style.position = 'fixed';
 	whiteClock.style.width = 100;
 	whiteClock.style.height = 100;
@@ -93,17 +92,7 @@ function init() {
 	game = new GameController();
 	scene = new THREE.Scene();
 	sceneControl = new SceneController(game, loadScene);
-	/*camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
-	camera.position.z = 176;
-	camera.position.y = 100;*/
-	
 
-	// scene
-
-	
-	
-	//datdatgui = new UIController();
-	
 	renderer = new THREE.WebGLRenderer({antialias: true, maxLights:true});
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	//renderer.shadowMapAutoUpdate = false;
@@ -117,35 +106,12 @@ function init() {
 	document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 	document.addEventListener( 'keyup', onKeyUp, false );
 	document.addEventListener( 'keydown', onKeyDown, false );
-
-	//
-
 	window.addEventListener( 'resize', onWindowResize, false );
-	
-	
-	
 	animate();
 	//setTimeout(toAnim, 200);
-	
-	
-	
-
-}
-function toAnim(){
-	if(start == 33){
-		datdatgui.gui();
-		doneLoading = true;
-		scene = game.scene;
-		camera = game.camera;
-		
-		endTime = new Date().getTime();
-		console.log(endTime - startTime);
-	}
-	else{
-		setTimeout(toAnim, 200);
-	}
 }
 
+//Our cloneObj method to instance objects
 function cloneObj ( obj ) {
     var i, cpy = new THREE.Object3D();
     for (var i in obj.children) {
@@ -156,6 +122,7 @@ function cloneObj ( obj ) {
     return cpy;
 }
 
+//cloneObjMtl to clone object from loading mtl files for instancing
 function cloneObjMtl ( objmtl ) {
     var i, cpy = new THREE.Object3D();
     for (var i in objmtl.children) {
@@ -171,6 +138,14 @@ function cloneObjMtl ( objmtl ) {
     return cpy;
 }
 
+function onKeyUp( event ) {
+	
+}
+
+function onKeyDown( event ) {
+	
+}
+
 function onWindowResize() {
 
 	windowHalfX = window.innerWidth / 2;
@@ -183,45 +158,6 @@ function onWindowResize() {
 
 }
 
-function onKeyUp( event ) {
-	//camera.position.z = -camera.position.z;
-	/*var testloader = new THREE.OBJMTLLoader();
-	testloader.load('Models/Pawn/Pawn.obj', 'Models/Pawn/pawn.mtl', function ( object ) {
-		// scales and positions the model;
-		object.position.z = TOP + 60;
-		object.position.x = LEFT + 40;;
-		object.position.y = 4.5;
-
-		object.scale.x = object.scale.y = object.scale.z = 5;
-
-		scene.add(object);
-		});*/
-	if(!sceneControl.loading){
-		//var str = prompt("Enter a move");
-		//board.move(str);
-		if(notPlaying){
-			notPlaying = false;
-			for(var i = 0; i < moveList5.length; i++){
-				//game.move(moveList5[i]);
-			}
-		}
-	}
-	/*var z = camera.position.z;
-	if(z == 170){
-		camera.position.z = -140;
-	}else{
-		camera.position.z = 175;
-	}*/
-	/*
-        Implement keyboard controls for pedaling (i.e., spinning the wheels)
-    block commits*/
-}
-
-function onKeyDown( event ) {
-    /*
-        Implement keyboard controls for steering (i.e. turning the handlebars)
-    */
-}
 
 function onDocumentMouseMove( event ) {
 
@@ -229,19 +165,17 @@ function onDocumentMouseMove( event ) {
 	mouseY = ( event.clientY - windowHalfY ) / 2;
 }
 
-//
 
 function animate() {
 	requestAnimationFrame( animate );
-    /*
-        TODO Perform updates for animation purposes
-    */
+
 	if(!sceneControl.loading){
-		//console.log('happens');
-		//scene.rotation.x += .5;
-		//scene.rotation.y += .5;
-		//scene.rotation.x += .5;
+		//No longer loading the game
 		game.update();
+		
+		//////////////
+		//Camera bounds
+		//////////////
 		if(camera.position.z >= 500)
 		{
 		camera.position.z = 500;
@@ -266,6 +200,8 @@ function animate() {
 		{
 			camera.position.x = -900;
 		}
+		
+		//Manual control of camera with mouse
 		if(controlCam && userCameraControl)
 		{
 			controls.update();
@@ -274,17 +210,11 @@ function animate() {
 		
 	}
 	
-	
-	
 	render();
 
 }
 
 function render() {
-
-	//camera.position.x += ( mouseX - camera.position.x ) * .05;
-	//camera.position.y += ( - mouseY - camera.position.y ) * .05;
-	//test.position.z += .5;
 	camera.lookAt( scene.position );
 	renderer.render( scene, camera );
 

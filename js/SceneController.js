@@ -15,16 +15,14 @@ SceneController.prototype.init = function(gameScene, loading){
 	scene = this.load.scene;
 	camera = this.load.camera;
 	
-	this.datdatgui = new UIController();
-	
-
+	this.datdatgui = new UIController();//datgui load
 	var self = this;
 
 	function change() {
 	
 		if(start == self.duration){
 			self.changeScene();
-			//self.datdatgui.gui();
+			
 		}else{
 			setTimeout(change, 200);
 		}
@@ -39,12 +37,15 @@ SceneController.prototype.changeScene = function(){
 		scene = this.game.scene;
 		camera = this.game.camera;
 		this.loading = false;
-		this.datdatgui.gui();
-		controls = new THREE.OrbitControls( camera, renderer.domElement );
-		controlCam = true;
+		this.datdatgui.gui(); //Begin to show the gui
+		controls = new THREE.OrbitControls( camera, renderer.domElement ); //Mouse camera controls
+		controlCam = true; //Manual camera control
 		
-	blackClock.innerHTML = "Black Timer: " + blackTime;
-	whiteClock.innerHTML = "White Timer: " + whiteTime;
+	blackClock.innerHTML = "Black Timer: " + blackTime; //Set the timers up
+	whiteClock.innerHTML = "White Timer: " + whiteTime; 
+	////////
+	//FPS
+	////////
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
@@ -52,11 +53,12 @@ SceneController.prototype.changeScene = function(){
 	stats.domElement.style.zIndex = 100;
 	container.appendChild( stats.domElement );
 	} else {
+	//Game is loading
 		this.loading = true;
 		scene = this.load.scene;
-		
 		camera = this.load.camera;
-		this.datdatgui.degui();
+		
+		this.datdatgui.degui(); //Destroy gui
 	}
 }
 
@@ -70,14 +72,14 @@ SceneController.prototype.loadChanges = function(poly){
 	this.load = new LoadScene(this.duration);
 	this.changeScene();
 
-	whiteClock.innerHTML = "";
+	whiteClock.innerHTML = ""; //Hide timer text during loading screen
 	blackClock.innerHTML = "";
 	var self = this;
 
 	function reChange() {
 		if(start == self.duration){
 			self.changeScene();
-			//self.datdatgui.gui();
+
 		}else{
 			setTimeout(reChange, 200);
 		}
@@ -95,7 +97,7 @@ SceneController.prototype.reset = function(){
 	camera = this.load.camera;
 	game = new GameController();
 	this.game = game;
-	whiteClock.innerHTML = "";
+	whiteClock.innerHTML = ""; //Hide timer text
 	blackClock.innerHTML = "";
 	var self = this;
 	function resetChange(){
