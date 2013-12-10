@@ -42,6 +42,7 @@ Bishop.prototype.init = function(scene, color, spot, board)
 	this.deady = 0;
 	this.deadz = 0;
 	this.dead = false;
+	this.spaces = 0;
 	
 	this.clock = new THREE.Clock();
 	this.particles = false;
@@ -129,19 +130,18 @@ Bishop.prototype.promoted = function(ttl){
 Bishop.prototype.move = function(x, y){
 	var spaces = 1;
 	if(this.xLoc != x){
-		spaces = Math.abs(this.xLoc - x);
+		this.spaces = Math.abs(this.xLoc - x);
 	}else{
-		spaces = Math.abs(this.yLoc - y);
+		this.spaces = Math.abs(this.yLoc - y);
 	}
 	this.xLoc = x;
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20) + this.xfix;
 	this.y2 = TOP + (y * 20) + this.zfix;
-	console.log(spaces);
 	
 	this.moving = true;
 	this.ttl = 0;
-	this.duration = TIME_TO_MOVE * spaces;
+	this.duration = SPEED_TIME * this.spaces;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
 	
@@ -149,7 +149,8 @@ Bishop.prototype.move = function(x, y){
 
 Bishop.prototype.update = function(){
 	if(this.dest){
-		if(this.ttl <= TIME_TO_MOVE){
+		var self = this;
+		if(this.ttl <= (this.duration / this.spaces)){
 			//console.log('opacity drops')
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -157,7 +158,7 @@ Bishop.prototype.update = function(){
 						mesh.material.transparent = true;
 						mesh.material.opacity = 1;
 					}
-					mesh.material.opacity -= (1 / TIME_TO_MOVE);
+					mesh.material.opacity -= (1 / (self.duration / self.spaces));
 				}
 			});
 		}
@@ -166,7 +167,7 @@ Bishop.prototype.update = function(){
 			this.dest = false;
 			this.dead = true;
 			this.ttl = 0;
-			this.duration = TIME_TO_MOVE;
+			this.duration = (this.duration / this.spaces);
 			this.piece.position.x = this.deadx;
 			this.piece.position.y = this.deady;
 			this.piece.position.z = this.deadz;
@@ -182,9 +183,10 @@ Bishop.prototype.update = function(){
 					this.firedSmoke = true;
 					this.particles = true;
 				}
+		var self = this;
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
-				mesh.material.opacity += (1 / TIME_TO_MOVE);
+				mesh.material.opacity += (1 / self.duration);
 				
 			}
 		});
@@ -230,9 +232,11 @@ Bishop.prototype.update = function(){
 	}
 }
 
-Bishop.prototype.destroy = function(ttl){
+Bishop.prototype.destroy = function(ttl, spaces){
 	this.moving = true;
+	this.spaces = spaces;
 	this.ttl = ttl;
+	this.duration = ttl;
 	this.dest = true;
 }
 

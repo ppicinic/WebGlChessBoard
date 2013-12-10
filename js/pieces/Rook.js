@@ -38,6 +38,7 @@ Rook.prototype.init = function(scene, color, spot, board)
 	this.dy = 0;
 	this.promote = false;
 	this.castle = false;
+	this.spaces = 0;
 
 	this.deadx = 0;
 	this.deady = 0;
@@ -107,7 +108,6 @@ Rook.prototype.init = function(scene, color, spot, board)
 }
 
 Rook.prototype.promoted = function(ttl){
-	console.log('queen promotion');
 	this.piece.traverse(function(mesh){
 		if(mesh instanceof THREE.Mesh){
 			mesh.material.transparent = true;
@@ -123,11 +123,10 @@ Rook.prototype.promoted = function(ttl){
 // TODO a move method, should add the rook to a move Queue that will animate one move at a time
 // Should handle callback to board for promotion
 Rook.prototype.move = function(x, y){
-	var spaces = 1;
 	if(this.xLoc != x){
-		spaces = Math.abs(this.xLoc - x);
+		this.spaces = Math.abs(this.xLoc - x);
 	}else{
-		spaces = Math.abs(this.yLoc - y);
+		this.spaces = Math.abs(this.yLoc - y);
 	}
 	this.xLoc = x;
 	this.yLoc = y;
@@ -137,7 +136,7 @@ Rook.prototype.move = function(x, y){
 	
 	this.moving = true;
 	this.ttl = 0;
-	this.duration = TIME_TO_MOVE * spaces;
+	this.duration = SPEED_TIME * this.spaces;
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
 	
@@ -148,7 +147,6 @@ Rook.prototype.castled = function(x, y, duration){
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20) + this.xfix;
 	this.y2 = TOP + (y * 20);
-	//console.log(spaces);
 	
 	this.moving = true;
 	this.castle = true;
@@ -160,7 +158,8 @@ Rook.prototype.castled = function(x, y, duration){
 
 Rook.prototype.update = function(){
 	if(this.dest){
-		if(this.ttl <= TIME_TO_MOVE){
+		var self = this;
+		if(this.ttl <= (this.duration / this.spaces)){
 			//console.log('opacity drops')
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -168,7 +167,7 @@ Rook.prototype.update = function(){
 						mesh.material.transparent = true;
 						mesh.material.opacity = 1;
 					}
-					mesh.material.opacity -= (1 / TIME_TO_MOVE);
+					mesh.material.opacity -= (1 / (self.duration / self.spaces));
 				}
 			});
 		}
@@ -177,7 +176,7 @@ Rook.prototype.update = function(){
 			this.dest = false;
 			this.dead = true;
 			this.ttl = 0;
-			this.duration = TIME_TO_MOVE;
+			this.duration = (this.duration / this.spaces);
 			this.piece.position.x = this.deadx;
 			this.piece.position.y = this.deady;
 			this.piece.position.z = this.deadz;
@@ -193,9 +192,10 @@ Rook.prototype.update = function(){
 					this.firedSmoke = true;
 					this.particles = true;
 				}
+		var self = this;
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
-				mesh.material.opacity += (1 / TIME_TO_MOVE);
+				mesh.material.opacity += (1 / self.duration);
 			}
 		});
 		this.ttl++;
@@ -249,9 +249,11 @@ Rook.prototype.update = function(){
 	}
 }
 
-Rook.prototype.destroy = function(ttl){
+Rook.prototype.destroy = function(ttl, spaces){
+	this.spaces = spaces;
 	this.moving = true;
 	this.ttl = ttl;
+	this.duration = ttl;
 	this.dest = true;
 }
 

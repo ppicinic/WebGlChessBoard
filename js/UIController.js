@@ -236,9 +236,11 @@ UIController.prototype.gui = function(){
 	speedFolder = gui.addFolder('Speed');
 	speedFolder.add(guiCameraParams, 'speed', 100,500).step(10).name("Sweep Speed").onFinishChange(function()
 	{
+        CAMERA_TIME = guiCameraParams.speed;
 	});
 	speedFolder.add(guiCameraParams, 'pieceSpeed', 10,80).step(2).name("Chess Speed").onFinishChange(function()
 	{
+        SPEED_TIME = guiCameraParams.pieceSpeed;
 	});
     
       
