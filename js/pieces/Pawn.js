@@ -208,6 +208,12 @@ Pawn.prototype.update = function(){
 	}else {
 		var newYpos = easeInOutSin(this.ttl, this.y, this.dy, this.duration);
 		var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
+		if(this.ttl >= (this.duration / 2)){
+			var newTTL = this.ttl - (this.duration / 2);
+			this.piece.position.y = easeInOutSin(newTTL, 6, -1.5, (this.duration / 2));
+		}else{
+			this.piece.position.y = easeInOutSin(this.ttl, 4.5, 1.5, (this.duration / 2));
+		}
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
 		this.ttl++;
