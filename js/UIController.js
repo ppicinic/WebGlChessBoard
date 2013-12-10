@@ -1,5 +1,5 @@
  //Needed for GUI
-var cameraFolder, serverFolder, themeFolder, guiServParams, guiGfxParams, guiThemeParams, moveFolder, gui; 
+var cameraFolder, serverFolder, themeFolder, guiServParams, guiGfxParams, guiThemeParams,speedFolder, moveFolder, gui; 
 
 						
 var UIController = function() { this.init(); }
@@ -209,30 +209,33 @@ UIController.prototype.gui = function(){
 	moveFolder.add(guiMoveParams, 'Move');
 	
     cameraFolder = gui.addFolder('Camera');
-	cameraFolder.add(guiCameraParams, 'control').name("Manual Control:").onFinishChange(function()
+	cameraFolder.add(guiCameraParams, 'control').name("Sweep Camera:").onFinishChange(function()
 	{
 		if(guiCameraParams.control)
-		{
-			//TODO DISABLE SWEEP CAMERA HERE
-            userCameraControl = true;
-			cameraFolder.add(camera.position, 'x', -500,500).step(5);
-			cameraFolder.add(camera.position, 'y', -500,500).step(5);
-			cameraFolder.add(camera.position, 'z', -500,500).step(5);
-			cameraFolder.add(guiCameraParams, 'speed', -100,500).step(10).name("Speed");
-			cameraFolder.add(guiCameraParams, 'pieceSpeed', 10,80).step(5).name("Chess Speed");
-		}
-		else
 		{
             userCameraControl = false;
             game.camera.position.y = 100;
 			cameraFolder.__controllers[1].remove();
 			cameraFolder.__controllers[2].remove();
 			cameraFolder.__controllers[3].remove();
-			cameraFolder.__controllers[4].remove();
-			cameraFolder.__controllers[5].remove();
-			cameraFolder.__controllers.splice(0,5);
+			cameraFolder.__controllers.splice(0,3);
+		}
+		else
+		{
+			userCameraControl = true;
+			cameraFolder.add(camera.position, 'x', -500,500).step(5);
+			cameraFolder.add(camera.position, 'y', -500,500).step(5);
+			cameraFolder.add(camera.position, 'z', -500,500).step(5);
 		}
 	});
+	userCameraControl = true;
+	cameraFolder.add(camera.position, 'x', -500,500).step(5);
+	cameraFolder.add(camera.position, 'y', -500,500).step(5);
+	cameraFolder.add(camera.position, 'z', -500,500).step(5);
+	
+	speedFolder = gui.addFolder('Speed');
+	speedFolder.add(guiCameraParams, 'speed', 100,500).step(10).name("Sweep Speed");
+	speedFolder.add(guiCameraParams, 'pieceSpeed', 10,80).step(5).name("Chess Speed");
     
       
     themeFolder = gui.addFolder('Themes');
