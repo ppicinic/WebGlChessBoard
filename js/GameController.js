@@ -77,9 +77,10 @@ GameController.prototype.updateTimer = function(){
 		}else{
 			blackTime = this.blackTime - seconds;
 		}
-
-		blackClock.innerHTML = "Black Timer:" + blackTime;
-		whiteClock.innerHTML = "White Timer:" + whiteTime;
+		if(!sceneControl.loading){
+			blackClock.innerHTML = "Black Timer:" + blackTime;
+			whiteClock.innerHTML = "White Timer:" + whiteTime;
+		}
 		var self = this;
 		setTimeout(function(){self.updateTimer();}, 1000);
 	}else{

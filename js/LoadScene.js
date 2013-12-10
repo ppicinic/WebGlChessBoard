@@ -72,3 +72,8 @@ LoadScene.prototype.init = function(duration){
 
 	this.scene.add(this.text);
 }
+
+LoadScene.prototype.update = function(){
+	var load = Math.floor(((start / this.duration) * 100));
+	whiteClock.innerHTML = "Loading: " + load + "%";
+}

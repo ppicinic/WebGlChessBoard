@@ -50,6 +50,8 @@ UIController.prototype.init = function(){
 			guiThemeParams.type = "Marble";
 			guiThemeParams.type = "Low";
 			guiServParams.Close();
+            blackTime = 900;
+            whiteTime = 900;
 			self.connection = false;
 			self.currentlyConnected = false;
 			console.log("Reset here");
