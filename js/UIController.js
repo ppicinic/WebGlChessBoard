@@ -229,13 +229,17 @@ UIController.prototype.gui = function(){
 		}
 	});
 	userCameraControl = true;
-	cameraFolder.add(camera.position, 'x', -500,500).step(5);
-	cameraFolder.add(camera.position, 'y', -500,500).step(5);
-	cameraFolder.add(camera.position, 'z', -500,500).step(5);
+	cameraFolder.add(camera.position, 'x', -500,500).step(5).listen();
+	cameraFolder.add(camera.position, 'y', -500,500).step(5).listen();
+	cameraFolder.add(camera.position, 'z', -500,500).step(5).listen();
 	
 	speedFolder = gui.addFolder('Speed');
-	speedFolder.add(guiCameraParams, 'speed', 100,500).step(10).name("Sweep Speed");
-	speedFolder.add(guiCameraParams, 'pieceSpeed', 10,80).step(5).name("Chess Speed");
+	speedFolder.add(guiCameraParams, 'speed', 100,500).step(10).name("Sweep Speed").onFinishChange(function()
+	{
+	});
+	speedFolder.add(guiCameraParams, 'pieceSpeed', 10,80).step(2).name("Chess Speed").onFinishChange(function()
+	{
+	});
     
       
     themeFolder = gui.addFolder('Themes');

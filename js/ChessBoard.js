@@ -2,6 +2,7 @@ var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
 var clock = new THREE.Clock();
 var particles = false;
+var timerClock;
 
 var rain =
 {
@@ -241,7 +242,21 @@ ChessBoard.prototype.init = function(scene, camera)
 			setTimeout(loadCompleted, 200);
 		}
 	};
-
+	
+	timerClock = document.createElement('div');
+	timerClock.style.position = 'fixed';
+	//timerClock.style.zIndex = 1;    // if you still don't see the label, try uncommenting this
+	timerClock.style.width = 100;
+	timerClock.style.height = 100;
+	timerClock.style.backgroundColor = "blue";
+	timerClock.innerHTML = "White Timer:";
+	timerClock.style.top = 0 + 'px';
+	timerClock.style.left = 5 + 'px';
+	timerClock.style.right = 5 + 'px';
+	timerClock.style.alignContent = 'Center';
+	console.log(timerClock.style);
+	//timerClock.style.text-align = 'center';
+	document.body.appendChild(timerClock);
 	setTimeout(loadCompleted, 200);
 
 	
