@@ -370,7 +370,7 @@ ChessBoard.prototype.update = function(){
 						// en passent happens
 						if(move.pawnCap){
 							this.engine.push(new ParticleEngine(this.scene));
-							smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
+							smoke.positionBase = new THREE.Vector3(this.pieces[x2][y].piece.position.x,this.pieces[x2][y].piece.position.y,this.pieces[x2][y].piece.position.z);
 							this.engine[this.engine.length-1].setValues( smoke );
 							this.engine[this.engine.length-1].initialize();
 							particles = true;
@@ -378,12 +378,12 @@ ChessBoard.prototype.update = function(){
 							this.pieces[x2][y].destroy(this.pieces[x][y].duration, this.pieces[x][y].spaces);
 							this.movingArray.push(this.pieces[x2][y]);
 							
-							if(this.pieces[x2][y2].color){
-								this.whiteCap.push(this.pieces[x2][y2]);
-								this.pieces[x2][y2].outPos(this.whiteCap.length);
+							if(this.pieces[x2][y].color){
+								this.whiteCap.push(this.pieces[x2][y]);
+								this.pieces[x2][y].outPos(this.whiteCap.length);
 							}else{
-								this.blackCap.push(this.pieces[x2][y2]);
-								this.pieces[x2][y2].outPos(this.blackCap.length);
+								this.blackCap.push(this.pieces[x2][y]);
+								this.pieces[x2][y].outPos(this.blackCap.length);
 							}
 						}
 					}
