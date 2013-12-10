@@ -1,7 +1,7 @@
 
 var SceneController = function(gameScene, loading){ this.init(gameScene, loading); }
 
-
+var stats;
 
 SceneController.prototype.init = function(gameScene, loading){
 
@@ -47,7 +47,7 @@ SceneController.prototype.changeScene = function(){
 	whiteClock.style.width = 100;
 	whiteClock.style.height = 100;
 	whiteClock.style.color = "black";
-	whiteClock.innerHTML = "White Timer:";
+	whiteClock.innerHTML = "White Timer:" + blackTime;
 	whiteClock.style.top = 0 + 'px';
 	whiteClock.style.left = 5 + 'px';
 	whiteClock.style.alignContent = 'center';
@@ -56,12 +56,19 @@ SceneController.prototype.changeScene = function(){
 	blackClock.style.width = 100;
 	blackClock.style.height = 100;
 	blackClock.style.color = "black";
-	blackClock.innerHTML = "Black Timer:";
+	blackClock.innerHTML = "Black Timer:" + blackTime;
 	blackClock.style.top = 15 + 'px';
 	blackClock.style.left = 5 + 'px';
 	blackClock.style.alignContent = 'center';
 	document.body.appendChild(whiteClock);
 	document.body.appendChild(blackClock);
+	
+	stats = new Stats();
+	stats.setMode(0); // 0: fps, 1: ms
+	stats.domElement.style.position = 'absolute';
+	stats.domElement.style.bottom = '0px';
+	stats.domElement.style.zIndex = 100;
+	container.appendChild( stats.domElement );
 	} else {
 		this.loading = true;
 		scene = this.load.scene;

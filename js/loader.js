@@ -24,6 +24,8 @@ var endTime;
 var datdatgui;
 var sceneControl;
 var loadScene;
+var whiteTime = 900;
+var blackTime = 900;
 
 init();
 var board;
@@ -235,7 +237,7 @@ function animate() {
 		{
 			controls.update();
 		}
-		
+		stats.update();
 		
 	}
 	

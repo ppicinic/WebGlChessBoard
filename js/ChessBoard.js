@@ -150,7 +150,7 @@ ChessBoard.prototype.init = function(scene, camera)
 	function loadTable(board, loader){
 	loader.load( 'Models/Table/table.obj', 'Models/Table/table.mtl', function ( object ) {
 		var bump = THREE.ImageUtils.loadTexture("Models/textures/blackwood.jpg");
-		console.log(object);
+		
 		object.position.x = 0;
 		object.position.z = 12;
 		object.position.y = -40;
