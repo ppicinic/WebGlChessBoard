@@ -82,7 +82,11 @@ UIController.prototype.init = function(){
 	guiCameraParams = {
 		control: false,
 		speed:	250,
-		pieceSpeed: 40
+		pieceSpeed: 40,
+		cameraSide: function(){camera.position.x = 165; camera.position.y = 65; camera.position.z = -5;},
+		cameraWhite: function(){camera.position.x = 0; camera.position.y = 100; camera.position.z = 176;},
+		cameraBlack: function(){camera.position.x = 0; camera.position.y = 100; camera.position.z = -140;},
+		cameraTop: function(){camera.position.x = -5; camera.position.y = 260; camera.position.z = 130;}
 	};
 	
 	/*guiGfxParams = {
@@ -218,7 +222,11 @@ UIController.prototype.gui = function(){
 			cameraFolder.__controllers[1].remove();
 			cameraFolder.__controllers[2].remove();
 			cameraFolder.__controllers[3].remove();
-			cameraFolder.__controllers.splice(0,3);
+			cameraFolder.__controllers[4].remove();
+			cameraFolder.__controllers[5].remove();
+			cameraFolder.__controllers[6].remove();
+			cameraFolder.__controllers[7].remove();
+			cameraFolder.__controllers.splice(0,7);
 		}
 		else
 		{
@@ -226,13 +234,21 @@ UIController.prototype.gui = function(){
 			cameraFolder.add(camera.position, 'x', -500,500).step(5);
 			cameraFolder.add(camera.position, 'y', -500,500).step(5);
 			cameraFolder.add(camera.position, 'z', -500,500).step(5);
+			cameraFolder.add(guiCameraParams,'cameraTop').name("Top Preset");
+			cameraFolder.add(guiCameraParams,'cameraWhite').name("White Preset");
+			cameraFolder.add(guiCameraParams,'cameraBlack').name("Black Preset");
+			cameraFolder.add(guiCameraParams,'cameraSide').name("Side Preset");
 		}
 	});
 	userCameraControl = true;
 	cameraFolder.add(camera.position, 'x', -500,500).step(5).listen();
 	cameraFolder.add(camera.position, 'y', -500,500).step(5).listen();
 	cameraFolder.add(camera.position, 'z', -500,500).step(5).listen();
-	
+	cameraFolder.add(guiCameraParams,'cameraTop').name("Top Preset");
+	cameraFolder.add(guiCameraParams,'cameraWhite').name("White Preset");
+	cameraFolder.add(guiCameraParams,'cameraBlack').name("Black Preset");
+	cameraFolder.add(guiCameraParams,'cameraSide').name("Side Preset");
+
 	speedFolder = gui.addFolder('Speed');
 	speedFolder.add(guiCameraParams, 'speed', 100,500).step(10).name("Sweep Speed").onFinishChange(function()
 	{
