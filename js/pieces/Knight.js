@@ -233,6 +233,12 @@ Knight.prototype.update = function(){
 		}
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
+		if(this.ttl >= (this.duration / 2)){
+			var newTTL = this.ttl - (this.duration / 2);
+			this.piece.position.y = easeInOutSin(newTTL, 16.5, -4, (this.duration / 2));
+		}else{
+			this.piece.position.y = easeInOutSin(this.ttl, 12.5, 4, (this.duration / 2));
+		}
 		this.ttl++;
 		if(this.ttl > this.duration){
 			this.moving = false;
