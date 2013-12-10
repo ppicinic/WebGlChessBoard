@@ -131,6 +131,12 @@ King.prototype.update = function(){
 	var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
 	this.piece.position.z = newYpos;
 	this.piece.position.x = newXpos;
+	if(this.ttl >= (this.duration / 2)){
+			var newTTL = this.ttl - (this.duration / 2);
+			this.piece.position.y = easeInOutSin(newTTL, 5.5, -1, (this.duration / 2));
+		}else{
+			this.piece.position.y = easeInOutSin(this.ttl, 4.5, 1, (this.duration / 2));
+		}
 	this.ttl++;
 	if(this.ttl > this.duration){
 		this.moving = false;

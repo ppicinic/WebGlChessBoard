@@ -215,6 +215,12 @@ Queen.prototype.update = function(){
 		var newXpos = easeInOutExp(this.ttl, this.x, this.dx, this.duration);
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
+		if(this.ttl >= (this.duration / 2)){
+			var newTTL = this.ttl - (this.duration / 2);
+			this.piece.position.y = easeInOutSin(newTTL, 7.5, -3, (this.duration / 2));
+		}else{
+			this.piece.position.y = easeInOutSin(this.ttl, 4.5, 3, (this.duration / 2));
+		}
 		this.ttl++;
 		if(this.ttl > this.duration){
 			this.moving = false;
