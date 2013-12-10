@@ -147,7 +147,7 @@ function ParticleEngine(scene)
         /////////////////////////
         // PARTICLE PROPERTIES //
         /////////////////////////
-        this.scene = scene;
+       
         this.positionStyle = Type.CUBE;                
         this.positionBase   = new THREE.Vector3();
         // cube shape data
@@ -359,7 +359,7 @@ ParticleEngine.prototype.initialize = function()
         this.particleMesh = new THREE.ParticleSystem( this.particleGeometry, this.particleMaterial );
         this.particleMesh.dynamic = true;
         this.particleMesh.sortParticles = true;
-        this.scene.add( this.particleMesh );
+        scene.add( this.particleMesh );
 }
 
 ParticleEngine.prototype.update = function(dt)

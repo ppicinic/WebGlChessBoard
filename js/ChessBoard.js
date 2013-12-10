@@ -316,8 +316,11 @@ ChessBoard.prototype.update = function(){
 	{
 		for(var i = 0; i < this.engine.length; i++)
 		{
-			this.engine[i].update( dt * 0.5 );	
+			this.engine[i].update( dt * 0.8 );	
 		}
+
+
+		
 	}
 	var bool = false;
 	for(var i = 0; i < this.movingArray.length; i++){
@@ -365,14 +368,15 @@ ChessBoard.prototype.update = function(){
 					this.pieces[x][y].move(x2, y2);
 					if(this.pieces[x2][y2]){
 
-						engine = new ParticleEngine(this.scene);
+			
 						this.engine.push(new ParticleEngine(this.scene));
 						
 						smoke.positionBase = new THREE.Vector3(this.pieces[x2][y2].piece.position.x,this.pieces[x2][y2].piece.position.y,this.pieces[x2][y2].piece.position.z);
 						this.engine[this.engine.length-1].setValues( smoke );
 						this.engine[this.engine.length-1].initialize();
 						particles = true;
-						console.log('piece dies');
+				
+					
 						
 						this.pieces[x2][y2].destroy(this.pieces[x][y].duration, this.pieces[x][y].spaces);
 						
