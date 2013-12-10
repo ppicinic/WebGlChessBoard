@@ -14,6 +14,7 @@ var start = 0;
 var userCameraControl = true;
 
 var whiteClock, blackClock; //Timers in the top left corner of the game
+var teamName;
 whiteClock = document.createElement('div'); //HTML text because DATGUI doesn't support unedit vars
 	whiteClock.style.position = 'fixed';
 	whiteClock.style.width = 100;
@@ -34,6 +35,16 @@ whiteClock = document.createElement('div'); //HTML text because DATGUI doesn't s
 	blackClock.style.alignContent = 'center';
 	document.body.appendChild(whiteClock);
 	document.body.appendChild(blackClock);
+	teamName = document.createElement('div');
+	teamName.style.position = 'fixed';
+	teamName.style.width = 100;
+	teamName.style.height = 100;
+	teamName.style.color = "black";
+	teamName.innerHTML = "HEY";
+	teamName.style.top = 40 + 'px';
+	teamName.style.left = 5 + 'px';
+	teamName.style.alignContent = 'center';
+	document.body.appendChild(teamName);
 
 var mouseX = 0, mouseY = 0;
 
