@@ -42,27 +42,9 @@ SceneController.prototype.changeScene = function(){
 		this.datdatgui.gui();
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 		controlCam = true;
-		whiteClock = document.createElement('div');
-	whiteClock.style.position = 'fixed';
-	whiteClock.style.width = 100;
-	whiteClock.style.height = 100;
-	whiteClock.style.color = "black";
-	whiteClock.innerHTML = "White Timer:" + blackTime;
-	whiteClock.style.top = 0 + 'px';
-	whiteClock.style.left = 5 + 'px';
-	whiteClock.style.alignContent = 'center';
-	blackClock = document.createElement('div');
-	blackClock.style.position = 'fixed';
-	blackClock.style.width = 100;
-	blackClock.style.height = 100;
-	blackClock.style.color = "black";
-	blackClock.innerHTML = "Black Timer:" + blackTime;
-	blackClock.style.top = 15 + 'px';
-	blackClock.style.left = 5 + 'px';
-	blackClock.style.alignContent = 'center';
-	document.body.appendChild(whiteClock);
-	document.body.appendChild(blackClock);
-	
+		
+	blackClock.innerHTML = "Black Timer: " + blackTime;
+	whiteClock.innerHTML = "White Timer: " + whiteTime;
 	stats = new Stats();
 	stats.setMode(0); // 0: fps, 1: ms
 	stats.domElement.style.position = 'absolute';
@@ -84,10 +66,12 @@ SceneController.prototype.loadChanges = function(poly){
 		this.poly = poly;
 		this.duration += 6;
 	}
-	console.log(this.duration);
+
 	this.load = new LoadScene(this.duration);
 	this.changeScene();
 
+	whiteClock.innerHTML = "";
+	blackClock.innerHTML = "";
 	var self = this;
 
 	function reChange() {
@@ -111,6 +95,8 @@ SceneController.prototype.reset = function(){
 	camera = this.load.camera;
 	game = new GameController();
 	this.game = game;
+	whiteClock.innerHTML = "";
+	blackClock.innerHTML = "";
 	var self = this;
 	function resetChange(){
 		if(start == self.duration){

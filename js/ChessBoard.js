@@ -2,7 +2,7 @@ var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
 var clock = new THREE.Clock();
 var particles = false;
-var whiteClock, blackClock;
+
 
 var rain =
 {
