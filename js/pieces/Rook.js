@@ -228,11 +228,11 @@ Rook.prototype.update = function(){
 		}
 	}else {
 		if(this.castle){
-			if(this.ttl > (this.duration / 2) ){
+			if(this.ttl >= (this.duration / 2) ){
 				var newTtl = this.ttl - (this.duration / 2);
-				this.piece.position.y = easeInOutSin(newTtl, 19.5, -15, (this.duration / 2) );
+				this.piece.position.y = easeInOutSin(newTtl, 18.7, -15, (this.duration / 2) );
 			}else{
-				this.piece.position.y = easeInOutSin(this.ttl, 4.5, 15, (this.duration / 2) );
+				this.piece.position.y = easeInOutSin(this.ttl, 3.7, 15, (this.duration / 2) );
 			}
 		}
 		var newYpos = easeInOutQnt(this.ttl, this.y, this.dy, this.duration);
