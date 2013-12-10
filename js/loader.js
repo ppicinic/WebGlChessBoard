@@ -208,6 +208,8 @@ function animate() {
 		}
 		stats.update();
 		
+	}else{
+		sceneControl.load.update();
 	}
 	
 	render();
