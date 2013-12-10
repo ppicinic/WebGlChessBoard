@@ -1,6 +1,8 @@
 
 var SceneController = function(gameScene, loading){ this.init(gameScene, loading); }
 
+
+
 SceneController.prototype.init = function(gameScene, loading){
 
 	this.duration = 41;
@@ -12,12 +14,14 @@ SceneController.prototype.init = function(gameScene, loading){
 	scene = new THREE.Scene();
 	scene = this.load.scene;
 	camera = this.load.camera;
+	
 	this.datdatgui = new UIController();
+	
 
 	var self = this;
 
 	function change() {
-		console.log(start);
+	
 		if(start == self.duration){
 			self.changeScene();
 			//self.datdatgui.gui();
@@ -36,9 +40,12 @@ SceneController.prototype.changeScene = function(){
 		camera = this.game.camera;
 		this.loading = false;
 		this.datdatgui.gui();
+		controls = new THREE.OrbitControls( camera, renderer.domElement );
+		controlCam = true;
 	} else {
 		this.loading = true;
 		scene = this.load.scene;
+		
 		camera = this.load.camera;
 		this.datdatgui.degui();
 	}

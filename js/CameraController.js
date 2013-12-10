@@ -37,6 +37,7 @@ CameraController.prototype.update = function(){
 	if(!userCameraControl){
 		this.camera.position.x = movey;
 		this.camera.position.z = movescale;
+		
 	}
 
 	this.ttl++;
