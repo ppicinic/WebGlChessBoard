@@ -43,6 +43,8 @@ SceneController.prototype.changeScene = function(){
 		
 	blackClock.innerHTML = "Black Timer: " + blackTime; //Set the timers up
 	whiteClock.innerHTML = "White Timer: " + whiteTime; 
+	wteamName.innerHTML = "White Team: " + whiteName;
+	bteamName.innerHTML = "Black Team: " + blackName;
 	////////
 	//FPS
 	////////
@@ -71,9 +73,11 @@ SceneController.prototype.loadChanges = function(poly){
 
 	this.load = new LoadScene(this.duration);
 	this.changeScene();
-
+	wteamName.innerHTML = "";
+	bteamName.innerHTML = "";
 	whiteClock.innerHTML = ""; //Hide timer text during loading screen
 	blackClock.innerHTML = "";
+
 	var self = this;
 
 	function reChange() {
@@ -97,8 +101,13 @@ SceneController.prototype.reset = function(){
 	camera = this.load.camera;
 	game = new GameController();
 	this.game = game;
+	whiteName = "";
+	blackName = "";
+	wteamName.innerHTML = "";
+	bteamName.innerHTML = "";
 	whiteClock.innerHTML = ""; //Hide timer text
 	blackClock.innerHTML = "";
+
 	var self = this;
 	function resetChange(){
 		if(start == self.duration){

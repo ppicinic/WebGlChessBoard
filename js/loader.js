@@ -12,16 +12,17 @@ var test;
 
 var start = 0;
 var userCameraControl = true;
-
+var whiteName = "";
+var blackName = "";
 var whiteClock, blackClock; //Timers in the top left corner of the game
-var teamName;
+var wteamName, bteamName;
 whiteClock = document.createElement('div'); //HTML text because DATGUI doesn't support unedit vars
 	whiteClock.style.position = 'fixed';
 	whiteClock.style.width = 100;
 	whiteClock.style.height = 100;
 	whiteClock.style.color = "black";
 	whiteClock.innerHTML = "";
-	whiteClock.style.top = 0 + 'px';
+	whiteClock.style.top = 30 + 'px';
 	whiteClock.style.left = 5 + 'px';
 	whiteClock.style.alignContent = 'center';
 	blackClock = document.createElement('div');
@@ -30,21 +31,32 @@ whiteClock = document.createElement('div'); //HTML text because DATGUI doesn't s
 	blackClock.style.height = 100;
 	blackClock.style.color = "black";
 	blackClock.innerHTML = "";
-	blackClock.style.top = 15 + 'px';
+	blackClock.style.top = 45 + 'px';
 	blackClock.style.left = 5 + 'px';
 	blackClock.style.alignContent = 'center';
 	document.body.appendChild(whiteClock);
 	document.body.appendChild(blackClock);
-	teamName = document.createElement('div');
-	teamName.style.position = 'fixed';
-	teamName.style.width = 100;
-	teamName.style.height = 100;
-	teamName.style.color = "black";
-	teamName.innerHTML = "HEY";
-	teamName.style.top = 40 + 'px';
-	teamName.style.left = 5 + 'px';
-	teamName.style.alignContent = 'center';
-	document.body.appendChild(teamName);
+	wteamName = document.createElement('div');
+	wteamName.style.position = 'fixed';
+	wteamName.style.width = 100;
+	wteamName.style.height = 100;
+	wteamName.style.color = "black";
+	wteamName.innerHTML = "";
+	wteamName.style.top = 0 + 'px';
+	wteamName.style.left = 5 + 'px';
+	wteamName.style.alignContent = 'center';
+	document.body.appendChild(wteamName);
+	bteamName = document.createElement('div');
+	bteamName.style.position = 'fixed';
+	bteamName.style.width = 100;
+	bteamName.style.height = 100;
+	bteamName.style.color = "black";
+	bteamName.innerHTML = "";
+	bteamName.style.top = 15 + 'px';
+	bteamName.style.left = 5 + 'px';
+	bteamName.style.alignContent = 'center';
+	document.body.appendChild(bteamName);
+
 
 var mouseX = 0, mouseY = 0;
 

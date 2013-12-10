@@ -75,5 +75,5 @@ LoadScene.prototype.init = function(duration){
 
 LoadScene.prototype.update = function(){
 	var load = Math.floor(((start / this.duration) * 100));
-	whiteClock.innerHTML = "Loading: " + load + "%";
+	wteamName.innerHTML = "Loading: " + load + "%";
 }
