@@ -192,9 +192,9 @@ function animate() {
 		{
 		camera.position.z = -900;
 		}
-		if(camera.position.y <= -900)
+		if(camera.position.y <= 15)
 		{
-			camera.position.y = -900;
+			camera.position.y = 15;
 		}
 		if(camera.position.x <= -900)
 		{

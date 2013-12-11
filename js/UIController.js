@@ -42,8 +42,7 @@ UIController.prototype.init = function(){
         },
 		Help: function()
 		{
-			console.log("Help");
-			//TODO:Add help doc
+			$("#infoBox").dialog("open");
 		},
         Reset: function()
         { //Reset the game entirely on button press.
