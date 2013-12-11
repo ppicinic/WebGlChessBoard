@@ -78,7 +78,7 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.blackCap = new Array();
 	bgSound = document.createElement( 'audio' );
 	source = document.createElement( 'source' );
-	source.src = 'Sound/mybg.wav';
+	source.src = 'Sound/mybg.mp3';
 	bgSound.appendChild(source);
 	bgSound.loop= true;
 	
@@ -621,7 +621,7 @@ ChessBoard.prototype.updateSkybox = function(skybox)
 				rainEngine.initialize();
 				rainControl = true;
 				bgSound.pause();
-				bgSound.src = 'Sound/rain.wav';
+				bgSound.src = 'Sound/rain.mp3';
 				bgSound.play();
 			}
 	}
@@ -630,7 +630,7 @@ ChessBoard.prototype.updateSkybox = function(skybox)
 		rainEngine.destroy();
 		rainControl = false;
 		bgSound.pause();
-		bgSound.src = 'Sound/mybg.wav';
+		bgSound.src = 'Sound/mybg.mp3';
 	}
 }
 
