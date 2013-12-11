@@ -120,7 +120,7 @@ Rook.prototype.init = function(scene, color, spot, board)
 }
 
 /**
-*	Promotion method sets up a Pawn to be promoted to a Queen
+*	Promotion method sets up a Pawn to be promoted to a Rook
 *	@param ttl time until Pawn reaches end of its animation
 */
 Rook.prototype.promoted = function(ttl){
