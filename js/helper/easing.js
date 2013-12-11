@@ -1,8 +1,14 @@
-// ease out function found online
-//t is time in frames (our ttl)
-// b is start value either 178 or -142
-// c is change in value always going to be 178 + 142 (negative from white to black, positive from black to white)
-// d camera time constant
+/*
+*	Easing Functions found at gizma.com/easing
+*	In Function speed up
+* 	Out Function slow down
+*	InOut functions accelerate halfway and then deccelerate
+*	Sin - Sine Behavior | Quad - Quadratic Behavior | Qnt - Quintic Behavior | Exp - Exponential Behavior
+*	@param t the frame
+*	@param b the start position
+*	@param c the distance changed by
+*	@param d the duration of animation
+*/
 
 function easeInOutSin(t, b, c, d){
 	return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
