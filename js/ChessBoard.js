@@ -2,11 +2,15 @@ var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
 var clock = new THREE.Clock(); //clock for dt change
 var particles = false; //control the particles being updated before the game starts
+var rainControl = false; //Disable rain effect for skybox
+var rainEngine; //Direct reference to rain particles to destroy
+var bgSound; //Direct reference to rain sound
+var source;
 
-//Rain particles
+
 var rain =
-{
-positionStyle    : Type.CUBE,
+{ //Rain particles
+		positionStyle    : Type.CUBE,
 		positionBase     : new THREE.Vector3( 0, 200, 0 ),
 		positionSpread   : new THREE.Vector3( 600, 0, 600 ),
 
@@ -21,15 +25,15 @@ positionStyle    : Type.CUBE,
 		sizeSpread  : 4.0,
 		colorBase   : new THREE.Vector3(0.66, 1.0, 0.7), // H,S,L
 		colorSpread : new THREE.Vector3(0.00, 0.0, 0.2),
-		opacityBase : 0.6,
+		opacityBase : 0.4,
 
 		particlesPerSecond : 1000,
 		particleDeathAge   : 1.0,		
-		emitterDeathAge    : 60
+		emitterDeathAge    : 100000
 }
-//Smoke particles
-var smoke =
-	{
+
+var smoke = 
+	{ //Smoke particles
 		positionStyle    : Type.CUBE,
 		positionBase     : new THREE.Vector3( 0, 0 ,0 ) , //Must set this before activating
 		positionSpread   : new THREE.Vector3( 10, 0, 10 ),
@@ -55,6 +59,10 @@ var smoke =
 		emitterDeathAge    : 0.1
 	}
 
+	/**
+	* Creates the chessboard and loads all the pieces, table, skybox, ect.
+	* Sets the game up for the initial display during the loading screen.
+	*/
 ChessBoard.prototype.init = function(scene, camera)
 {
 	this.scene = scene;
@@ -68,6 +76,11 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.loader = new THREE.OBJMTLLoader();
 	this.whiteCap = new Array();
 	this.blackCap = new Array();
+	bgSound = document.createElement( 'audio' );
+	source = document.createElement( 'source' );
+	source.src = 'Sound/mybg.wav';
+	bgSound.appendChild(source);
+	bgSound.loop= true;
 	
 
 	// Low Poly - false || High Poly - true
@@ -103,6 +116,12 @@ ChessBoard.prototype.init = function(scene, camera)
 	this.orange.position.y = 8;
 	this.scene.add(this.orange);
 	
+	/**
+	*Loads the skybox.
+	* @param board the ChessBoard object
+	* @param loader the loader object
+	* @param skybox the skybox folder to load such as "sunnyocean"
+	*/
 	function loadSkybox(board,loader,skybox)
 	{
 		//Load over the textures and create a seamless cube.
@@ -126,13 +145,18 @@ ChessBoard.prototype.init = function(scene, camera)
 		start++;
 		console.log('skybox ');
 		console.log(start);
-		
-		
+	
 	}
 
 	/////////////////////
 	////Load Board/Pieces
 	////////////////////
+	
+	/**
+	* Loads the board model and textures
+	* @param board the ChessBoard type (this)
+	* @param loader the Loader type
+	*/
 	function loadBoard(board, loader){
 	loader.load( 'Models/Board/board.obj', 'Models/Board/board.mtl', function ( object ) {
 
@@ -153,6 +177,11 @@ ChessBoard.prototype.init = function(scene, camera)
     } );
 	}
 	
+	/**
+	*Load the table model and textures
+	* @param board the ChessBoard type (this)
+	* @param loader the Loader type
+	*/
 	function loadTable(board, loader){
 	loader.load( 'Models/Table/table.obj', 'Models/Table/table.mtl', function ( object ) {
 		var bump = THREE.ImageUtils.loadTexture("Models/textures/blackwood.jpg");
@@ -231,6 +260,9 @@ ChessBoard.prototype.init = function(scene, camera)
 	
 }
 
+/**
+*Loads the pieces logically in arrays for manipulation
+*/
 ChessBoard.prototype.loadPieces = function(){
 	this.pieces = new Array(8);
 	for(var i = 0; i < this.pieces.length; i++){
@@ -292,6 +324,12 @@ ChessBoard.prototype.loadPieces = function(){
 		}
 	}
 }
+
+/**
+* Update the chessboard render.
+* Logic to check and kill pawn pieces when they move, as well as animation.
+* Handles the particles too.
+*/
 ChessBoard.prototype.update = function(){
 	var dt = clock.getDelta();
 	if(particles)
@@ -300,6 +338,10 @@ ChessBoard.prototype.update = function(){
 		{
 			this.engine[i].update( dt * 0.5 );	//Update each with the dt from clock
 		}
+	}
+	if(rainControl)
+	{
+		rainEngine.update(dt * 0.3);
 	}
 	var bool = false; //WHAT?
 	for(var i = 0; i < this.movingArray.length; i++){
@@ -424,7 +466,9 @@ ChessBoard.prototype.update = function(){
 	}
 }
 
-//Manual movie pieces with a string in the GUI
+/**
+*Manual moving pieces with a string in the GUI
+*/
 ChessBoard.prototype.move = function(str){
 
 		var move = new PieceMove(str);
@@ -434,7 +478,11 @@ ChessBoard.prototype.move = function(str){
 	
 }
 
-//Load new textures or models
+/**
+*Load new textures or models
+*@param poly is either high or low
+*@param texture is either wood or marble
+*/
 ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 	var polyUpdate = false;
 	var board = this;
@@ -520,7 +568,11 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 			this.whiteTexture = THREE.ImageUtils.loadTexture('Models/textures/whitewood.jpg');
 		}
 	}
-
+	
+	/**
+	* For loading screen
+	* Logic to handle when done loading async
+	*/
 	function waitUpdate(){
 	//Wait for the new models and textures to load
 		if(loadComplete == 6){
@@ -538,7 +590,10 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 
 }
 
-//Load a new skybox if selected
+/**
+*Load a new skybox if selected
+*@param skybox string of folder
+*/
 ChessBoard.prototype.updateSkybox = function(skybox)
 {
 	var board = this;
@@ -559,10 +614,29 @@ ChessBoard.prototype.updateSkybox = function(skybox)
 
 			board.skybox.material = skyMaterial;
 			board.skyboxName = skybox;
+			if(this.skyboxName == "stormynight")
+			{
+				rainEngine = new ParticleEngine(this.scene);
+				rainEngine.setValues( rain );
+				rainEngine.initialize();
+				rainControl = true;
+				bgSound.pause();
+				bgSound.src = 'Sound/rain.wav';
+				bgSound.play();
+			}
+	}
+	if(this.skyboxName != "stormynight" && rainEngine)
+	{
+		rainEngine.destroy();
+		rainControl = false;
+		bgSound.pause();
+		bgSound.src = 'Sound/mybg.wav';
 	}
 }
 
-//Push the new models and textures onto the pieces
+/**
+*Push the new models and textures onto the pieces
+*/
 ChessBoard.prototype.updatePieces = function(poly, texture){
 	for(var x = 0; x < this.pieces.length; x++){
 		for(var y = 0; y < this.pieces[x].length; y++){
@@ -580,7 +654,10 @@ ChessBoard.prototype.updatePieces = function(poly, texture){
 
 }
 
-//Is the game being played or stopped?
+/**
+*Is the game being played or stopped?
+*@return true or false
+*/
 ChessBoard.prototype.isPlaying = function(){
 	var bool = false;
 	for(var i in this.movingArray){
@@ -595,7 +672,10 @@ ChessBoard.prototype.isPlaying = function(){
 	return bool;
 }
 
-//GameOver screen setup
+/**
+*GameOver screen setup
+*@param move count how many moves have occured
+*/
 ChessBoard.prototype.gameOver = function(count){
 	console.log('happens');
 	if(count % 2 == 0){

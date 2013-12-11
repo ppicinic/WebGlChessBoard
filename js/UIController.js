@@ -1,7 +1,12 @@
 //Global variables for reference
-var cameraFolder, serverFolder, themeFolder, guiServParams, guiGfxParams, guiThemeParams,speedFolder, moveFolder, gui; 
+var cameraFolder, serverFolder, themeFolder, guiServParams, guiThemeParams,speedFolder, moveFolder, gui; 
 var UIController = function() { this.init(); }
 
+
+/**
+*DATGUI controller
+*Initiates default values for the GUI.
+*/
 UIController.prototype.init = function(){
 	//DEFAULTS
 	this.serverUrl = "http://bencarle.com/chess/cg/340";
@@ -24,7 +29,7 @@ UIController.prototype.init = function(){
                 }
 				self.connection = true;
 				self.currentlyConnected = true;
-                game.connectToServer(url);
+                game.connectToServer(url); //Call over to GameController with url
         },
         Close: function(){//On button press, disconnect from the server.
             game.closeServerConnection();
@@ -36,12 +41,12 @@ UIController.prototype.init = function(){
                         serverFolder.__controllers[1].remove();
                         serverFolder.__controllers.splice(1);
                         serverFolder.close(); 
-                        serverFolder.add(guiServParams,'Close').name("Close Connection");}
-						);
+                        serverFolder.add(guiServParams,'Close').name("Close Connection");
+						});
 						
         },
 		Help: function()
-		{
+		{//On button press, HTML dialog box opens for help.
 			$("#infoBox").dialog("open");
 		},
         Reset: function()
@@ -79,19 +84,14 @@ UIController.prototype.init = function(){
 		cameraBlack: function(){camera.position.x = 0; camera.position.y = 100; camera.position.z = -140;},
 		cameraTop: function(){camera.position.x = -5; camera.position.y = 260; camera.position.z = 130;}
 	};
-	
-	/*guiGfxParams = {
-		shadowMap: 0,
-		shadowRes: 250,
-		fxaa: false
-	};*/
 
     guiThemeParams = { //Change the textures, models, and skybox
         type: "Marble",
         quality: "Low",
 		skybox: "sunnyocean",
+		playAudio: false,
 		Update: function()
-		{
+		{//Initiates the reload of the new textures/models
             var poly;
             var texture;
 			guiCameraParams.control = false;
@@ -116,7 +116,7 @@ UIController.prototype.init = function(){
 				poly = true;
 			}
             start = 0;
-            console.log(start);
+            console.log(start); //Timer to see how long it takes to load.
             sceneControl.loadChanges(poly);
             game.updatePieces(poly, texture);
 			game.updateSkybox(guiThemeParams.skybox);
@@ -124,9 +124,18 @@ UIController.prototype.init = function(){
     };
 }
 
-//Create the GUI
+/**
+*Creates the GUI and displays it.
+*Depended on UIController.connection to check if
+*the player has already connected to a server.
+*Is called on initial load and updating themes on reload.
+*/
 UIController.prototype.gui = function(){
 	gui = new dat.GUI();
+	
+	//////////////
+	//Server Folder
+	/////////////
     serverFolder = gui.addFolder('Server');
      
      if(this.connection)
@@ -197,11 +206,16 @@ UIController.prototype.gui = function(){
         );
     }
     serverFolder.open();
-    //Manual movement
+    //////////////
+	//Manual Movement Folder
+	/////////////
 	moveFolder = gui.addFolder('Manual Move');
 	moveFolder.add(guiMoveParams, 'moveString').name("Move").listen();
-	moveFolder.add(guiMoveParams, 'Move');
-	//Camera Movement
+	moveFolder.add(guiMoveParams, 'Move').name("Execute");
+	
+	//////////////
+	//Camera Folder
+	/////////////
     cameraFolder = gui.addFolder('Camera'); 
 	cameraFolder.add(guiCameraParams, 'control').name("Sweep Camera:").onFinishChange(function()
 	{
@@ -242,7 +256,9 @@ UIController.prototype.gui = function(){
 	cameraFolder.add(guiCameraParams,'cameraBlack').name("Black Preset");
 	cameraFolder.add(guiCameraParams,'cameraSide').name("Side Preset");
 	
-	//Sweep and chess speed options
+	//////////////
+	//Speed Folder
+	/////////////
 	speedFolder = gui.addFolder('Speed');
 	speedFolder.add(guiCameraParams, 'speed', 100,500).step(10).name("Sweep Speed").onFinishChange(function()
 	{
@@ -253,38 +269,30 @@ UIController.prototype.gui = function(){
         SPEED_TIME = guiCameraParams.pieceSpeed;
 	});
     
-      //Change the textures and skybox and models
+    //////////////
+	//Theme Folder
+	/////////////
     themeFolder = gui.addFolder('Themes');
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:");
     themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:");
-	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight"]);
+	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight","stormynight"]);
 	themeFolder.add(guiThemeParams,'Update');
 	
-	/*gfxFolder = gui.addFolder('Graphics Settings');
-    
-	gfxFolder.add(guiGfxParams, 'shadowMap', 0, 6).step(1).name("# of Shadows").onFinishChange(function(){
-		console.log(guiGfxParams.shadowMap);
-		//TODO Change shadowmap quality here
-	});
-	
-	gfxFolder.add(guiGfxParams, 'shadowRes', 100, 1200).step(100).name("Shadow Res").onFinishChange(function(){
-		console.log(guiGfxParams.shadowRes);
-		//TODO Change shadowmap resolution here
-	});
-	
-	gfxFolder.add(guiGfxParams, 'fxaa').name("FXAA").onFinishChange(function(){
-		console.log(guiGfxParams.fxaa);
-		//TODO Enable/Disable fxaa here
-	});*/
-	
 	//Buttons on their own
+	gui.add(guiThemeParams,'playAudio').name("Play Audio").onFinishChange(function(){
+	if(guiThemeParams.playAudio)
+	{
+		bgSound.play();
+	}
+	else{bgSound.pause();}
+	});
 	gui.add(guiServParams, 'Help');
     gui.add(guiServParams,'Reset');
-	
-	
 }
 
-//Destroy the gui for loading screens
+/**
+*Destroy the gui for loading screens
+*/
 UIController.prototype.degui = function(){
     gui.destroy();
 }
