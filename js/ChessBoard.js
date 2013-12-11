@@ -1,3 +1,8 @@
+/**
+*	ChessBoard class
+*	This class is responsible for the board, table, skyboxes, reference pieces
+*	This class also handles movement logic and calling proper updates on pieces
+*/
 var ChessBoard = function (scene, camera) { this.init(scene, camera); }
 
 var clock = new THREE.Clock(); //clock for dt change
@@ -59,12 +64,15 @@ var smoke =
 		emitterDeathAge    : 0.1
 	}
 
-	/**
-	* Creates the chessboard and loads all the pieces, table, skybox, ect.
-	* Sets the game up for the initial display during the loading screen.
-	*/
+/**
+* Creates the chessboard and loads all the pieces, table, skybox, ect.
+* Sets the game up for the initial display during the loading screen.
+* @param scene a reference to the scene it belongs to
+* @param camera a reference to the camera that belongs to it
+*/
 ChessBoard.prototype.init = function(scene, camera)
 {
+	// Set up data fields
 	this.scene = scene;
 	this.board;
 	this.engine = new Array();
