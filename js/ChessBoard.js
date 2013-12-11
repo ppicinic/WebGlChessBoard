@@ -12,6 +12,33 @@ var rainEngine; //Direct reference to rain particles to destroy
 var bgSound; //Direct reference to rain sound
 var source;
 
+var funnel =
+	{
+		positionStyle  : Type.CUBE,
+		positionBase   : new THREE.Vector3( 0, 0, 0 ),
+		positionSpread : new THREE.Vector3( 10, 10, 10 ),
+
+		velocityStyle  : Type.CUBE,
+		velocityBase   : new THREE.Vector3( 0, 100, 200 ),
+		velocitySpread : new THREE.Vector3( 40, 40, 80 ), 
+		
+		angleBase               : 0,
+		angleSpread             : 720,
+		angleVelocityBase       : 10,
+		angleVelocitySpread     : 0,
+		
+		particleTexture : THREE.ImageUtils.loadTexture( 'Models/textures/spikey.png' ),
+
+		sizeBase    : 4.0,
+		sizeSpread  : 2.0,				
+		colorBase   : new THREE.Vector3(0.15, 1.0, 0.8), // H,S,L
+		opacityBase : 1,
+		blendStyle  : THREE.AdditiveBlending,
+
+		particlesPerSecond : 500,
+		particleDeathAge   : 4.0,		
+		emitterDeathAge    : 10000
+	};
 
 var rain =
 { //Rain particles
@@ -646,10 +673,22 @@ ChessBoard.prototype.updateSkybox = function(skybox, audioB)
 		bgSound.src = 'Sound/mybg.mp3';
 		if(this.skyboxName == "stormynight" && skybox != "stormynight" && audioB)
 		{
-			console.log("here");
 			bgSound.play();
 		}
 	}
+	if(skybox != "tron" && rainEngine)
+	{
+		rainEngine.destroy();
+		rainControl = false;
+		bgSound.pause();
+		bgSound.src = 'Sound/mybg.mp3';
+		if(this.skyboxName == "funnel" && skybox != "funnel" && audioB)
+		{
+			
+			bgSound.play();
+		}
+	}
+	
 	
 	if(this.skyboxName != skybox)
 	{
@@ -676,6 +715,16 @@ ChessBoard.prototype.updateSkybox = function(skybox, audioB)
 				rainControl = true;
 				bgSound.pause();
 				bgSound.src = 'Sound/rain.mp3';
+				bgSound.play();
+			}
+			if(this.skyboxName == "tron")
+			{
+				rainEngine = new ParticleEngine(this.scene);
+				rainEngine.setValues( funnel );
+				rainEngine.initialize();
+				rainControl = true;
+				bgSound.pause();
+				bgSound.src = 'Sound/derezzed.mp3';
 				bgSound.play();
 			}
 	}
