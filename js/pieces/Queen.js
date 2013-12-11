@@ -416,9 +416,6 @@ Queen.prototype.outPos = function(pos){
 		this.deadz = 80 - ((spot - 1) * 15) + 5;
 		
 	}
-	
-	
-	
-	this.deady = 2.2;
 
+	this.deady = 2.2;
 }

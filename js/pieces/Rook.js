@@ -19,30 +19,37 @@ var Rook = function (scene, color, spot, board) { this.init(scene, color, spot, 
 */
 Rook.prototype.init = function(scene, color, spot, board)
 {
-	// initializes all class instances
+	// Holds board and scene references
 	this.board = board;
 	this.scene = scene;
+	// Sets Color
 	this.color = color;
+	//Sets all required position info
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
 	this.xfix = -2;
 	this.x = LEFT + (this.xLoc * 20) + this.xfix;
 	this.y = TOP + (this.yLoc * 20);
-	this.moving = false;
-	this.dest = false;
-	this.ttl = 0;
-	this.duration = 0;
 	this.x2 = 0;
 	this.y2 = 0;
 	this.dx = 0;
 	this.dy = 0;
-	this.promote = false;
-	this.castle = false;
+	// Animation info
+	this.moving = false;
+	this.dest = false;
+	this.ttl = 0;
+	this.duration = 0;
 	this.spaces = 0;
 
+	//Promotion and Castle Flags
+	this.promote = false;
+	this.castle = false;
+
+	// Dead position - needed for moving off table
 	this.deadx = 0;
 	this.deady = 0;
 	this.deadz = 0;
+
 	this.dead = board.highpoly;
 	// Low Poly - false || High Poly - true
 	this.poly = board.texture;
@@ -83,7 +90,9 @@ Rook.prototype.init = function(scene, color, spot, board)
 		emitterDeathAge    : 0.1
 	};
 
+	// Clone piece from the reference piece in board
 	this.piece = cloneObjMtl(board.rook);
+	//Set it's texture and tell it to cast a shadow
 	if(this.color){
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
@@ -99,44 +108,63 @@ Rook.prototype.init = function(scene, color, spot, board)
 			}
 		});
 	} 
+	// Scale and Place the piece in its position
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 	this.piece.position.x = LEFT + (xPos * 20) + this.xfix;
 	this.piece.position.z = TOP + (yPos * 20);
 	this.piece.position.y = 3.7;
+	// Add the piece to scene
 	this.scene.add(this.piece);
+	//Tell the loader the piece has finished loading
 	start++;	
 }
 
+/**
+*	Promotion method sets up a Pawn to be promoted to a Queen
+*	@param ttl time until Pawn reaches end of its animation
+*/
 Rook.prototype.promoted = function(ttl){
+	// Set the opacity to 0 and transparency on
 	this.piece.traverse(function(mesh){
 		if(mesh instanceof THREE.Mesh){
 			mesh.material.transparent = true;
 			mesh.material.opacity = 0;
 		}
 	});
+	// Calculate time
 	this.ttl = ttl + (FADE_TIME * 2);
+	// Set animation flags on
 	this.moving = true;
 	this.promote = true;
 }
 
-
-// TODO a move method, should add the rook to a move Queue that will animate one move at a time
-// Should handle callback to board for promotion
+/**
+*	Move method sets a piece up to be moved
+* 	Move locations are in regards to board spots 1 through 8
+*	not WebGL locations
+*	@param x the board x location the piece is moved to
+* 	@param y the board y location the piece is moved to
+*/
 Rook.prototype.move = function(x, y){
+	// Counts the number of spaces to move
 	if(this.xLoc != x){
 		this.spaces = Math.abs(this.xLoc - x);
 	}else{
 		this.spaces = Math.abs(this.yLoc - y);
 	}
+	// Recalculates position info for after move
 	this.xLoc = x;
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20) + this.xfix;
 	this.y2 = TOP + (y * 20);
-	//console.log(spaces);
 	
+	//Sets up moving boolean for animation
 	this.moving = true;
+	// Sets up time to live for animation
 	this.ttl = 0;
+	// Sets the duration of animation
 	this.duration = SPEED_TIME * this.spaces;
+	// Calculates the distance traveled in webgl points
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
 	
@@ -156,11 +184,17 @@ Rook.prototype.castled = function(x, y, duration){
 	
 }
 
+/**
+*	Update method is called if the piece is currently moving
+* 	This method handles animating the piece
+*/
 Rook.prototype.update = function(){
+	// Handles Fading out piece on capture
 	if(this.dest){
 		var self = this;
+		// Fades out pieces once the capturing piece gets close
 		if(this.ttl <= (this.duration / this.spaces)){
-			//console.log('opacity drops')
+			// Ends Fading out and set ups fade in on the table
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					if(!mesh.material.transparent){
@@ -171,34 +205,43 @@ Rook.prototype.update = function(){
 				}
 			});
 		}
+		// Moves to Next frame
 		this.ttl--;
+		// Ends fade out
 		if(this.ttl == 0){
+			// Ends Fading out and set ups fade in on the table
 			this.dest = false;
 			this.dead = true;
 			this.ttl = 0;
+			//Sets up duration for Fade back in
 			this.duration = (this.duration / this.spaces);
+			//Sets location on table
 			this.piece.position.x = this.deadx;
 			this.piece.position.y = this.deady;
 			this.piece.position.z = this.deadz;
 		}
-
+	// Handles fading back in on the table
 	}else if(this.dead){
+		// Particle effect when the piece is placed on the table
 		if(!this.firedSmoke)
-				{
-					this.board.engine.push(new ParticleEngine(this.scene));
-					this.smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
-					this.board.engine[this.board.engine.length-1].setValues( this.smoke );
-					this.board.engine[this.board.engine.length-1].initialize();
-					this.firedSmoke = true;
-					this.particles = true;
-				}
+		{
+			this.board.engine.push(new ParticleEngine(this.scene));
+			this.smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
+			this.board.engine[this.board.engine.length-1].setValues( this.smoke );
+			this.board.engine[this.board.engine.length-1].initialize();
+			this.firedSmoke = true;
+			this.particles = true;
+		}
+		// Fades back in on table
 		var self = this;
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.opacity += (1 / self.duration);
 			}
 		});
+		// Move to next frame
 		this.ttl++;
+		// Ends dead animation
 		if(this.ttl == this.duration){
 			this.moving = false;
 			this.piece.traverse(function(mesh){
@@ -207,8 +250,9 @@ Rook.prototype.update = function(){
 				}
 			});
 		}
-
+	// Ends dead animation
 	}else if(this.promote){
+		// Fades Piece in
 		if(this.ttl <= FADE_TIME){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -216,17 +260,22 @@ Rook.prototype.update = function(){
 				}
 			});
 		}
+		// Move to next frame
 		this.ttl--;
+		// End fading
 		if(this.ttl == 0){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.transparent = false;
 				}
 			});
+			// Set promotion flags off
 			this.moving = false;
 			this.promote = false;
 		}
+	// Handles Piece movement animation
 	}else {
+		// Handles Castling Piece Lift
 		if(this.castle){
 			if(this.ttl >= (this.duration / 2) ){
 				var newTtl = this.ttl - (this.duration / 2);
@@ -234,6 +283,7 @@ Rook.prototype.update = function(){
 			}else{
 				this.piece.position.y = easeInOutSin(this.ttl, 3.7, 16, (this.duration / 2) );
 			}
+		// Handles standar piece lift
 		}else{
 			if(this.ttl >= (this.duration / 2)){
 				var newTTL = this.ttl - (this.duration / 2);
@@ -242,20 +292,31 @@ Rook.prototype.update = function(){
 				this.piece.position.y = easeInOutSin(this.ttl, 3.7, 2.5, (this.duration / 2));
 			}
 		}
+		// Calculates and sets X and Z position of the piece
 		var newYpos = easeInOutQnt(this.ttl, this.y, this.dy, this.duration);
 		var newXpos = easeInOutQnt(this.ttl, this.x, this.dx, this.duration);
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
+		// Moves to next frame
 		this.ttl++;
+		// Ends animation
 		if(this.ttl > this.duration){
+			// Sets moving flag to false, ends animation
 			this.moving = false;
 			this.castle = false;
+			// Sets piece coordinates
 			this.x = this.x2;
 			this.y = this.y2;
 		}
 	}
 }
 
+/**
+*	Destroy method sets up piece to be capture
+*	@param ttl the duration of the piece capping it
+* 	@param spaces the number of spaces the piece capturing
+*		it has to move
+*/
 Rook.prototype.destroy = function(ttl, spaces){
 	this.spaces = spaces;
 	this.moving = true;
@@ -264,25 +325,40 @@ Rook.prototype.destroy = function(ttl, spaces){
 	this.dest = true;
 }
 
+/**
+*	Tells if the piece is moving
+*	@return true if moving, false otherwise
+*/
 Rook.prototype.isMoving = function(){
 	return this.moving;
 }
 
+/**
+*	Updates the piece model and/or texture
+*	@param poly the model being updated to
+*	@param texture the texture being updated to
+*/
 Rook.prototype.updatePiece = function(poly, texture){
 
+	// Set up references for anonymous functions
 	var board = this.board;
 	var temp = this.piece;
 
+	// Update the Piece Geometries
 	if(this.poly != poly){
+		// Set geometry flag
 		this.poly = poly;
-		
+		//Remove old model from scene
 		this.scene.remove(this.piece);
+		// Clone model reference and position it
 		this.piece = cloneObjMtl(this.board.rook);
 		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 		this.piece.position.x = temp.position.x;
 		this.piece.position.z = temp.position.z;
 		this.piece.position.y = temp.position.y;
+		// Set texture flag
 		this.texture = texture;
+		// Update texture of model
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -306,12 +382,15 @@ Rook.prototype.updatePiece = function(poly, texture){
 				}
 			});
 		} 
+		// Add piece to scene
 		this.scene.add(this.piece);
 
 	}
-
+	// Update Texture of model
 	if(this.texture != texture){
+		// Set texture flag
 		this.texture = texture;
+		// Update Texture
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -336,11 +415,14 @@ Rook.prototype.updatePiece = function(poly, texture){
 			});
 		} 
 	}
-
+	// Tell loader piece has loaded
 	start++;
-
 }
 
+/**
+*	outPos calculates piece location outside on table
+*	@param pos the place the pice goes logically
+*/
 Rook.prototype.outPos = function(pos){
 	var spot = pos;
 	if(pos > 11){
