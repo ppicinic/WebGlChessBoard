@@ -1,8 +1,17 @@
+// Texture for particles
 var sprite = THREE.ImageUtils.loadTexture("Models/textures/load.png");
 
+/**
+*	LoadScene class, a loading scene for when models and/or textures are being loaded 
+*/
 var LoadScene = function(duration) { this.init(duration); }
 
+/**
+*	Constructor creates the load scene
+*	@param duration, the duration of the load screen
+*/
 LoadScene.prototype.init = function(duration){
+	
 	this.duration = duration;
 
 	this.scene = new THREE.Scene();
