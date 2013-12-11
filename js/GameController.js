@@ -81,8 +81,8 @@ GameController.prototype.updateTimer = function(){
 			blackTime = this.blackTime - seconds;
 		}
 		if(!sceneControl.loading){
-			blackClock.innerHTML = "Black Timer:" + blackTime;
-			whiteClock.innerHTML = "White Timer:" + whiteTime;
+			blackClock.innerHTML = "Black Timer: " + blackTime;
+			whiteClock.innerHTML = "White Timer: " + whiteTime;
 		}
 		var self = this;
 		setTimeout(function(){self.updateTimer();}, 1000);
