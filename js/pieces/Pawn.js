@@ -183,7 +183,6 @@ Pawn.prototype.update = function(){
 	}else if(this.dest){
 		// Fades out pieces once the capturing piece gets close
 		if(this.ttl <= (this.duration / this.spaces) ){
-			//console.log('opacity drops')
 			var self = this;
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -300,7 +299,7 @@ Pawn.prototype.destroy = function(ttl, spaces){
 }
 
 /**
-*	Tells if the piece is moveing
+*	Tells if the piece is moving
 */
 Pawn.prototype.isMoving = function(){
 	return this.moving;
@@ -366,7 +365,7 @@ Pawn.prototype.updatePiece = function(poly, texture){
 		this.scene.add(this.piece);
 	}
 
-	// Update Texture of mode
+	// Update Texture of model
 	if(this.texture != texture){
 		// Set texture flag
 		this.texture = texture;
