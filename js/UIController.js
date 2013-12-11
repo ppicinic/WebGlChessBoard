@@ -53,6 +53,8 @@ UIController.prototype.init = function(){
         { //Reset the game entirely on button press.
 			guiThemeParams.type = "Marble";
 			guiThemeParams.type = "Low";
+			guiThemeParams.playAudio = false;
+			bgSound.pause();
 			guiServParams.Close();
 			whiteName = "Player 1";
 			blackName = "Player 2";
@@ -287,7 +289,7 @@ UIController.prototype.gui = function(){
 	themeFolder.add(guiThemeParams,'Update');
 	
 	//Buttons on their own
-	gui.add(guiThemeParams,'playAudio').name("Play Audio").onFinishChange(function(){
+	gui.add(guiThemeParams,'playAudio').name("Play Audio").listen().onFinishChange(function(){
 	if(guiThemeParams.playAudio)
 	{
 		bgSound.play();

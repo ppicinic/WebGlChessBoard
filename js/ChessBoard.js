@@ -666,28 +666,24 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 ChessBoard.prototype.updateSkybox = function(skybox, audioB)
 {
 	var board = this;
+	if(audioB)
+	{
+		bgSound.play();
+	}
 	if(skybox != "stormynight" && rainEngine)
 	{
 		rainEngine.destroy();
 		rainControl = false;
 		bgSound.pause();
 		bgSound.src = 'Sound/mybg.mp3';
-		if(this.skyboxName == "stormynight" && skybox != "stormynight" && audioB)
-		{
-			bgSound.play();
-		}
 	}
+	
 	if(skybox != "tron" && rainEngine)
 	{
 		rainEngine.destroy();
 		rainControl = false;
 		bgSound.pause();
 		bgSound.src = 'Sound/mybg.mp3';
-		if(this.skyboxName == "tron" && skybox != "tron" && audioB)
-		{
-			
-			bgSound.play();
-		}
 	}
 	
 	
