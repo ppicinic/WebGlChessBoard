@@ -54,6 +54,7 @@ SceneController.prototype.changeScene = function(){
 	stats.domElement.style.bottom = '0px';
 	stats.domElement.style.zIndex = 100;
 	container.appendChild( stats.domElement );
+	
 	} else {
 	//Game is loading
 		this.loading = true;

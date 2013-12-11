@@ -5,6 +5,7 @@ var loadingScene;
 var loadingCamera;
 var controls;
 
+
 var camera, scene, renderer;
 var bicycle, frame;
 var test;
@@ -130,6 +131,10 @@ function init() {
 	document.addEventListener( 'keyup', onKeyUp, false );
 	document.addEventListener( 'keydown', onKeyDown, false );
 	window.addEventListener( 'resize', onWindowResize, false );
+	
+	
+	
+	
 	animate();
 	//setTimeout(toAnim, 200);
 }
