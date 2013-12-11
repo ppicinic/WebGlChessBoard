@@ -1,9 +1,16 @@
+/**
+*	Piece move object takes care of changing movestrings to logical moves
+*	Also used for initiating moves
+*/
 var PieceMove = function (moveString) { this.init(moveString); }
 
+/**
+*	Constructor, initializes the object
+*	@param moveString the move string to make a move based off
+*/
 PieceMove.prototype.init = function(moveString)
 {
 	this.moveString = moveString.toUpperCase();
-	console.log(this.moveString);
 	this.piece = true;
 	var a = this.moveString[1];
 	var b = this.moveString[2];
@@ -38,10 +45,13 @@ PieceMove.prototype.init = function(moveString)
 	}
 }
 
+/**
+*	decides the X location base on str
+*	@param str the letter location
+*/
 PieceMove.prototype.decideX = function(str)
 {
 	var x = -1;
-	console.log(str);
 	if(str == 'A'){
 		x = 0;
 	}else if(str == 'B'){
@@ -62,6 +72,10 @@ PieceMove.prototype.decideX = function(str)
 	return x;
 }
 
+/**
+*	decides the Y location base on str
+*	@param str the character number location
+*/
 PieceMove.prototype.decideY = function(str)
 {
 	var y = parseInt(str);
@@ -69,6 +83,10 @@ PieceMove.prototype.decideY = function(str)
 	return y;
 }
 
+/**
+* 	Tells if this object is for a piece
+*	@return true this is always for a piece
+*/
 PieceMove.prototype.isPiece = function()
 {
 	return this.piece;
