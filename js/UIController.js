@@ -123,7 +123,8 @@ UIController.prototype.init = function(){
 			{
 				guiThemeParams.playAudio = true;
 			}
-			game.updateSkybox(guiThemeParams.skybox);
+			game.updateSkybox(guiThemeParams.skybox, guiThemeParams.playAudio);
+			game.updateLights(guiThemeParams.skybox);
 		}
     };
 }
@@ -279,7 +280,7 @@ UIController.prototype.gui = function(){
     themeFolder = gui.addFolder('Themes');
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:");
     themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:");
-	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight","stormynight"]);
+	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight","sunset","stormynight"]);
 	themeFolder.add(guiThemeParams,'Update');
 	
 	//Buttons on their own

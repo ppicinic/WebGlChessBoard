@@ -602,9 +602,22 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 *Load a new skybox if selected
 *@param skybox string of folder
 */
-ChessBoard.prototype.updateSkybox = function(skybox)
+ChessBoard.prototype.updateSkybox = function(skybox, audioB)
 {
 	var board = this;
+	if(skybox != "stormynight" && rainEngine)
+	{
+		rainEngine.destroy();
+		rainControl = false;
+		bgSound.pause();
+		bgSound.src = 'Sound/mybg.mp3';
+		if(this.skyboxName == "stormynight" && skybox != "stormynight" && audioB)
+		{
+			console.log("here");
+			bgSound.play();
+		}
+	}
+	
 	if(this.skyboxName != skybox)
 	{
 		//Load all the textures from the folder and modify the cube
@@ -633,13 +646,8 @@ ChessBoard.prototype.updateSkybox = function(skybox)
 				bgSound.play();
 			}
 	}
-	if(this.skyboxName != "stormynight" && rainEngine)
-	{
-		rainEngine.destroy();
-		rainControl = false;
-		bgSound.pause();
-		bgSound.src = 'Sound/mybg.mp3';
-	}
+
+
 }
 
 /**

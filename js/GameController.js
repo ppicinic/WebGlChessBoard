@@ -126,8 +126,8 @@ GameController.prototype.updatePieces = function(poly, texture){
 *	Updates the sky box
 *	@param the skybox type
 */
-GameController.prototype.updateSkybox = function(skybox){
-	this.board.updateSkybox(skybox);
+GameController.prototype.updateSkybox = function(skybox, audioB){
+	this.board.updateSkybox(skybox,audioB);
 }
 
 /**
@@ -141,6 +141,63 @@ GameController.prototype.connectToServer = function(url){
 		var self = this;
 		setTimeout(function(){ self.pingServer(); }, 0);
 	}
+}
+
+GameController.prototype.updateLights = function(skybox)
+{
+	
+	console.log(this.directionalLight);
+	if(skybox == "sunset")
+	{
+		this.scene.remove(this.directionalLight);
+		this.directionalLight = new THREE.DirectionalLight( 0xFDEAD1 );
+		this.directionalLight.position.set( 0, 10, 0 ).normalize();
+		this.scene.add(this.directionalLight);
+		this.scene.remove(this.light2);
+		this.light2 = new THREE.PointLight( 0xFDEAD1, .5, 10000 );
+		this.light2.position.set( -90, 140, -90 );
+		this.scene.add( this.light2 );
+		this.shadow.position.set(-50,100,-100);
+	}
+	else if(skybox == "darknight")
+	{
+		this.shadow.position.set(0,100,-100);
+	}
+	else if(skybox == "stormynight")
+	{
+		this.scene.remove(this.directionalLight);
+		this.directionalLight = new THREE.DirectionalLight( 0x383838 );
+		this.directionalLight.position.set( 0, 10, 0 ).normalize();
+		this.scene.add( this.directionalLight );
+		this.shadow.position.set(0,300,0);
+	}
+	else
+	{
+	/* Adds all lights
+	this.ambient = new THREE.AmbientLight( 0x00000f );
+	this.scene.add( this.ambient );
+	this.areaLight1 = new THREE.AreaLight( 0xffffff, 100 );
+	this.areaLight1.position.set( 0.0001, 10.0001, 0.5001 );
+	this.areaLight1.width = 100;
+	this.areaLight1.height = 100;
+	this.scene.add( this.areaLight1 );
+	*/			
+	this.scene.remove(this.light2);
+	this.light2 = new THREE.PointLight( 0xffffff, .5, 10000 );
+	this.light2.position.set( -90, 140, -90 );
+	this.scene.add( this.light2 );
+	
+	this.scene.remove(this.directionalLight);
+	this.directionalLight = new THREE.DirectionalLight( 0x8b8b8b );
+	this.directionalLight.position.set( 0, 10, 0 ).normalize();
+	this.scene.add( this.directionalLight );
+	this.shadow.position.set(0,100,0);
+	/*this.spotLight = new THREE.SpotLight( 0x111111 );
+	this.spotLight.position.set( 0, 10000, -500 );
+	this.scene.add(this.spotLight);*/
+
+	}
+	
 }
 
 /**
