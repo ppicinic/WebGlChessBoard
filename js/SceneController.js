@@ -13,7 +13,7 @@ SceneController.prototype.init = function(gameScene, loading){
 	// Set load properties
 	this.duration = 41;
 	this.loading = true;
-	this.poly = false;
+	this.poly = 0;
 	
 	// Set up game and load scene initialize scene and camera
 	// to that of loadScene
@@ -124,7 +124,7 @@ SceneController.prototype.reset = function(){
 	start = 0;
 	this.duration = 41;
 	this.loading = true;
-	this.poly = false;
+	this.poly = 0;
 
 	// Create a new LoadScene and switch to it
 	this.load = new LoadScene(this.duration);

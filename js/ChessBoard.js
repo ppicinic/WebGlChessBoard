@@ -91,8 +91,8 @@ ChessBoard.prototype.init = function(scene, camera)
 	bgSound.loop= true;
 	
 
-	// Low Poly - false || High Poly - true
-	this.highpoly = false;
+	
+	this.highpoly = 0;
 	// Marble - true || Wood - false
 	this.texture = true;
 	this.pawn;
@@ -491,11 +491,13 @@ ChessBoard.prototype.move = function(str){
 ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 	var polyUpdate = false;
 	var board = this;
+	console.log(poly);
+	console.log(this.highpoly);
 	if(this.highpoly != poly){
 		polyUpdate = true;
 		this.highpoly = poly;
 		var loadComplete = 0;
-		if(this.highpoly){ //LOAD THE HIGH POLY MODELS
+		if(this.highpoly == 1){ //LOAD THE HIGH POLY MODELS
 			this.loader.load('Models/Pawn/pawn.obj', 'Models/Pawn/pawn.mtl', function (object){
 				board.pawn = object;
 				loadComplete++;
@@ -527,7 +529,7 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				loadComplete++;
 				start++;
 			});
-		}else{
+		}else if(this.highpoly==0){
 			//LOAD THE LOW POLY MODELS
 			var loadComplete = 0;
 			this.loader.load('Models/Pawn/pawnlow.obj', 'Models/Pawn/pawn.mtl', function (object){
@@ -556,6 +558,40 @@ ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 				start++;
 			});
 			this.loader.load('Models/King/kinglow.obj', 'Models/King/king.mtl', function (object){
+				board.king = object;
+				loadComplete++;
+				start++;
+			});
+		}
+		else if(this.highpoly==2){
+			//LOAD THE CIRCLE POLY MODELS
+			var loadComplete = 0;
+			this.loader.load('Models/Pawn/pawncircle.obj', 'Models/Pawn/pawn.mtl', function (object){
+				board.pawn = object;
+				loadComplete++;
+				start++;
+			});
+			this.loader.load('Models/Rook/rookcircle.obj', 'Models/Rook/rook.mtl', function (object){
+				board.rook = object;
+				loadComplete++;
+				start++;
+			});
+			this.loader.load('Models/Knight/knightcircle.obj', 'Models/Knight/knight.mtl', function (object){
+				board.knight = object;
+				loadComplete++;
+				start++;
+			});
+			this.loader.load('Models/Bishop/bishopcircle.obj', 'Models/Bishop/bishop.mtl', function (object){
+				board.bishop = object;
+				loadComplete++;
+				start++;
+			});
+			this.loader.load('Models/Queen/queencircle.obj', 'Models/Queen/queen.mtl', function (object){
+				board.queen = object;
+				loadComplete++;
+				start++;
+			});
+			this.loader.load('Models/King/kingcircle.obj', 'Models/King/king.mtl', function (object){
 				board.king = object;
 				loadComplete++;
 				start++;

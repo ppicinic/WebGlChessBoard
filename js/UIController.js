@@ -109,12 +109,16 @@ UIController.prototype.init = function(){
 			   if(guiThemeParams.quality=="Low")
 			{
 				//Make models low.
-				poly = false;
+				poly = 0;
+			}
+			else if(guiThemeParams.quality=="High")
+			{
+				//Make models high.
+				poly = 1;
 			}
 			else
 			{
-				//Make models high.
-				poly = true;
+				poly = 2;
 			}
             start = 0;
             sceneControl.loadChanges(poly);
@@ -278,7 +282,7 @@ UIController.prototype.gui = function(){
 	/////////////
     themeFolder = gui.addFolder('Themes');
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:");
-    themeFolder.add(guiThemeParams, 'quality', ["Low","High"]).name("Quality:");
+    themeFolder.add(guiThemeParams, 'quality', ["Low","High","Comodore64"]).name("Quality:");
 	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight","sunset","stormynight"]);
 	themeFolder.add(guiThemeParams,'Update');
 	
