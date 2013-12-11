@@ -1,22 +1,34 @@
+/**
+*	CameraController object handles animating the camera
+*/
 var CameraController = function (camera) { this.init(camera); }
 
+/**
+*	Constructor initializes the camera controller
+*/
 CameraController.prototype.init = function(camera)
 {
+	//sets the camera
 	this.camera = camera;
 	this.pos = WHITE;
+	// Sets camera position
 	this.camera.position.x = 0;
 	this.camera.position.y = 100;
 	this.camera.position.z = 176;
+	// Sets animation fields
 	this.duration = CAMERA_TIME;
 	this.movex = 1;
 	this.movez = -1;
 	this.moving = false;
 	this.ttl = 0;
 	this.point = 176;
+	// Set default sweep off
 	this.sweepOff = true;
-	
 }
 
+/**
+*	Initialize the camera to sweep
+*/
 CameraController.prototype.move = function(){
 	this.pos = this.pos;
 	this.ttl = 0;
@@ -30,14 +42,21 @@ CameraController.prototype.move = function(){
 	}
 }
 
+/**
+*	Update method animates the camera
+*/
 CameraController.prototype.update = function(){
+	// Animation if sweep is off
 	if(this.sweepOff){
+		// Do nothing for 10 frames
+		// This gives just a slight pause between moves
 		this.ttl++;
 		if(this.ttl >= 10){
 			this.moving = false;
 			this.point += (316 * this.movez);
 			this.movez = -this.movez;
 		}
+	// Sweep Camera
 	}else{
 		var movescale = easeInOutSin(this.ttl, this.point, (316 * this.movez), this.duration);
 		var factor = 1;
@@ -64,6 +83,10 @@ CameraController.prototype.update = function(){
 	}
 }
 
+/**
+*	Tell if the camera is animating
+*	@return true if animating, false otherwise
+*/
 CameraController.prototype.isMoving = function(){
 	return this.moving;
 }
