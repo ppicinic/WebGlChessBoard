@@ -283,7 +283,7 @@ UIController.prototype.gui = function(){
     themeFolder = gui.addFolder('Themes');
     themeFolder.add(guiThemeParams, 'type', ["Marble","Wood"]).name("Piece Type:");
     themeFolder.add(guiThemeParams, 'quality', ["Low","High","Comodore64"]).name("Quality:");
-	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight","sunset","stormynight"]);
+	themeFolder.add(guiThemeParams, 'skybox',["sunnyocean","darknight","sunset","stormynight","tron"]);
 	themeFolder.add(guiThemeParams,'Update');
 	
 	//Buttons on their own

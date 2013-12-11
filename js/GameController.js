@@ -168,6 +168,17 @@ GameController.prototype.updateLights = function(skybox)
 		this.directionalLight.position.set( 0, 10, 0 ).normalize();
 		this.scene.add( this.directionalLight );
 	}
+	if(skybox == "tron")
+	{
+		this.scene.remove(this.directionalLight);
+		this.directionalLight = new THREE.DirectionalLight( 0xFFA347 );
+		this.directionalLight.position.set( 0, 10, 0 ).normalize();
+		this.scene.add(this.directionalLight);
+		this.scene.remove(this.light2);
+		this.light2 = new THREE.PointLight( 0xFFA347, .5, 10000 );
+		this.light2.position.set( -90, 140, -90 );
+		this.scene.add( this.light2 );
+	}
 	else
 	{
 	this.scene.remove(this.light2);
