@@ -53,6 +53,7 @@ UIController.prototype.init = function(){
         { //Reset the game entirely on button press.
 			guiThemeParams.type = "Marble";
 			guiThemeParams.type = "Low";
+			guiThemeParams.skybox = "sunnyocean";
 			guiThemeParams.playAudio = false;
 			bgSound.pause();
 			guiServParams.Close();
