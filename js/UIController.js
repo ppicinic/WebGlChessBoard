@@ -119,6 +119,10 @@ UIController.prototype.init = function(){
             console.log(start); //Timer to see how long it takes to load.
             sceneControl.loadChanges(poly);
             game.updatePieces(poly, texture);
+			if(guiThemeParams.skybox == "stormynight")
+			{
+				guiThemeParams.playAudio = true;
+			}
 			game.updateSkybox(guiThemeParams.skybox);
 		}
     };
