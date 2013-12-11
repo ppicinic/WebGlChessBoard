@@ -150,7 +150,6 @@ GameController.prototype.connectToServer = function(url){
 GameController.prototype.updateLights = function(skybox)
 {
 	
-	console.log(this.directionalLight);
 	if(skybox == "sunset")
 	{
 		this.scene.remove(this.directionalLight);
