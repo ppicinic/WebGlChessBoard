@@ -17,7 +17,7 @@ UIController.prototype.init = function(){
 	guiServParams = { //Needed for GUI, has server settings and Reset. Default settings.
         ServSetting: false, //True for GameID connection
     	ServerUrl: self.serverUrl,
-        GameID: "team03",
+        GameID: "340",
         Connect: function(){ //On button press, connect to the server.
                 var url = "";
                 if(!this.ServSetting)
