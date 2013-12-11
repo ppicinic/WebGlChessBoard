@@ -519,8 +519,6 @@ ChessBoard.prototype.move = function(str){
 ChessBoard.prototype.updatePieceLoad = function(poly, texture){
 	var polyUpdate = false;
 	var board = this;
-	console.log(poly);
-	console.log(this.highpoly);
 	if(this.highpoly != poly){
 		polyUpdate = true;
 		this.highpoly = poly;
@@ -670,22 +668,16 @@ ChessBoard.prototype.updateSkybox = function(skybox, audioB)
 	{
 		bgSound.play();
 	}
-	if(skybox != "stormynight" && rainEngine)
+	if(skybox != "stormynight" && skybox != "tron" && rainEngine)
 	{
-		rainEngine.destroy();
-		rainControl = false;
+		
 		bgSound.pause();
 		bgSound.src = 'Sound/mybg.mp3';
-	}
-	
-	if(skybox != "tron" && rainEngine)
-	{
-		rainEngine.destroy();
-		rainControl = false;
-		bgSound.pause();
-		bgSound.src = 'Sound/mybg.mp3';
-	}
-	
+	}	
+	if(this.skyboxName != skybox && rainEngine){
+			rainEngine.destroy();
+			rainControl = false;
+		}
 	
 	if(this.skyboxName != skybox)
 	{
