@@ -126,8 +126,8 @@ GameController.prototype.updatePieces = function(poly, texture){
 *	Updates the sky box
 *	@param the skybox type
 */
-GameController.prototype.updateSkybox = function(skybox){
-	this.board.updateSkybox(skybox);
+GameController.prototype.updateSkybox = function(skybox, audioB){
+	this.board.updateSkybox(skybox,audioB);
 }
 
 /**
@@ -141,6 +141,47 @@ GameController.prototype.connectToServer = function(url){
 		var self = this;
 		setTimeout(function(){ self.pingServer(); }, 0);
 	}
+}
+
+/**
+*	Changes the lights based on the skybox
+*	@param skybox the skybox that has been changed to
+*/
+GameController.prototype.updateLights = function(skybox)
+{
+	
+	console.log(this.directionalLight);
+	if(skybox == "sunset")
+	{
+		this.scene.remove(this.directionalLight);
+		this.directionalLight = new THREE.DirectionalLight( 0xFDEAD1 );
+		this.directionalLight.position.set( 0, 10, 0 ).normalize();
+		this.scene.add(this.directionalLight);
+		this.scene.remove(this.light2);
+		this.light2 = new THREE.PointLight( 0xFDEAD1, .5, 10000 );
+		this.light2.position.set( -90, 140, -90 );
+		this.scene.add( this.light2 );
+	}
+	else if(skybox == "stormynight")
+	{
+		this.scene.remove(this.directionalLight);
+		this.directionalLight = new THREE.DirectionalLight( 0x383838 );
+		this.directionalLight.position.set( 0, 10, 0 ).normalize();
+		this.scene.add( this.directionalLight );
+	}
+	else
+	{
+	this.scene.remove(this.light2);
+	this.light2 = new THREE.PointLight( 0xffffff, .5, 10000 );
+	this.light2.position.set( -90, 140, -90 );
+	this.scene.add( this.light2 );
+	
+	this.scene.remove(this.directionalLight);
+	this.directionalLight = new THREE.DirectionalLight( 0x8b8b8b );
+	this.directionalLight.position.set( 0, 10, 0 ).normalize();
+	this.scene.add( this.directionalLight );
+	}
+	
 }
 
 /**
