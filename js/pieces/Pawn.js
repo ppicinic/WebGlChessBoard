@@ -38,7 +38,6 @@ Pawn.prototype.init = function(scene, color, spot, board)
 	this.dy = 0;
 	// Animation info
 	this.moving = false;
-	this.fadettl = TIME_TO_MOVE;
 	this.dest = false;
 	this.ttl = 0;
 	this.duration = 0;
@@ -226,7 +225,7 @@ Pawn.prototype.update = function(){
 			this.firedSmoke = true;
 			this.particles = true;
 		}
-		//
+		// Fades back in on table
 		var self = this;
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
@@ -234,9 +233,13 @@ Pawn.prototype.update = function(){
 				
 			}
 		});
+		// Move to next frame
 		this.ttl++;
+		// Ends dead animation
 		if(this.ttl == this.duration){
+			// Sets moving flag to false; ends animation
 			this.moving = false;
+			// Sets Opacity to 1 and transparent to false to fix up model in case of issues
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.opacity = 1;
@@ -244,50 +247,50 @@ Pawn.prototype.update = function(){
 				}
 			});
 		}
-
+	// Handles Piece movement animation
 	}else {
+		// Calculates X and Z position of the piece
 		var newYpos = easeInOutSin(this.ttl, this.y, this.dy, this.duration);
 		var newXpos = easeInOutSin(this.ttl, this.x, this.dx, this.duration);
+		// Calculates and sets Y position of the piece
+		// This gives the piece lifting effect
 		if(this.ttl >= (this.duration / 2)){
 			var newTTL = this.ttl - (this.duration / 2);
 			this.piece.position.y = easeInOutSin(newTTL, 6, -1.5, (this.duration / 2));
 		}else{
 			this.piece.position.y = easeInOutSin(this.ttl, 4.5, 1.5, (this.duration / 2));
 		}
+		// Sets X and Z position of the piece
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
+		// Moves to next frame
 		this.ttl++;
+		// Ends animation
 		if(this.ttl > this.duration){
+			// Sets moving flag to false, ends animation
 			this.moving = false;
+			// Sets piece coordinates
 			this.x = this.x2;
 			this.y = this.y2;
+			// Sets up pawn to be promoted
 			if(this.promote){
+				//Sets moving flag back to true
 				this.moving = true;
+				// Sets up promotion flags
 				this.ttl = FADE_TIME;
 				this.promoting = true;
 				this.promote = false;
 			}
 		}
-		// old method
-		/*this.piece.position.z += this.dy;
-		this.piece.position.x += this.dx;
-		this.ttl--;
-		if(this.ttl == 0){
-			this.moving = false;
-			this.x = this.x2;
-			this.y = this.y2;
-			if(this.promote){
-				this.moving = true;
-				this.ttl = FADE_TIME;
-				this.promoting = true;
-				this.promote = false;
-			}
-			
-		}*/
 	}
 }
 
-
+/**
+*	Destroy method sets up piece to be capture
+*	@param ttl the duration of the piece capping it
+* 	@param spaces the number of spaces the piece capturing
+*		it has to move
+*/
 Pawn.prototype.destroy = function(ttl, spaces){
 	this.moving = true;
 	this.duration = ttl;
@@ -296,28 +299,46 @@ Pawn.prototype.destroy = function(ttl, spaces){
 	this.dest = true;
 }
 
+/**
+*	Tells if the piece is moveing
+*/
 Pawn.prototype.isMoving = function(){
 	return this.moving;
 }
 
+/**
+*	Sets piece to be promoted
+*/
 Pawn.prototype.promoted = function(){
 	this.promote = true;
 }
 
+/**
+*	Updates the piece model and/or texture
+*	@param poly the model being updated to
+*	@param texture the texture being updated to
+*/
 Pawn.prototype.updatePiece = function(poly, texture){
 
+	// Set up references for anonymous functions
 	var board = this.board;
 	var temp = this.piece;
 
+	// Update the Piece Geometries
 	if(this.poly != poly){
+		// Set geometry flag
 		this.poly = poly;
+		//Remove old model from scene
 		this.scene.remove(this.piece);
+		// Clone model reference and position it
 		this.piece = cloneObjMtl(this.board.pawn);
 		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 		this.piece.position.x = temp.position.x;
 		this.piece.position.z = temp.position.z;
 		this.piece.position.y = temp.position.y;
+		// Set texture flag
 		this.texture = texture;
+		// Update texture of model
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -341,12 +362,15 @@ Pawn.prototype.updatePiece = function(poly, texture){
 				}
 			});
 		} 
+		// Add piece to scene
 		this.scene.add(this.piece);
-
 	}
 
+	// Update Texture of mode
 	if(this.texture != texture){
+		// Set texture flag
 		this.texture = texture;
+		// Update Texture
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -372,10 +396,14 @@ Pawn.prototype.updatePiece = function(poly, texture){
 		} 
 	}
 
+	// Tell loader piece has loaded
 	start++;
-
 }
 
+/**
+*	outPos calculates piece location outside on table
+*	@param pos the place the pice goes logically
+*/
 Pawn.prototype.outPos = function(pos){
 	var spot = pos;
 	if(pos > 11){
@@ -396,8 +424,5 @@ Pawn.prototype.outPos = function(pos){
 		
 	}
 	
-	
-	
 	this.deady = 2.2;
-
 }
