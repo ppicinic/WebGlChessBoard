@@ -19,28 +19,35 @@ var Queen = function (scene, color, spot, board) { this.init(scene, color, spot,
 */
 Queen.prototype.init = function(scene, color, spot, board)
 {
-	// initializes all class instances
+	// Holds board and scene references
 	this.board = board;
 	this.scene = scene;
+	// Sets Color
 	this.color = color;
+	//Sets all required position info
 	this.xLoc = spot[0];
 	this.yLoc = spot[1];
 	this.x = LEFT + (this.xLoc * 20);
 	this.y = TOP + (this.yLoc * 20);
-	this.moving = false;
-	this.dest = false;
-	this.ttl = 0;
-	this.duration = 0;
 	this.x2 = 0;
 	this.y2 = 0;
 	this.dx = 0;
 	this.dy = 0;
+	// Animation info
+	this.moving = false;
+	this.dest = false;
+	this.ttl = 0;
+	this.duration = 0;
+	this.spaces = 0;
+
+	//Promotion Info
 	this.promote = false;
+
+	// Dead position - needed for moving off table
 	this.deadx = 0;
 	this.deady = 0;
 	this.deadz = 0;
 	this.dead = false;
-	this.spaces = 0;
 
 	// Low Poly - false || High Poly - true
 	this.poly = board.highpoly;
@@ -80,7 +87,10 @@ Queen.prototype.init = function(scene, color, spot, board)
 	//local variables to the init method to help loading the model
 	var xPos = this.xLoc;
 	var yPos = this.yLoc;
+
+	// Clone piece from the reference piece in board
 	this.piece = cloneObjMtl(board.queen);
+	//Set it's texture and tell it to cast a shadow
 	if(this.color){
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
@@ -96,55 +106,78 @@ Queen.prototype.init = function(scene, color, spot, board)
 			}
 		});
 	} 
+	// Scale and Place the piece in its position
 	this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 	this.piece.position.x = LEFT + (xPos * 20);
 	this.piece.position.z = TOP + (yPos * 20);
 	this.piece.position.y = 4.5;
+	// Add the piece to scene
 	this.scene.add(this.piece);
+	//Tell the loader the piece has finished loading
 	start++;
 }
 
+/**
+*	Promotion method sets up a Pawn to be promoted to a Queen
+*	@param ttl time until Pawn reaches end of its animation
+*/
 Queen.prototype.promoted = function(ttl){
-	console.log('queen promotion');
+	// Set the opacity to 0 and transparency on
 	this.piece.traverse(function(mesh){
 		if(mesh instanceof THREE.Mesh){
 			mesh.material.transparent = true;
 			mesh.material.opacity = 0;
 		}
 	});
+	// Calculate time
 	this.ttl = ttl + (FADE_TIME * 2);
+	// Set animation flags on
 	this.moving = true;
 	this.promote = true;
 }
 
-// TODO a move method, should add the queen to a move Queue that will animate one move at a time
-// Should handle callback to board for promotion
+/**
+*	Move method sets a piece up to be moved
+* 	Move locations are in regards to board spots 1 through 8
+*	not WebGL locations
+*	@param x the board x location the piece is moved to
+* 	@param y the board y location the piece is moved to
+*/
 Queen.prototype.move = function(x, y){
+	// Counts the number of spaces to move
 	if(this.xLoc != x){
 		this.spaces = Math.abs(this.xLoc - x);
 	}else{
 		this.spaces = Math.abs(this.yLoc - y);
 	}
+	// Recalculates position info for after move
 	this.xLoc = x;
 	this.yLoc = y;
 	this.x2 = LEFT + (x * 20);
 	this.y2 = TOP + (y * 20);
-		
+	
+	//Sets up moving boolean for animation
 	this.moving = true;
+	// Sets up time to live for animation
 	this.ttl = 0;
+	// Sets the duration of animation
 	this.duration = SPEED_TIME * this.spaces;
-	console.log(SPEED_TIME);
-	console.log(this.duration);
+	// Calculates the distance traveled in webgl points
 	this.dx = (this.x2 - this.x);
 	this.dy = (this.y2 - this.y);
 	
 }
 
+/**
+*	Update method is called if the piece is currently moving
+* 	This method handles animating the piece
+*/
 Queen.prototype.update = function(){
+	// Handles Fading out piece on capture
 	if(this.dest){
 		var self = this;
+		// Fades out pieces once the capturing piece gets close
 		if(this.ttl <= (this.duration / this.spaces)){
-			//console.log('opacity drops')
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					if(!mesh.material.transparent){
@@ -155,34 +188,43 @@ Queen.prototype.update = function(){
 				}
 			});
 		}
+		// Moves to Next frame
 		this.ttl--;
+		// Ends fade out
 		if(this.ttl == 0){
+			// Ends Fading out and set ups fade in on the table
 			this.dest = false;
 			this.dead = true;
 			this.ttl = 0;
+			//Sets up duration for Fade back in
 			this.duration = (this.duration / this.spaces);
+			//Sets location on table
 			this.piece.position.x = this.deadx;
 			this.piece.position.y = this.deady;
 			this.piece.position.z = this.deadz;
 		}
-
+	// Handles fading back in on the table
 	}else if(this.dead){
+		// Particle effect when the piece is placed on the table
 		if(!this.firedSmoke)
-				{
-					this.board.engine.push(new ParticleEngine(this.scene));
-					this.smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
-					this.board.engine[this.board.engine.length-1].setValues( this.smoke );
-					this.board.engine[this.board.engine.length-1].initialize();
-					this.firedSmoke = true;
-					this.particles = true;
-				}
+		{
+			this.board.engine.push(new ParticleEngine(this.scene));
+			this.smoke.positionBase = new THREE.Vector3(this.piece.position.x,this.piece.position.y,this.piece.position.z);
+			this.board.engine[this.board.engine.length-1].setValues( this.smoke );
+			this.board.engine[this.board.engine.length-1].initialize();
+			this.firedSmoke = true;
+			this.particles = true;
+		}
+		// Fades back in on table
 		var self = this;
 		this.piece.traverse(function(mesh){
 			if(mesh instanceof THREE.Mesh){
 				mesh.material.opacity += (1 / self.duration);
 			}
 		});
+		// Move to next frame
 		this.ttl++;
+		// Ends dead animation
 		if(this.ttl == this.duration){
 			this.moving = false;
 			this.piece.traverse(function(mesh){
@@ -191,8 +233,9 @@ Queen.prototype.update = function(){
 				}
 			});
 		}
-
+	// Handles Promoting to this piece
 	}else if(this.promote){
+		// Fades Piece in
 		if(this.ttl <= FADE_TIME){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -200,36 +243,53 @@ Queen.prototype.update = function(){
 				}
 			});
 		}
+		// Move to next frame
 		this.ttl--;
+		// End fading
 		if(this.ttl == 0){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
 					mesh.material.transparent = false;
 				}
 			});
+			// Set promotion flags off
 			this.moving = false;
 			this.promote = false;
 		}
+	// Handles Piece movement animation
 	}else {
+		// Calculates and sets X and Z position of the piece
 		var newYpos = easeInOutExp(this.ttl, this.y, this.dy, this.duration);
 		var newXpos = easeInOutExp(this.ttl, this.x, this.dx, this.duration);
 		this.piece.position.z = newYpos;
 		this.piece.position.x = newXpos;
+		// Calculates and sets Y position of the piece
+		// This gives the piece lifting effect
 		if(this.ttl >= (this.duration / 2)){
 			var newTTL = this.ttl - (this.duration / 2);
 			this.piece.position.y = easeInOutSin(newTTL, 7.5, -3, (this.duration / 2));
 		}else{
 			this.piece.position.y = easeInOutSin(this.ttl, 4.5, 3, (this.duration / 2));
 		}
+		// Moves to next frame
 		this.ttl++;
+		// Ends animation
 		if(this.ttl > this.duration){
+			// Sets moving flag to false, ends animation
 			this.moving = false;
+			// Sets piece coordinates
 			this.x = this.x2;
 			this.y = this.y2;
 		}
 	}
 }
 
+/**
+*	Destroy method sets up piece to be capture
+*	@param ttl the duration of the piece capping it
+* 	@param spaces the number of spaces the piece capturing
+*		it has to move
+*/
 Queen.prototype.destroy = function(ttl, spaces){
 	this.moving = true;
 	this.spaces = spaces;
@@ -238,24 +298,40 @@ Queen.prototype.destroy = function(ttl, spaces){
 	this.dest = true;
 }
 
+/**
+*	Tells if the piece is moving
+*	@return true if moving, false otherwise
+*/
 Queen.prototype.isMoving = function(){
 	return this.moving;
 }
 
+/**
+*	Updates the piece model and/or texture
+*	@param poly the model being updated to
+*	@param texture the texture being updated to
+*/
 Queen.prototype.updatePiece = function(poly, texture){
 
+	// Set up references for anonymous functions
 	var board = this.board;
 	var temp = this.piece;
 
+	// Update the Piece Geometries
 	if(this.poly != poly){
+		// Set geometry flag
 		this.poly = poly;
+		//Remove old model from scene
 		this.scene.remove(this.piece);
+		// Clone model reference and position it
 		this.piece = cloneObjMtl(this.board.queen);
 		this.piece.scale.x = this.piece.scale.y = this.piece.scale.z = 5;
 		this.piece.position.x = temp.position.x;
 		this.piece.position.z = temp.position.z;
 		this.piece.position.y = temp.position.y;
+		// Set texture flag
 		this.texture = texture;
+		// Update texture of model
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -279,12 +355,15 @@ Queen.prototype.updatePiece = function(poly, texture){
 				}
 			});
 		} 
+		// Add piece to scene
 		this.scene.add(this.piece);
 
 	}
-
+	// Update Texture of model
 	if(this.texture != texture){
+		// Set texture flag
 		this.texture = texture;
+		// Update Texture
 		if(this.color){
 			this.piece.traverse(function(mesh){
 				if(mesh instanceof THREE.Mesh){
@@ -309,11 +388,15 @@ Queen.prototype.updatePiece = function(poly, texture){
 			});
 		} 
 	}
-
+	// Tell loader piece has loaded
 	start++;
 
 }
 
+/**
+*	outPos calculates piece location outside on table
+*	@param pos the place the pice goes logically
+*/
 Queen.prototype.outPos = function(pos){
 	var spot = pos;
 	if(pos > 11){
@@ -333,9 +416,6 @@ Queen.prototype.outPos = function(pos){
 		this.deadz = 80 - ((spot - 1) * 15) + 5;
 		
 	}
-	
-	
-	
-	this.deady = 2.2;
 
+	this.deady = 2.2;
 }
