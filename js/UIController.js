@@ -123,7 +123,7 @@ UIController.prototype.init = function(){
             start = 0;
             sceneControl.loadChanges(poly);
             game.updatePieces(poly, texture);
-			if(guiThemeParams.skybox == "stormynight")
+			if(guiThemeParams.skybox == "stormynight" || guiThemeParams.skybox == "tron")
 			{
 				guiThemeParams.playAudio = true;
 			}

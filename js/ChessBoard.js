@@ -15,12 +15,13 @@ var source;
 var funnel =
 	{
 		positionStyle  : Type.CUBE,
-		positionBase   : new THREE.Vector3( 0, 0, 0 ),
-		positionSpread : new THREE.Vector3( 10, 10, 10 ),
+		positionBase     : new THREE.Vector3( 0, 200, 0 ),
+		positionSpread   : new THREE.Vector3( 600, 0, 600 ),
 
-		velocityStyle  : Type.CUBE,
-		velocityBase   : new THREE.Vector3( 0, 100, 200 ),
-		velocitySpread : new THREE.Vector3( 40, 40, 80 ), 
+		velocityStyle    : Type.CUBE,
+		velocityBase     : new THREE.Vector3( 0, -400, 0 ),
+		velocitySpread   : new THREE.Vector3( 100, 50, 10 ), 
+		accelerationBase : new THREE.Vector3( 700, -10,0 ),
 		
 		angleBase               : 0,
 		angleSpread             : 720,
@@ -35,7 +36,7 @@ var funnel =
 		opacityBase : 1,
 		blendStyle  : THREE.AdditiveBlending,
 
-		particlesPerSecond : 500,
+		particlesPerSecond : 1000,
 		particleDeathAge   : 4.0,		
 		emitterDeathAge    : 10000
 	};
@@ -682,7 +683,7 @@ ChessBoard.prototype.updateSkybox = function(skybox, audioB)
 		rainControl = false;
 		bgSound.pause();
 		bgSound.src = 'Sound/mybg.mp3';
-		if(this.skyboxName == "funnel" && skybox != "funnel" && audioB)
+		if(this.skyboxName == "tron" && skybox != "tron" && audioB)
 		{
 			
 			bgSound.play();
