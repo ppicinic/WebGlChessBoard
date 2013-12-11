@@ -1,3 +1,6 @@
+/**
+*	Game Over class initiates a game over sequence if its played
+*/
 var GameOver = function (text) { this.init(text); }
 //Fireworks particles
 var firework =
@@ -24,6 +27,10 @@ var firework =
 		emitterDeathAge    : 0.2
 	};
 
+/**
+*	Constructor constructs the game over object
+*	@param text the text that tells who wins
+*/
 GameOver.prototype.init = function(text)
 {
 	this.theText = text;
@@ -39,6 +46,9 @@ GameOver.prototype.init = function(text)
 	
 }
 
+/**
+*	Initiates animation of game over scene
+*/
 GameOver.prototype.move = function(){
 	this.ttl = 0;
 	//Create 3D text displaying who won the game
@@ -84,6 +94,9 @@ GameOver.prototype.move = function(){
 	scene.add(this.text);
 }
 
+/**
+*	Update animation of the of game over scene
+*/
 GameOver.prototype.update = function(){
 
 	var dt = this.clock.getDelta();
@@ -129,6 +142,10 @@ GameOver.prototype.update = function(){
 	
 }
 
+/**
+*	Tells if the game over object is animating
+*	@return true if animating, false otherwise
+*/
 GameOver.prototype.isMoving = function(){
 	return this.moving;
 }

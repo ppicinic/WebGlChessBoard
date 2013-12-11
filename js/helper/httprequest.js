@@ -1,5 +1,8 @@
-// From Eloquent Javascript
-
+/**
+*	Code from Eloquent Javascript
+*	Makes an http request Object
+*	@return an Http Request Object
+*/
 function makeHttpObject() {
   try {return new XMLHttpRequest();}
   catch (error) {}
