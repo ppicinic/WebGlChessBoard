@@ -54,11 +54,12 @@ UIController.prototype.init = function(){
 			guiThemeParams.type = "Marble";
 			guiThemeParams.type = "Low";
 			guiServParams.Close();
+			whiteName = "Player 1";
+			blackName = "Player 2";
             blackTime = 900;
             whiteTime = 900;
 			self.connection = false;
 			self.currentlyConnected = false;
-			console.log("Reset here");
 			gui.destroy();
 			sceneControl.reset();
                 
@@ -116,7 +117,6 @@ UIController.prototype.init = function(){
 				poly = true;
 			}
             start = 0;
-            console.log(start); //Timer to see how long it takes to load.
             sceneControl.loadChanges(poly);
             game.updatePieces(poly, texture);
 			if(guiThemeParams.skybox == "stormynight")
@@ -145,7 +145,6 @@ UIController.prototype.gui = function(){
      if(this.connection)
 	 {//Only if previously connected create these folders and buttons
 	 serverFolder.add(guiServParams,'Close');
-	 console.log(serverFolder.__controllers);
 	 serverFolder.__controllers[0].remove();
 	 
 		if(this.currentlyConnected){

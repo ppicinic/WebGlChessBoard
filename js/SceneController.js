@@ -55,6 +55,8 @@ SceneController.prototype.changeScene = function(){
 		controls = new THREE.OrbitControls( camera, renderer.domElement ); //Mouse camera controls
 		controlCam = true; //Manual camera control
 		
+	wTeamName.innerHTML = "White Team: " + whiteName;
+	bTeamName.innerHTML = "Black Team: " + blackName;
 	blackClock.innerHTML = "Black Timer: " + blackTime; //Set the timers up
 	whiteClock.innerHTML = "White Timer: " + whiteTime; 
 	////////
@@ -95,6 +97,8 @@ SceneController.prototype.loadChanges = function(poly){
 	this.changeScene();
 
 	//Hide timer text during loading screen
+	wTeamName.innerHTML = "";
+	bTeamName.innerHTML = "";
 	whiteClock.innerHTML = ""; 
 	blackClock.innerHTML = "";
 	var self = this;
@@ -120,6 +124,7 @@ SceneController.prototype.reset = function(){
 	start = 0;
 	this.duration = 41;
 	this.loading = true;
+	this.poly = false;
 
 	// Create a new LoadScene and switch to it
 	this.load = new LoadScene(this.duration);
@@ -129,6 +134,8 @@ SceneController.prototype.reset = function(){
 	game = new GameController();
 	this.game = game;
 	//Hide timer text
+	wTeamName.innerHTML = "";
+	bTeamName.innerHTML = "";
 	whiteClock.innerHTML = ""; 
 	blackClock.innerHTML = "";
 	// Switch to Game scene when loading is complete

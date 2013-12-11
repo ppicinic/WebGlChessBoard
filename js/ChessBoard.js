@@ -151,9 +151,6 @@ ChessBoard.prototype.init = function(scene, camera)
 		// add it to the scene
 		board.scene.add(board.skybox);
 		start++;
-		console.log('skybox ');
-		console.log(start);
-	
 	}
 
 	/////////////////////
