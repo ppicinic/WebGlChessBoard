@@ -214,10 +214,11 @@ GameController.prototype.pingServer = function(){
 				if(this.jsonGame){
 					//set the moves and all moves not in game yet
 					var moves = newJSON.moves;
-					
-					for(var i = this.moveCount; i < moves.length; i++){
-						
-						this.board.move(moves[i]);
+					if(moves){
+						for(var i = this.moveCount; i < moves.length; i++){
+							
+							this.board.move(moves[i]);
+						}
 					}
 					// Update all other info
 					this.gameOver = newJSON.gameover;
@@ -260,8 +261,10 @@ GameController.prototype.pingServer = function(){
 					this.gameOver = newJSON.gameover;
 					// Add and play and the moves in the JSON
 					var moves = newJSON.moves;
-					for(var i in moves){
-						this.board.move(moves[i]);
+					if(moves){
+						for(var i in moves){
+							this.board.move(moves[i]);
+						}
 					}
 					this.jsonGame = newJSON;
 					// if game over set the flags and close the connection
